@@ -19,15 +19,15 @@ class Player(Sprite):
         self.bounds = bounds
 
         self.image.fill(self.color)
-        self.off_ground = False
+        self.off_ground = True
         self.vx = 0
         self.vy = 0
 
     def jump(self):
         keystate =  pygame.key.get_pressed()
         if self.off_ground == False:
-            self.vy = -6
-            self.vx *= 0.5
+            self.vy = -5
+          #  self.vx *= 0.5
             self.off_ground = True
 
     def update(self):
@@ -37,15 +37,26 @@ class Player(Sprite):
         if self.off_ground:
             self.vy += 0.2
             if keystate[K_RIGHT]:
-                while self.vx <= 0:
-                    self.vx += 0.7
+                if self.vx < 10:
+                    self.vx += 0.5
+                else:
+                    self.vx = 10
             if keystate[K_LEFT]:
-                while self.vx >= 0:
-                    self.vx -= 0.7
+                if self.vx > -10:
+                    self.vx -= 0.5
+                else:
+                    self.vx = -10
+          #  if self.vy > 0:
+           #     self.vy *= 1.2
+            if keystate[K_DOWN]:  #thurst down while mid-air
+                if self.vy < 0:
+                    self.vy *= -1
+                self.vy *= 1.5
         if not self.off_ground:
             self.walk()
         if self.rect.bottom >= 200:
             self.vy = 0
+            self.rect.bottom = 200
             self.off_ground = False
 
     def walk(self):
