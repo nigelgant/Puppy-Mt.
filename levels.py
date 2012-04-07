@@ -2,7 +2,7 @@ import pygame
 from pygame.locals import *
 from pygame import Surface
 from pygame.sprite import Sprite, Group, GroupSingle, groupcollide
-
+from puppies import Puppy, RegPuppy
 
 
 def drawtile():
@@ -35,7 +35,16 @@ class Level_1(object):
     def create_vtiles(self):  #creates vertical tiles
         tile3 = Tile((200, 406), (6, 64), (0,0,150))
         tile4 = Tile((325, 406), (6, 64), (0,0,150))
-        tile5 = Tile((450, 300), (6, 100), (0,0,150))
+        tile5 = Tile((480, 300), (6, 100), (0,0,150))
+        tile6 = Tile((380, 300), (6, 20), (0,0,150))
+        tile7 = Tile((70, 300), (6, 100), (0,0,150))
         vtiles = Group()
-        vtiles.add(tile3, tile4, tile5)
+        vtiles.add(tile3, tile4, tile5, tile6, tile7)
         return vtiles
+
+    def create_puppies(self):
+        pup1 = RegPuppy((100, 401), 0)
+        pup2 = RegPuppy((400, 401), 1)
+        pups = Group()
+        pups.add(pup1, pup2)
+        return pups
