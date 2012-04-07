@@ -29,7 +29,7 @@ class Player(Sprite):
         keystate =  pygame.key.get_pressed()
         if self.off_ground == False:
             self.vy = -3
-            self.vx *= 0.3
+            self.vx *= 0.2
             self.off_ground = True
 
     def update(self):
@@ -39,15 +39,15 @@ class Player(Sprite):
         if self.off_ground:
             self.vy += 0.2
             if keystate[K_RIGHT]:
-                if self.vx < 10:
-                    self.vx += 0.5
+                if self.vx < 5:
+                    self.vx += 0.4
                 else:
-                    self.vx = 10
+                    self.vx = 5
             if keystate[K_LEFT]:
-                if self.vx > -10:
-                    self.vx -= 0.5
+                if self.vx > -5:
+                    self.vx -= 0.4
                 else:
-                    self.vx = -10
+                    self.vx = -5
           #  if self.vy > 0:
            #     self.vy *= 1.2
             if keystate[K_DOWN]:  #thurst down while mid-air
@@ -58,14 +58,15 @@ class Player(Sprite):
             self.walk()
 
     def land(self):
-        self.vy = 0
+      # self.vy = 0
+        self.vy *= .0001
         self.off_ground = False
     def hitwall(self):
-        self.vx = 0
-        self.off_ground = True
+      #  self.vx = 0
+        self.vx *= .0001
+     #   self.off_ground = True
     def fall(self):
         self.off_ground = True 
-
     def walk(self):
         keystate = pygame.key.get_pressed()
         if keystate[K_RIGHT] and keystate[K_LEFT]:

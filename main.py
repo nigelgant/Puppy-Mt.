@@ -43,11 +43,11 @@ def main():
         #collisions
         if groupcollide(player_grp, htiles, False, False):
             player.land()
-        elif groupcollide(player_grp, vtiles, False, False):
+        if groupcollide(player_grp, vtiles, False, False):
             player.hitwall()
         elif not groupcollide(player_grp, htiles, False, False, None):
             player.fall()
-
+            
         #draw
         screen.fill(BG_COLOR)
         player_grp.draw(screen)
