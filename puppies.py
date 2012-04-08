@@ -50,11 +50,12 @@ class RegPuppy(Puppy):
             self.rect.x += self.vx
 
         if self.state == 1:
-            self.vx += 2
-            if self.vx < 2:
-                self.vx = -2
-            if self.vx > 2:
-                self.vx = 2
+            spd = 2 #speed
+            self.vx += spd
+            if self.vx < spd:
+                self.vx = -spd
+            if self.vx > spd:
+                self.vx = spd
         self.rect.x += self.vx
             
     def hitwall(self):
@@ -63,7 +64,6 @@ class RegPuppy(Puppy):
 
     def edge(self):
         self.vx *= -1
-        print "reach edge"
         self.rect.x += self.vx
 
 

@@ -2,7 +2,7 @@
 
 import pygame
 from pygame.locals import *
-from pygame.sprite import Group, GroupSingle, groupcollide, spritecollide, spritecollideany
+from pygame.sprite import Group, GroupSingle, groupcollide, spritecollide, spritecollideany, collide_rect
 
 from player import Player
 from levels import Tile, Level_1
@@ -50,22 +50,44 @@ def main():
         pups.update()
 
         #collisions
-        if groupcollide(player_grp, htiles, False, False):
-            player.land()
-        if groupcollide(player_grp, vtiles, False, False):
-            player.hitwall()
-        elif not groupcollide(player_grp, htiles, False, False, None):
+        for Tile in htiles:
+            if spritecollideany(Tile, player_grp):
+                if player.rect.bottom > Tile.rect.top:
+                    player.rect.bottom = Tile.rect.top
+                    player.rect.bottom += 1
+                    player.land()
+                else:
+                    player.fall()
+        for Tile in vtiles:
+            if spritecollideany(Tile, player_grp):
+                if Tile.rect.left < player.rect.right and Tile.rect.left < player.rect.left:
+                    player.rect.left = Tile.rect.right
+                    player.hitwall()
+                elif Tile.rect.right > player.rect.left:
+                    player.rect.right = Tile.rect.left
+                    player.hitwall()
+      #  if groupcollide(player_grp, vtiles, False, False):
+       #     player.hitwall()
+        if not groupcollide(player_grp, htiles, False, False, None):
             player.fall()
+            
         for RegPuppy in pups:
             if spritecollideany(RegPuppy, vtiles):
                 RegPuppy.hitwall()
             if spritecollideany(RegPuppy, player_grp):
                 if RegPuppy.state == 1:
-                    player.kill()1
+                    player.kill()
                 if RegPuppy.state == 0:
-                    player.land()
-                if RegPuppy.state == 0 and player.off_ground == False:
-                    player.hitwall()
+                    if player.rect.bottom > RegPuppy.rect.top and player.rect.bottom < RegPuppy.rect.bottom:
+                        player.rect.bottom = RegPuppy.rect.top
+                        player.rect.bottom += 1
+                        player.land()
+      
+                    elif player.rect.right < RegPuppy.rect.right:
+                        player.rect.right = RegPuppy.rect.left
+                    elif player.rect.left > RegPuppy.rect.left:
+                        player.rect.left = RegPuppy.rect.right
+ 
             if not spritecollideany(RegPuppy, htiles):
                 RegPuppy.edge()
 
