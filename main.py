@@ -5,7 +5,7 @@ from pygame.locals import *
 from pygame.sprite import Group, GroupSingle, groupcollide, spritecollide, spritecollideany, collide_rect
 
 from player import Player
-from levels import Tile, Level_1
+from levels import Tile, Level_1, Level_2
 from puppies import Puppy, RegPuppy
 
 SCREEN_SIZE = 640,480
@@ -21,6 +21,7 @@ def main():
     player = Player((200,200), bounds)
     player_grp = GroupSingle(player) #spritegroup for player
     lvl1 = Level_1()
+    lvl2 = Level_2()
     pups = Group(lvl1.create_puppies())
 
     #game loop
@@ -42,7 +43,6 @@ def main():
                 player = Player((200,200), bounds)
                 player_grp.add(player)
 
-
         #update
         player_grp.update()
         htiles = lvl1.create_htiles()
@@ -56,6 +56,9 @@ def main():
                     player.rect.bottom = Tile.rect.top
                     player.rect.bottom += 1
                     player.land()
+
+                  #  htiles = lvl2.create_htiles() #TEST
+                    
                 else:
                     player.fall()
         for Tile in vtiles:
@@ -66,8 +69,6 @@ def main():
                 elif Tile.rect.right > player.rect.left:
                     player.rect.right = Tile.rect.left
                     player.hitwall()
-      #  if groupcollide(player_grp, vtiles, False, False):
-       #     player.hitwall()
         if not groupcollide(player_grp, htiles, False, False, None):
             player.fall()
             

@@ -21,12 +21,9 @@ class Tile(Sprite):
         self.image.fill(self.color)
 
 class Level_1(object):
-    
-    def __init__(self):
-        pass
 
     def create_htiles(self):  #creates horizontal tiles
-        tile1 = Tile((0, 400), (206, 6), (0,150,0)) #coordinates, size, color
+        tile1 = Tile((0, 400), (206, 6), (0,150,0)) #(coordinates) (length, height) (RGB)
         tile2 = Tile((325, 400), (200, 6), (0,150,0))
         htiles = Group() #creates a sprite group for tiles
         htiles.add(tile1,tile2)
@@ -48,3 +45,13 @@ class Level_1(object):
         pups = Group()
         pups.add(pup1, pup2)
         return pups
+
+class Level_2(object):
+    
+    def create_htiles(self):
+        tile1 = Tile((0, 400), (206, 6), (0,150,150))
+        tile2 = Tile((500, 400), (100, 6), (0,150,150))
+        htiles = Group()
+        htiles.add(tile1,tile2)
+        return htiles
+        
