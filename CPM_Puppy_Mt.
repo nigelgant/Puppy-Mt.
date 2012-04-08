@@ -1,0 +1,23 @@
+Puppy Mt. CPM
+
+duration/effort			               needs / feeds
+						   
+A-1d/2h-Define Game                                 -/B,C,D,E,F,G
+B-1d/3h-Define objects/functions/classes/etc        A/C,D,E,F
+C-1d/1h-Control scheme                            A,B/E,F
+D-4d/6h-Create (place-holder) graphics            A,B/E,F,G
+E-18d/40h-Code game                           A,B,C,D/F,G
+    -Define basic classes:
+    	   -Player
+	   -Level (loading, drawing, collision)
+	   -Puppy (basic goomba style) 
+    -Build basic lvl:
+    	   -Load/draw lvl
+	   -player controls/draw
+	   -level collision
+	   -spawn/draw puppy and puppy player collision
+	   -shoot/collide projectiles
+F-2d/4h-Build level                           A,B,D,E/G
+G-3d/9h-Polish (graphics, menu, sounds, etc)    D,E,F/-
+
+
