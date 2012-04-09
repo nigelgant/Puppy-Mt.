@@ -61,12 +61,11 @@ def main():
         for Tile in htiles:
             if spritecollideany(Tile, player_grp):
               #  print player.rect.bottom, Tile.rect.top
-                if player.rect.bottom > Tile.rect.top and player.vy >= 0:
+                if player.rect.bottom > Tile.rect.top:
                     player.rect.bottom = Tile.rect.top
                     player.rect.bottom += 1
                     player.land()
                 elif player.rect.right <= Tile.rect.left:
-                
                     player.hitwall()
                     player.rect.right = Tile.rect.left
                     print "collide"

@@ -60,13 +60,13 @@ class Player(Sprite):
     def land(self):
         self.vy = 0
        # self.vy *= .0001
-        if self.off_ground == True:
-            self.vx = 0
-        
+       # if self.off_ground == True:
+        #    self.vx = 0        
         self.off_ground = False
+
     def hitwall(self):
-      #  self.vx = 0
-        self.vx *= .0001
+        self.vx = 0
+      #  self.vx *= .0001
     def fall(self):
         self.off_ground = True 
     def walk(self):
