@@ -9,73 +9,110 @@ from levels import Tile
 class Player(Sprite):
     size = 12, 24
     color = 0, 0, 255
+    playerspeed = 200
+    gravity = 600
 
-
-    def __init__(self, loc, bounds):
+    def __init__(self, loc, level):
         Sprite.__init__(self)
+        
+        self.level = level
+        self.spawnpoint = loc
 
         self.image = Surface(self.size)
         self.rect = self.image.get_rect()
-
-        self.rect.center = loc #where player respawns?
-        self.bounds = bounds
-
+        self.rect.center = loc
+        
         self.image.fill(self.color)
-        self.off_ground = True
+        rect = self.image.get_rect().inflate(-4,-4) #what does this do?
+        self.image.fill(self.color, rect)
+        
         self.vx = 0
         self.vy = 0
+        self.off_ground = True
 
     def jump(self):
-        keystate =  pygame.key.get_pressed()
-        if self.off_ground == False:
-            self.vy = -3
-            self.vx *= 0.2
-            self.off_ground = True
-
-    def update(self):
-        keystate = pygame.key.get_pressed()
-        self.rect.x += self.vx
-        self.rect.y += self.vy
-        if self.off_ground:
-            self.vy += 0.2
-            if keystate[K_RIGHT]:
-                if self.vx < 5:
-                    self.vx += 0.4
-                else:
-                    self.vx = 5
-            if keystate[K_LEFT]:
-                if self.vx > -5:
-                    self.vx -= 0.4
-                else:
-                    self.vx = -5
-          #  if self.vy > 0:
-           #     self.vy *= 1.2
-            if keystate[K_DOWN]:  #thurst down while mid-air
-                if self.vy < 0:
-                    self.vy *= -1
-                self.vy *= 1.5
         if not self.off_ground:
-            self.walk()
+            self.off_ground = True
+            self.vy = 200 #jump speed
+            self.vx *= 0.2
+            
+    def touches(self, group):
+        touching = Group()
+        coll = self.rect.inflate(1,1) #grow 1px to allow for edges
+        for sprite in group:
+            if coll.colliderect(sprite.rect):
+                touching.add(sprite)
+        return touching
+    
+    def die(self):
+        #insert dying animation
+        self.level.reset()
+        self.__init__(self.spawnpoint, self.level)
 
-    def land(self):
-        self.vy = 0
-       # self.vy *= .0001
-       # if self.off_ground == True:
-        #    self.vx = 0        
-        self.off_ground = False
-
-    def hitwall(self):
-        self.vx = 0
-      #  self.vx *= .0001
-    def fall(self):
-        self.off_ground = True 
-    def walk(self):
+    def reset(self):
+        self.level.reset()
+        self.__init__(self.spawnpoint, self.level)
+    
+    def update(self, dt):
+        dt = dt / 1000.0
         keystate = pygame.key.get_pressed()
-        if keystate[K_RIGHT] and keystate[K_LEFT]:
-            pass
-        elif keystate[K_RIGHT]:
-            self.vx = 7  #move right
-        elif keystate[K_LEFT]:
-            self.vx = -7  #move left
-        elif not self.off_ground:
-            self.vx = 0
+
+        self.vx = 0
+        if keystate[K_LEFT]:
+            self.vx -= self.playerspeed
+        if keystate[K_RIGHT]:
+            self.vx += self.playerspeed
+
+        self.vy -= dt * self.gravity
+        dx = self.vx * dt
+        dy = -self.vy * dt
+
+        #update position
+        prev_rect = self.rect
+        self.rect = self.rect.move(dx, dy)
+
+        self.off_ground = True
+
+        for sprite in self.touches(self.level.tiles):
+            rect = sprite.rect
+
+            #collide walls
+            if self.rect.left <= rect.right and prev_rect.left >= rect.right:
+                self.rect.left = rect.right
+                print "collide left"
+            if self.rect.right >= rect.left and prev_rect.right <= rect.left:
+                self.rect.right = rect.left
+                print "collide right"
+            #collide ceilings
+            if self.rect.top <= rect.bottom and prev_rect.top >= rect.bottom:
+                self.vy /= 2.0 #half speed
+                self.rect.top = rect.bottom
+                
+            #land
+            if self.rect.bottom >= rect.top and prev_rect.bottom <= rect.top:
+                self.vy = 0
+                self.rect.bottom = rect.top
+                self.off_ground = False
+            
+        for sprite in self.touches(self.level.pups):
+            rect = sprite.rect
+            for RegPuppy in self.touches(self.level.pups):
+                if RegPuppy.state == 0:
+                #collide top of regpuppy
+                    if self.rect.bottom >= rect.top and prev_rect.bottom <= rect.top: 
+                        self.vy = 0
+                        self.rect.bottom = rect.top
+                        self.off_ground = False
+
+                #collide side of regpuppy:
+                    if self.rect.left <= rect.right and prev_rect.left >= rect.right:
+                        self.rect.left = rect.right
+                    if self.rect.right >= rect.left and prev_rect.right <= rect.left:
+                        self.rect.right = rect.left
+                    
+                if RegPuppy.state == 1:
+                  #  level.reset()
+                    self.die()
+
+            
+                

@@ -59,7 +59,7 @@ class Level_1(object):
 
     def create_puppies(self):
         pup1 = RegPuppy((130, 381), 1)
-        pup2 = RegPuppy((410, 381), 0)
+        pup2 = RegPuppy((390, 381), 0)
         pups = Group()
         pups.add(pup1, pup2)
         return pups
