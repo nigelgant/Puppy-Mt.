@@ -3,7 +3,7 @@
 import pygame
 from pygame.locals import *
 from pygame import Surface
-from pygame.sprite import Sprite, Group, groupcollide
+from pygame.sprite import Sprite, Group, groupcollide, spritecollideany
 
 class Puppy(Sprite):
     
@@ -60,8 +60,6 @@ class RegPuppy(Puppy):
         return touching
     
     def update(self):
-        self.rect.y += self.vy
-
         prev_rect = self.rect
 
         if self.state == 0:
@@ -69,29 +67,31 @@ class RegPuppy(Puppy):
             self.rect.x += self.vx
 
         if self.state == 1:
-            spd = 2 #speed
+            spd = 4 #speed
             self.vx += spd
             if self.vx < spd:
                 self.vx = -spd
             if self.vx > spd:
                 self.vx = spd
         self.rect.x += self.vx
-
+                 
+       # for sprite in self.level_tiles:
         for sprite in self.touches(self.level_tiles):
             rect = sprite.rect
-
-            #collide left
-            if self.rect.left <= rect.right and prev_rect.left >= rect.right:
-               # self.rect.left = rect.right
-                self.vx *= -1
-                print "collide left"
-                print self.rect.left, rect.right
-
-            #collide right
-            elif self.rect.right >= rect.left and prev_rect.right <= rect.left:
-               # self.rect.right = rect.left
+            
+            if self.rect.bottom > rect.top:
+                if self.rect.right <= rect.left:
                     self.vx *= -1
-                    print "collide right"
-                    print self.rect.right, rect.left  #fix later
-
-        
+                   # print "collide right"
+                elif self.rect.left >= rect.right:
+                    self.vx *= -1
+                   # print "collide left"
+            if self.rect.bottom <= rect.top:
+                if self.rect.right > (rect.right - 2):
+                    self.vx *= -1
+                    print "edge right"
+                elif self.rect.left < (rect.left + 2):
+                    self.vx *= -1
+                    print "edge left"
+    
+                    

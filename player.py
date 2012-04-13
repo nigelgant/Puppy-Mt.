@@ -101,7 +101,6 @@ class Player(Sprite):
             
         #collide doors
         for sprite in self.touches(self.level.door):
-       # if spritecollideany(self, self.level.door):
             print "collide door"
             if self.playerlvl == self.level.levelnum:
                 self.endlevel()

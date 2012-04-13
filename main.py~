@@ -5,7 +5,7 @@ from pygame.locals import *
 from pygame.sprite import Group, GroupSingle, groupcollide, spritecollide, spritecollideany, collide_rect
 
 from player import Player
-from levels import Tile, Level_1, Level_2
+from levels import Tile, L1, L2
 from puppies import Puppy, RegPuppy
 
 SCREEN_SIZE = 640,480
@@ -19,14 +19,15 @@ def main():
 
     #initialize game
     spawn = (50, 300) #spawnpoint
-    lvl1 = Level_1()
-    lvl2 = Level_2()
+    lvl1 = L1()
+    lvl2 = L2()
+    lvls = [lvl1, lvl2]
+
     lvl = lvl1
+    lvls = [lvl1, lvl2]
     player = Player(lvl.spawn, lvl)
     player_grp = GroupSingle(player) #spritegroup for player
 
-  #  pups = Group(lvl.create_puppies())
-#    pups = Group()
     #game loop
     done = False
     clock = pygame.time.Clock()
@@ -44,8 +45,9 @@ def main():
                 player.jump()
             elif event.type == KEYDOWN and event.key == K_r:  #reset level
                 player.reset()
-                
 
+        lvl = lvls[(player.playerlvl)]
+        player.level = lvl
         #update
         dt = clock.tick(30)
                 
