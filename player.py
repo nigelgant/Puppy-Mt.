@@ -3,7 +3,7 @@
 import pygame
 from pygame.locals import *
 from pygame import Surface
-from pygame.sprite import Sprite, Group, groupcollide
+from pygame.sprite import Sprite, Group, groupcollide, spritecollideany
 from levels import Tile
 
 class Player(Sprite):
@@ -30,6 +30,8 @@ class Player(Sprite):
         self.vy = 0
         self.off_ground = True
 
+        self.playerlvl = level.levelnum
+
     def jump(self):
         if not self.off_ground:
             self.off_ground = True
@@ -52,6 +54,11 @@ class Player(Sprite):
     def reset(self):
         self.level.reset()
         self.__init__(self.spawnpoint, self.level)
+
+    def endlevel(self):
+        self.playerlvl += 1
+        print self.playerlvl
+        self.rect.center = self.spawnpoint
     
     def update(self, dt):
         dt = dt / 1000.0
@@ -79,10 +86,8 @@ class Player(Sprite):
             #collide walls
             if self.rect.left <= rect.right and prev_rect.left >= rect.right:
                 self.rect.left = rect.right
-                print "collide left"
             if self.rect.right >= rect.left and prev_rect.right <= rect.left:
                 self.rect.right = rect.left
-                print "collide right"
             #collide ceilings
             if self.rect.top <= rect.bottom and prev_rect.top >= rect.bottom:
                 self.vy /= 2.0 #half speed
@@ -94,6 +99,14 @@ class Player(Sprite):
                 self.rect.bottom = rect.top
                 self.off_ground = False
             
+        #collide doors
+        for sprite in self.touches(self.level.door):
+       # if spritecollideany(self, self.level.door):
+            print "collide door"
+            if self.playerlvl == self.level.levelnum:
+                self.endlevel()
+    
+
         for sprite in self.touches(self.level.pups):
             rect = sprite.rect
             for RegPuppy in self.touches(self.level.pups):
@@ -111,7 +124,6 @@ class Player(Sprite):
                         self.rect.right = rect.left
                     
                 if RegPuppy.state == 1:
-                  #  level.reset()
                     self.die()
 
             

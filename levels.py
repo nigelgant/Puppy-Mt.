@@ -43,12 +43,12 @@ class Level(object):
 
     def reset(self):
         self.__init__()
-        
 
   #  def update(self):
         
 
-class Level_1(Level):
+class L1(Level):
+    levelnum = 0
 
     def __init__(self):
         self.spawn = (50, 300) #spawnpoint
@@ -56,18 +56,40 @@ class Level_1(Level):
         ##tiles - (coordinates) (length, height) (RGB)
         self.tiles = Group(     
             Tile((0, 350), (100, 150), (0,150,0)),
-            Tile((100, 380), (140, 100), (0,150,0)),
-            Tile((335, 380), (100, 100), (0,150,0)),
+            Tile((100, 380), (140, 100), (200,150,0)),
+            Tile((330, 380), (100, 100), (200,150,0)),
             Tile((430, 350), (100, 150), (0,150, 0))
             )
 
         ##puppies
         self.pups = Group(   
-            RegPuppy((130, 381), 1, self.tiles),
+            RegPuppy((130, 380), 1, self.tiles),
+            RegPuppy((400, 381), 0, self.tiles)
+            )
+    
+        self.door = GroupSingle(Door((470,350)))
+        
+class L2(Level):
+    levelnum = 1
+
+    def __init__(self):
+        self.spawn = (50, 300) #spawnpoint
+
+        ##tiles - (coordinates) (length, height) (RGB)
+        self.tiles = Group(     
+            Tile((0, 350), (100, 150), (150,0,0)),
+            Tile((100, 380), (140, 100), (0,150,0)),
+            Tile((335, 380), (100, 100), (0,150,150)),
+            Tile((430, 350), (100, 150), (0,150, 0))
+            )
+
+        ##puppies
+        self.pups = Group(   
+           # RegPuppy((130, 381), 1, self.tiles),
             RegPuppy((400, 381), 0, self.tiles)
             )
 
+
+
         self.door = GroupSingle(Door((470,350)))
         
-class Level_2(Level):
-    pass
