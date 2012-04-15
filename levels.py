@@ -2,7 +2,7 @@ import pygame
 from pygame.locals import *
 from pygame import Surface
 from pygame.sprite import Sprite, Group, GroupSingle, groupcollide
-from puppies import Puppy, RegPuppy
+from puppies import Puppy, RegPuppy, Bouncer, Fire
 
 
 def drawtile():
@@ -50,6 +50,8 @@ class Level(object):
 
 class L1(Level):
     levelnum = 0
+    whistlelimit = 3
+    treatlimit = 2
 
     def __init__(self):
         self.spawn = (50, 300) #spawnpoint
@@ -65,9 +67,9 @@ class L1(Level):
         ##puppies
         pup1 = RegPuppy((130, 380), 1, self.tiles)
         pup2 = RegPuppy((400, 380), 0, self.tiles)
-        pup3 = RegPuppy((370, 380), 1, self.tiles)
-
-        self.pups = Group(pup1, pup2, pup3)
+        pup3 = Bouncer((370, 330), 2, self.tiles)
+        pup4 = Fire((80, 50), (0, 1), 90)
+        self.pups = Group(pup1, pup2, pup3, pup4)
         """
         self.pups = Group(   
             RegPuppy((130, 380), 1, self.tiles),
@@ -76,17 +78,15 @@ class L1(Level):
         """
  
         self.door = GroupSingle(Door((470,350)))
-        print self.pups
+
     def update(self):
         for pup in self.pups:
-            if pup.state == 0:
+            if pup.state == 0 or pup.state == 3:
                self.pups.remove(pup)
                self.tiles.add(pup)
-               print "pup tile"
-               print self.pups
 
         for pup in self.tiles:
-            if pup.state == 1:
+            if pup.state == 1 or pup.state == 2:
                 self.tiles.remove(pup)
                 self.pups.add(pup)
         
@@ -112,4 +112,15 @@ class L2(Level):
             )
 
         self.door = GroupSingle(Door((470,350)))
+        
+    def update(self):
+        for pup in self.pups:
+            if pup.state == 0:
+               self.pups.remove(pup)
+               self.tiles.add(pup)
+
+        for pup in self.tiles:
+            if pup.state == 1:
+                self.tiles.remove(pup)
+                self.pups.add(pup)
         

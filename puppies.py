@@ -26,18 +26,9 @@ class RegPuppy(Puppy):
 
         self.rect = self.image.get_rect()
         self.rect.bottomleft = loc
-      #  self.vx = -5
         self.vx = 5
 
-        self.vy = 0
-
         self.state = state
-
-        if self.state == 0:
-            self.color = 205, 133, 63
-        if self.state == 1:
-            self.color = 150, 0, 0
-        self.image.fill(self.color)
 
     def anger(self):
         self.state = 1
@@ -61,12 +52,14 @@ class RegPuppy(Puppy):
                 touching.add(sprite)
         return touching
     
-    def update(self):
+    def update(self, dt):
         prev_rect = self.rect
+        dt = dt / 1000.0
 
         if self.state == 0:
             self.vx = 0
             self.rect.x += self.vx
+            self.color = 205, 133, 63
 
         if self.state == 1:
             spd = 4 #speed
@@ -75,6 +68,10 @@ class RegPuppy(Puppy):
                 self.vx = -spd
             if self.vx > spd:
                 self.vx = spd
+            self.color = 150, 0, 0
+
+        self.image.fill(self.color)
+
         self.rect.x += self.vx
                  
        # for sprite in self.level_tiles:
@@ -98,3 +95,91 @@ class RegPuppy(Puppy):
                 elif self.rect.left < (rect.left + 2):
                     self.vx *= -1
                     
+class Bouncer(Puppy):
+    size = 16, 12
+   # color = 150, 0, 0
+    gravity = 600
+    
+    def __init__(self, loc, state, level_tiles):
+        Sprite.__init__(self)
+        self.image = Surface(self.size)
+        self.level_tiles = level_tiles
+
+        self.state = state
+
+        self.rect = self.image.get_rect()
+        self.rect.bottomleft = loc
+        rect = self.image.get_rect().inflate(-4,-4)
+        
+        self.vy = 5
+        self.off_ground = True
+
+    def jump(self):
+        if not self.off_ground:
+            self.off_ground = True
+            self.vy = 250
+
+    def touches(self, group):
+        touching = Group()
+        coll = self.rect.inflate(1,1) #grow 1px to allow for edges
+        for sprite in group:
+            if coll.colliderect(sprite.rect):
+                touching.add(sprite)
+        return touching
+    
+    def update(self, dt):
+        dt = dt / 1000.0
+        
+        self.vy -= dt * self.gravity
+        dy = -self.vy * dt
+        prev_rect = self.rect
+        self.rect = self.rect.move(0, dy)
+
+        if self.state == 2:
+            self.color = 150, 0, 0
+        if self.state == 3:
+            self.vy = 0
+            self.color =  205, 133, 63
+
+        self.image.fill(self.color)
+
+        for sprite in self.touches(self.level_tiles):
+            rect = sprite.rect
+
+            if self.rect.bottom >= rect.top and prev_rect.bottom <= rect.top:
+                self.vy = 0
+                self.rect.bottom = rect.top
+                self.off_ground = False
+                self.jump()
+    
+class Fire(Puppy):
+    size = 16, 12
+    color = 255, 140, 0
+
+    def __init__(self, loc, direction, interval):
+        Sprite.__init__(self)
+        self.image = Surface(self.size)
+        self.vx, self.vy = direction
+        self.direction = direction
+        self.vx *= 10
+        self.vy *= 10
+        self.loc = loc
+        self.interval = interval
+        self.state = 4
+        self.image.fill(self.color)
+        self.spawncounter = 0
+        print self.interval
+
+        self.rect = self.image.get_rect()
+        self.rect.bottomleft = loc
+        
+    def update(self, dt):
+        self.spawncounter += 1
+        self.rect.x += self.vx
+        self.rect.y += self.vy
+        
+        if self.rect.right > 640 or self.rect.left < 0 or self.rect.top < 0 or self.rect.bottom > 480:
+            if self.spawncounter >= self.interval:
+                self.__init__(self.loc, self.direction, self.interval)
+                self.spawncounter = 0
+                print self.interval

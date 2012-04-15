@@ -19,6 +19,7 @@ class Tile(Sprite):
         self.rect = self.image.get_rect()
         self.rect.topleft = loc
         self.image.fill(self.color)
+        self.state = "TEST"
 
 class Door(Sprite):
     
@@ -62,12 +63,33 @@ class L1(Level):
             )
 
         ##puppies
+        pup1 = RegPuppy((130, 380), 1, self.tiles)
+        pup2 = RegPuppy((400, 380), 0, self.tiles)
+        pup3 = RegPuppy((370, 380), 1, self.tiles)
+
+        self.pups = Group(pup1, pup2, pup3)
+        """
         self.pups = Group(   
             RegPuppy((130, 380), 1, self.tiles),
             RegPuppy((400, 381), 0, self.tiles)
             )
-    
+        """
+ 
         self.door = GroupSingle(Door((470,350)))
+        print self.pups
+    def update(self):
+        for pup in self.pups:
+            if pup.state == 0:
+               self.pups.remove(pup)
+               self.tiles.add(pup)
+               print "pup tile"
+               print self.pups
+
+        for pup in self.tiles:
+            if pup.state == 1:
+                self.tiles.remove(pup)
+                self.pups.add(pup)
+        
         
 class L2(Level):
     levelnum = 1
@@ -88,8 +110,6 @@ class L2(Level):
            # RegPuppy((130, 381), 1, self.tiles),
             RegPuppy((400, 381), 0, self.tiles)
             )
-
-
 
         self.door = GroupSingle(Door((470,350)))
         

@@ -26,7 +26,9 @@ class RegPuppy(Puppy):
 
         self.rect = self.image.get_rect()
         self.rect.bottomleft = loc
-        self.vx = -5
+      #  self.vx = -5
+        self.vx = 5
+
         self.vy = 0
 
         self.state = state
@@ -82,16 +84,17 @@ class RegPuppy(Puppy):
             if self.rect.bottom > rect.top:
                 if self.rect.right <= rect.left:
                     self.vx *= -1
-                   # print "collide right"
                 elif self.rect.left >= rect.right:
                     self.vx *= -1
-                   # print "collide left"
+
             if self.rect.bottom <= rect.top:
                 if self.rect.right > (rect.right - 2):
                     self.vx *= -1
-                    print "edge right"
                 elif self.rect.left < (rect.left + 2):
                     self.vx *= -1
-                    print "edge left"
-    
+            if self.rect.bottom == rect.bottom and self.rect.top == rect.top:
+                if self.rect.right > (rect.right - 2):
+                    self.vx *= -1
+                elif self.rect.left < (rect.left + 2):
+                    self.vx *= -1
                     

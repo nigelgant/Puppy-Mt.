@@ -54,7 +54,7 @@ def main():
       #  player_grp.update()
         player.update(dt)
       #  door = GroupSingle(lvl.door())
-
+        lvl.update()
        # pups.add(lvl.create_puppies())
        # print pups
         lvl.pups.update()
