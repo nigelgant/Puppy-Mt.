@@ -12,11 +12,14 @@ class Player(Sprite):
     playerspeed = 200
     gravity = 600
 
-    def __init__(self, loc, level):
+    def __init__(self, loc, level, bounds):
         Sprite.__init__(self)
         
+        self.facing = "right"  #facing right
+
         self.level = level
         self.spawnpoint = loc
+        self.bounds = bounds
 
         self.image = Surface(self.size)
         self.rect = self.image.get_rect()
@@ -29,6 +32,10 @@ class Player(Sprite):
         self.vx = 0
         self.vy = 0
         self.off_ground = True
+        self.waves = Group() #soundwaves
+        self.treats = Group() #dog treats
+        self.whistlecount = 0
+        self.treatcount = 0
 
         self.playerlvl = level.levelnum
 
@@ -37,7 +44,29 @@ class Player(Sprite):
             self.off_ground = True
             self.vy = 200 #jump speed
             self.vx *= 0.2
-            
+
+    def whistle(self):
+        if self.whistlecount < self.level.whistlelimit:
+            soundwave = Wave(self.bounds, self.level, self.facing)
+            if self.facing == "right":
+                soundwave.rect.left = self.rect.right
+                soundwave.rect.midleft = self.rect.midright
+            elif self.facing == "left":
+                soundwave.rect.right = self.rect.left
+                soundwave.rect.midright = self.rect.midleft
+            self.waves.add(soundwave)
+            self.whistlecount += 1
+            print "whistles:", self.whistlecount
+
+    def throw(self):
+        if self.treatcount < self.level.treatlimit:
+            treat = Treat(self.bounds, self.level, self.facing)
+            treat.rect.left = self.rect.right
+            treat.rect.midleft = self.rect.midright
+            self.treats.add(treat)
+            self.treatcount += 1
+            print "treats:", self.treatcount
+
     def touches(self, group):
         touching = Group()
         coll = self.rect.inflate(1,1) #grow 1px to allow for edges
@@ -49,15 +78,14 @@ class Player(Sprite):
     def die(self):
         #insert dying animation
         self.level.reset()
-        self.__init__(self.spawnpoint, self.level)
+        self.__init__(self.spawnpoint, self.level, self.bounds)
 
     def reset(self):
         self.level.reset()
-        self.__init__(self.spawnpoint, self.level)
+        self.__init__(self.spawnpoint, self.level, self.bounds)
 
     def endlevel(self):
         self.playerlvl += 1
-        print self.playerlvl
         self.rect.center = self.spawnpoint
     
     def update(self, dt):
@@ -67,8 +95,10 @@ class Player(Sprite):
         self.vx = 0
         if keystate[K_LEFT]:
             self.vx -= self.playerspeed
+            self.facing = "left"
         if keystate[K_RIGHT]:
             self.vx += self.playerspeed
+            self.facing = "right"
 
         self.vy -= dt * self.gravity
         dx = self.vx * dt
@@ -125,5 +155,94 @@ class Player(Sprite):
                 if RegPuppy.state == 1:
                     self.die()
 
-            
+            for Bouncer in self.touches(self.level.pups):
+                self.die()
+
+            for Fire in self.touches(self.level.pups):
+                self.die()
                 
+class Projectile(Sprite):
+    speed = 12
+    size = 5, 10
+
+    def __init__(self, bounds, level, facing):
+        Sprite.__init__(self)
+        self.image = Surface(self.size)
+        self.facing = facing
+        self.rect = self.image.get_rect()
+        self.bounds = bounds
+        self.level = level
+
+    def touches(self, group):
+        touching = Group()
+        coll = self.rect.inflate(1,1) #grow 1px to allow for edges
+        for sprite in group:
+            if coll.colliderect(sprite.rect):
+                touching.add(sprite)
+        return touching
+    
+    def update(self):
+        if self.facing == "right":
+            self.rect.x += self.speed
+        elif self.facing == "left":
+            self.rect.x -= self.speed
+
+        if self.rect.right > self.bounds.right:  #remove if leaves screen
+            self.kill()
+        elif self.rect.left < self.bounds.left:
+            self.kill()
+
+        for sprite in self.touches(self.level.tiles):
+            rect = sprite.rect
+
+            #collide walls
+            if self.rect.left <= rect.right:
+                self.kill()
+            if self.rect.right >= rect.left:
+                self.kill()
+
+class Wave(Projectile):
+    color = 0, 0, 230
+
+    def __init__(self, bounds, level, facing):
+        Projectile.__init__(self, bounds, level, facing)
+        self.image.fill(self.color)
+
+    def update(self):
+        Projectile.update(self)
+        
+        for RegPuppy in self.touches(self.level.tiles):
+            if RegPuppy.state == 0:
+                RegPuppy.state = 1
+                self.kill()
+            
+        for Bouncer in self.touches(self.level.tiles):
+            if Bouncer.state == 3:
+                Bouncer.state = 2
+                self.kill()
+
+        for pup in self.touches(self.level.pups):
+            self.kill()
+
+class Treat(Projectile):
+    color = 139, 69, 19
+    
+    def __init__(self, bounds, level, facing):
+        Projectile.__init__(self, bounds, level, facing)
+        self.image.fill(self.color)
+
+    def update(self):
+        Projectile.update(self)
+        
+        for RegPuppy in self.touches(self.level.pups):
+            if RegPuppy.state == 1:
+                RegPuppy.state = 0
+                self.kill()
+        
+        for Bouncer in self.touches(self.level.pups):
+            if Bouncer.state == 2:
+                Bouncer.state = 3
+                self.kill()
+        
+        
+

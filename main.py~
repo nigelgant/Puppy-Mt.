@@ -15,7 +15,7 @@ def main():
     #initialize pygame
     pygame.init()
     screen = pygame.display.set_mode(SCREEN_SIZE)
-    bounds = screen.get_rect
+    bounds = screen.get_rect()
 
     #initialize game
     spawn = (50, 300) #spawnpoint
@@ -24,8 +24,8 @@ def main():
     lvls = [lvl1, lvl2]
 
     lvl = lvl1
-    lvls = [lvl1, lvl2]
-    player = Player(lvl.spawn, lvl)
+ #   lvls = [lvl1, lvl2]
+    player = Player(lvl.spawn, lvl, bounds)
     player_grp = GroupSingle(player) #spritegroup for player
 
     #game loop
@@ -45,6 +45,10 @@ def main():
                 player.jump()
             elif event.type == KEYDOWN and event.key == K_r:  #reset level
                 player.reset()
+            elif event.type == KEYDOWN and event.key == K_z: 
+                player.whistle()
+            elif event.type == KEYDOWN and event.key == K_x:
+                player.throw()
 
         lvl = lvls[(player.playerlvl)]
         player.level = lvl
@@ -53,12 +57,14 @@ def main():
                 
       #  player_grp.update()
         player.update(dt)
+        player.waves.update()
+        player.treats.update()
       #  door = GroupSingle(lvl.door())
         lvl.update()
        # pups.add(lvl.create_puppies())
        # print pups
-        lvl.pups.update()
-
+        lvl.pups.update(dt)
+        lvl.tiles.update(dt)
         #collisions
         """
  
@@ -68,7 +74,8 @@ def main():
         #draw
         screen.fill(BG_COLOR)
         player_grp.draw(screen)
-      #  player.draw(screen)
+        player.waves.draw(screen)
+        player.treats.draw(screen)
         lvl.tiles.draw(screen)
 
         lvl.pups.draw(screen)
