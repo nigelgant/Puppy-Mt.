@@ -17,13 +17,26 @@ def main():
     screen = pygame.display.set_mode(SCREEN_SIZE)
     bounds = screen.get_rect()
 
+    file_out = open("Textdata.txt", "w")
+    file_out.write("0")
+    file_out.close()
+
+   # try:
+    file_in = open("Textdata.txt","r")
+    for line in file_in:
+        lvlnum = int(line) + 1
+    file_in.close()
+
     #initialize game
     lvl1 = L1()
     lvl2 = L2()
     lvl3 = L3()
     lvls = [lvl1, lvl2, lvl3]
 
-    lvl = lvl1   #starting level
+   # currentlevel = "lvl"+str(lvlnum)
+  #  print currentlevel
+  #  lvl = currentlevel   #starting level
+    lvl = lvl1
     player = Player(lvl.spawn, lvl, bounds)
     player_grp = GroupSingle(player) #spritegroup for player
 

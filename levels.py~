@@ -58,7 +58,7 @@ class Level(object):
 class L1(Level):
     levelnum = 0
     wlimit = 0  #whistle limit
-    tlimit = 1  #treat limit
+    tlimit = 0  #treat limit
 
     def __init__(self):
         self.spawn = (50, 200) #spawnpoint
@@ -86,28 +86,57 @@ class L1(Level):
         """
         self.door = GroupSingle(Door((470,260)))
         
+
 class L2(Level):
     levelnum = 1
+    wlimit = 3
+    tlimit = 3
+
+    def __init__(self):
+        self.spawn = (50, 255) #spawnpoint
+
+        ##tiles - (coordinates) (length, height) (RGB)
+        self.tiles = Group(     
+            Tile((0, 280), (200, 80), (150,0,0)),
+            Tile((200, 240), (40, 120), (0,150,0)),
+            Tile((240, 200), (40, 160), (0,150,150)),
+            Tile((280, 160), (160, 200), (0,150, 0)),
+            Tile((440, 240), (160, 120), (0,150,150)),
+            Tile((680, 280), (120, 80), (0,150, 0))
+            )
+
+
+        ##puppies
+        self.pups = Group(   
+            RegPuppy((285, 160), 1, self.tiles),
+            RegPuppy((445, 240), 1, self.tiles)
+            )
+
+        self.door = GroupSingle(Door((760,280)))
+
+class L3(Level):
+    levelnum = 2
     wlimit = 2
     tlimit = 3
 
     def __init__(self):
-        self.spawn = (50, 300) #spawnpoint
+        self.spawn = (50, 115) #spawnpoint
 
         ##tiles - (coordinates) (length, height) (RGB)
         self.tiles = Group(     
-            Tile((0, 350), (100, 150), (150,0,0)),
-            Tile((100, 380), (140, 100), (0,150,0)),
-            Tile((335, 380), (100, 100), (0,150,150)),
-            Tile((430, 350), (100, 150), (0,150, 0))
+            Tile((0, 120), (120, 240), (150,0,0)),
+            Tile((120, 240), (120, 120), (0,150,0)),
+            Tile((240, 80), (120, 280), (0,150,150)),
+            Tile((360, 160), (120, 200), (0,150, 0)),
+            Tile((600, 160), (40, 200), (0,150,150)),
+            Tile((640, 120), (200, 240), (0,150, 0))
             )
 
         ##puppies
-        self.pups = Group(   
-           # RegPuppy((130, 381), 1, self.tiles),
+        self.pups = Group(
+            Bouncer((160, 235), 2, self.tiles),
+            RegPuppy((130, 381), 1, self.tiles),
             RegPuppy((400, 381), 0, self.tiles)
             )
 
-        self.door = GroupSingle(Door((470,350)))
-
-        
+        self.door = GroupSingle(Door((760,120)))

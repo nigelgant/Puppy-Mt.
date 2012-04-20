@@ -5,7 +5,7 @@ from pygame.locals import *
 from pygame.sprite import Group, GroupSingle, groupcollide, spritecollide, spritecollideany, collide_rect
 
 from player import Player
-from levels import Tile, L1, L2
+from levels import Tile, L1, L2, L3
 from puppies import Puppy, RegPuppy
 
 SCREEN_SIZE = 800,360
@@ -20,9 +20,10 @@ def main():
     #initialize game
     lvl1 = L1()
     lvl2 = L2()
-    lvls = [lvl1, lvl2]
+    lvl3 = L3()
+    lvls = [lvl1, lvl2, lvl3]
 
-    lvl = lvl   #starting level
+    lvl = lvl1   #starting level
     player = Player(lvl.spawn, lvl, bounds)
     player_grp = GroupSingle(player) #spritegroup for player
 

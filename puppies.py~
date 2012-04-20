@@ -6,18 +6,11 @@ from pygame import Surface
 from pygame.sprite import Sprite, Group, groupcollide, spritecollideany
 
 class Puppy(Sprite):
-    
+    size = 22, 15
     def __init__(self):
         pass
-    #    Sprite.__init__(self)
-
-     #   self.rect = self.image.get_rect()
-      #  self.rect.bottom = loc
-      #  self.vx = 0
-      #  self.vy = 0
 
 class RegPuppy(Puppy):
-    size = 16, 12
 
     def __init__(self, loc, state, level_tiles):
         Sprite.__init__(self)
@@ -52,7 +45,7 @@ class RegPuppy(Puppy):
                 touching.add(sprite)
         return touching
     
-    def update(self, dt):
+    def update(self, dt, bounds):
         prev_rect = self.rect
         dt = dt / 1000.0
 
@@ -74,7 +67,6 @@ class RegPuppy(Puppy):
 
         self.rect.x += self.vx
                  
-       # for sprite in self.level_tiles:
         for sprite in self.touches(self.level_tiles):
             rect = sprite.rect
             
@@ -96,8 +88,6 @@ class RegPuppy(Puppy):
                     self.vx *= -1
                     
 class Bouncer(Puppy):
-    size = 16, 12
-   # color = 150, 0, 0
     gravity = 600
     
     def __init__(self, loc, state, level_tiles):
@@ -127,7 +117,7 @@ class Bouncer(Puppy):
                 touching.add(sprite)
         return touching
     
-    def update(self, dt):
+    def update(self, dt, bounds):
         dt = dt / 1000.0
         
         self.vy -= dt * self.gravity
@@ -153,10 +143,9 @@ class Bouncer(Puppy):
                 self.jump()
     
 class Fire(Puppy):
-    size = 16, 12
     color = 255, 140, 0
 
-    def __init__(self, loc, direction, interval):
+    def __init__(self, loc, direction, interval, level_tiles):
         Sprite.__init__(self)
         self.image = Surface(self.size)
         self.vx, self.vy = direction
@@ -166,6 +155,7 @@ class Fire(Puppy):
         self.loc = loc
         self.interval = interval
         self.state = 4
+        self.level_tiles = level_tiles
         self.image.fill(self.color)
         self.spawncounter = 0
         print self.interval
@@ -173,13 +163,46 @@ class Fire(Puppy):
         self.rect = self.image.get_rect()
         self.rect.bottomleft = loc
         
-    def update(self, dt):
+    def touches(self, group):
+        touching = Group()
+        coll = self.rect.inflate(1,1) #grow 1px to allow for edges
+        for sprite in group:
+            if coll.colliderect(sprite.rect):
+                touching.add(sprite)
+        return touching
+    
+    def update(self, dt, bounds):
+        self.bounds = bounds
         self.spawncounter += 1
         self.rect.x += self.vx
         self.rect.y += self.vy
+        prev_rect = self.rect
         
-        if self.rect.right > 640 or self.rect.left < 0 or self.rect.top < 0 or self.rect.bottom > 480:
+        if self.rect.right > self.bounds.right or self.rect.left < self.bounds.left or self.rect.top < self.bounds.top or self.rect.bottom > self.bounds.bottom:
             if self.spawncounter >= self.interval:
-                self.__init__(self.loc, self.direction, self.interval)
+                self.__init__(self.loc, self.direction, self.interval, self.level_tiles)
                 self.spawncounter = 0
-                print self.interval
+
+
+        for sprite in self.touches(self.level_tiles):
+            rect = sprite.rect
+            if sprite.state != "tile":  
+                self.vx *= -1
+                self.vy *= -1
+"""
+                if self.rect.bottom > rect.top and self.rect.top < rect.bottom:
+                    print "land"
+                    self.vx *= -1
+                    self.vy *= -1
+                    
+                    
+                elif self.rect.top <= rect.bottom and self.rect.bottom <= rect.top:
+                    print "hit ceiling"
+                    self.vy *= -1
+                elif self.rect.left <= rect.right:
+                    print "collide right"
+                    self.vx *= -1
+                elif self.rect.right >= rect.left:
+                    print "collide left"
+                    self.vx *= -1
+"""

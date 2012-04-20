@@ -45,8 +45,8 @@ class Player(Sprite):
     def jump(self):
         if not self.off_ground:
             self.off_ground = True
-            self.vy = 240 #jump speed
-            self.vx *= 0.2
+            self.vy = 260 #jump speed
+    
 
     def whistle(self):
         if self.whistlecount < self.level.wlimit and self.level.wlimit > 0:
@@ -85,6 +85,9 @@ class Player(Sprite):
 
     def reset(self):
         self.level.reset()
+        file_out = open("Textdata.txt","w")
+        file_out.write("0")
+        file_out.close
         self.__init__(self.spawnpoint, self.level, self.bounds)
 
     def endlevel(self):
@@ -107,11 +110,15 @@ class Player(Sprite):
         dx = self.vx * dt
         dy = -self.vy * dt
 
+        if self.off_ground == True:
+            dx *= 0.5
+
         #update position
         prev_rect = self.rect
         self.rect = self.rect.move(dx, dy)
 
         self.off_ground = True
+       
 
         for sprite in self.touches(self.level.tiles):
             rect = sprite.rect
@@ -136,7 +143,20 @@ class Player(Sprite):
         for sprite in self.touches(self.level.door):
             if self.playerlvl == self.level.levelnum:
                 self.endlevel()
-        
+                file_in = open("level.txt","r")
+                for line in file_in:
+                    lvlnum = int(line)
+                    lvlnum += 1
+                    print lvlnum
+                file_in.close()
+                  #  except IOError: 
+                   #     pass
+
+                file_out = open("level.txt","w")
+                num = str(lvlnum)
+                file_out.write(lvlnum)
+                file_out.close()
+
         #fall off bottom
         if self.rect.bottom > self.bounds.bottom:
             self.die()
@@ -160,11 +180,29 @@ class Player(Sprite):
                 if RegPuppy.state == 1:
                     self.die()
 
+                #collect gold puppy
+                elif RegPuppy.state == 5:
+                    RegPuppy.kill()
+                    file_in = open("Textdata.txt","r")
+                    for line in file_in:
+                        num = int(line)
+                        num += 1
+                        print num
+                    file_in.close()
+                  #  except IOError: 
+                    file_out = open("Textdata.txt","w")
+                    num = str(num)
+                    file_out.write(num)
+                    file_out.close
+
             for Bouncer in self.touches(self.level.pups):
                 self.die()
 
             for Fire in self.touches(self.level.pups):
                 self.die()
+            
+            for Gold in self.touches(self.level.pups):
+                Gold.collected()
                 
 class Projectile(Sprite):
     speed = 15

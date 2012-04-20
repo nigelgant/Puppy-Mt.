@@ -90,11 +90,11 @@ class RegPuppy(Puppy):
 class Bouncer(Puppy):
     gravity = 600
     
-    def __init__(self, loc, state, level_tiles):
+    def __init__(self, loc, state, height, level_tiles):
         Sprite.__init__(self)
         self.image = Surface(self.size)
         self.level_tiles = level_tiles
-
+        self.height = height
         self.state = state
 
         self.rect = self.image.get_rect()
@@ -107,7 +107,7 @@ class Bouncer(Puppy):
     def jump(self):
         if not self.off_ground:
             self.off_ground = True
-            self.vy = 250
+            self.vy = self.height
 
     def touches(self, group):
         touching = Group()
@@ -189,20 +189,18 @@ class Fire(Puppy):
             if sprite.state != "tile":  
                 self.vx *= -1
                 self.vy *= -1
-"""
-                if self.rect.bottom > rect.top and self.rect.top < rect.bottom:
-                    print "land"
-                    self.vx *= -1
-                    self.vy *= -1
-                    
-                    
-                elif self.rect.top <= rect.bottom and self.rect.bottom <= rect.top:
-                    print "hit ceiling"
-                    self.vy *= -1
-                elif self.rect.left <= rect.right:
-                    print "collide right"
-                    self.vx *= -1
-                elif self.rect.right >= rect.left:
-                    print "collide left"
-                    self.vx *= -1
-"""
+
+class Gold(Puppy):
+
+    def __init__(self, loc):
+        Sprite.__init__(self)
+        self.image = Surface(self.size)
+        self.rect = self.image.get_rect()
+        self.rect.bottomleft = loc
+        self.state = 5
+        self.color = 255, 215, 0
+        self.image.fill(self.color)
+
+
+    def collected(self):
+        self.kill()        
