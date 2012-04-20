@@ -7,7 +7,7 @@ from pygame.sprite import Sprite, Group, groupcollide, spritecollideany
 from levels import Tile
 
 class Player(Sprite):
-    size = 12, 24
+    size = 18, 34
     color = 0, 0, 255
     playerspeed = 200
     gravity = 600
@@ -42,11 +42,11 @@ class Player(Sprite):
     def jump(self):
         if not self.off_ground:
             self.off_ground = True
-            self.vy = 200 #jump speed
+            self.vy = 225 #jump speed
             self.vx *= 0.2
 
     def whistle(self):
-        if self.whistlecount < self.level.whistlelimit:
+        if self.whistlecount < self.level.wlimit and self.level.wlimit > 0:
             soundwave = Wave(self.bounds, self.level, self.facing)
             if self.facing == "right":
                 soundwave.rect.left = self.rect.right
@@ -59,7 +59,7 @@ class Player(Sprite):
             print "whistles:", self.whistlecount
 
     def throw(self):
-        if self.treatcount < self.level.treatlimit:
+        if self.treatcount < self.level.tlimit and self.level.tlimit > 0:
             treat = Treat(self.bounds, self.level, self.facing)
             treat.rect.left = self.rect.right
             treat.rect.midleft = self.rect.midright
@@ -131,7 +131,6 @@ class Player(Sprite):
             
         #collide doors
         for sprite in self.touches(self.level.door):
-            print "collide door"
             if self.playerlvl == self.level.levelnum:
                 self.endlevel()
     
@@ -162,8 +161,8 @@ class Player(Sprite):
                 self.die()
                 
 class Projectile(Sprite):
-    speed = 12
-    size = 5, 10
+    speed = 15
+    size = 20, 15
 
     def __init__(self, bounds, level, facing):
         Sprite.__init__(self)

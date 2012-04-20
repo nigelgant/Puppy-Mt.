@@ -5,6 +5,9 @@ from pygame.locals import *
 from pygame import Surface
 from pygame.sprite import Sprite, Group, groupcollide, spritecollideany
 from levels import Tile
+from resources import load_image
+from spritesheet import SpriteSheet
+from anim import Animation
 
 class Player(Sprite):
     size = 18, 34
@@ -133,7 +136,10 @@ class Player(Sprite):
         for sprite in self.touches(self.level.door):
             if self.playerlvl == self.level.levelnum:
                 self.endlevel()
-    
+        
+        #fall off bottom
+        if self.rect.bottom > self.bounds.bottom:
+            self.die()
 
         for sprite in self.touches(self.level.pups):
             rect = sprite.rect

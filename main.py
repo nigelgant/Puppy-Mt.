@@ -22,7 +22,7 @@ def main():
     lvl2 = L2()
     lvls = [lvl1, lvl2]
 
-    lvl = lvl   #starting level
+    lvl = lvl1   #starting level
     player = Player(lvl.spawn, lvl, bounds)
     player_grp = GroupSingle(player) #spritegroup for player
 

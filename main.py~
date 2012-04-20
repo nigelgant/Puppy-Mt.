@@ -8,7 +8,7 @@ from player import Player
 from levels import Tile, L1, L2
 from puppies import Puppy, RegPuppy
 
-SCREEN_SIZE = 640,480
+SCREEN_SIZE = 800,360
 BG_COLOR = 255, 255, 255
 
 def main():
@@ -18,13 +18,11 @@ def main():
     bounds = screen.get_rect()
 
     #initialize game
-    spawn = (50, 300) #spawnpoint
     lvl1 = L1()
     lvl2 = L2()
     lvls = [lvl1, lvl2]
 
-    lvl = lvl1
- #   lvls = [lvl1, lvl2]
+    lvl = lvl   #starting level
     player = Player(lvl.spawn, lvl, bounds)
     player_grp = GroupSingle(player) #spritegroup for player
 
@@ -45,26 +43,22 @@ def main():
                 player.jump()
             elif event.type == KEYDOWN and event.key == K_r:  #reset level
                 player.reset()
-            elif event.type == KEYDOWN and event.key == K_z: 
+            elif event.type == KEYDOWN and event.key == K_z: #whistle
                 player.whistle()
-            elif event.type == KEYDOWN and event.key == K_x:
+            elif event.type == KEYDOWN and event.key == K_x: #throw
                 player.throw()
 
         lvl = lvls[(player.playerlvl)]
         player.level = lvl
         #update
         dt = clock.tick(30)
-                
-      #  player_grp.update()
+
         player.update(dt)
         player.waves.update()
         player.treats.update()
-      #  door = GroupSingle(lvl.door())
         lvl.update()
-       # pups.add(lvl.create_puppies())
-       # print pups
-        lvl.pups.update(dt)
-        lvl.tiles.update(dt)
+        lvl.pups.update(dt, bounds)
+        lvl.tiles.update(dt, bounds)
         #collisions
         """
  

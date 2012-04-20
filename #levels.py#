@@ -3,7 +3,6 @@ from pygame.locals import *
 from pygame import Surface
 from pygame.sprite import Sprite, Group, GroupSingle, groupcollide
 from puppies import Puppy, RegPuppy, Bouncer, Fire
-from resources import load_image, play_song
 
 def drawtile():
     pass    
@@ -61,7 +60,6 @@ class L1(Level):
     wlimit = 0  #whistle limit
     tlimit = 1  #treat limit
     song = "cypress"
-
     def __init__(self):
         self.spawn = (50, 200) #spawnpoint
 
@@ -72,7 +70,6 @@ class L1(Level):
             Tile((320, 280), (100, 100), (200,150,0)),
             Tile((420, 240), (100, 140), (0,150, 0))
             )
-        play_song(self.song)
 
         ##puppies
         pup1 = RegPuppy((130, 280), 1, self.tiles)
