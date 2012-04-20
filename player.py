@@ -45,7 +45,7 @@ class Player(Sprite):
     def jump(self):
         if not self.off_ground:
             self.off_ground = True
-            self.vy = 225 #jump speed
+            self.vy = 240 #jump speed
             self.vx *= 0.2
 
     def whistle(self):
