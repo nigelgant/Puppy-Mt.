@@ -40,13 +40,10 @@ class Player(Sprite):
         self.whistlecount = 0
         self.treatcount = 0
 
-        self.playerlvl = level.levelnum
-
     def jump(self):
         if not self.off_ground:
             self.off_ground = True
             self.vy = 260 #jump speed
-    
 
     def whistle(self):
         if self.whistlecount < self.level.wlimit and self.level.wlimit > 0:
@@ -79,21 +76,31 @@ class Player(Sprite):
         return touching
     
     def die(self):
-        #insert dying animation
+        #insert dying animation        
         self.level.reset()
-        self.__init__(self.spawnpoint, self.level, self.bounds)
+        self.__init__(self.level.spawn, self.level, self.bounds)
 
     def reset(self):
         self.level.reset()
         file_out = open("Textdata.txt","w")
         file_out.write("0")
         file_out.close
-        self.__init__(self.spawnpoint, self.level, self.bounds)
+        self.__init__(self.level.spawn, self.level, self.bounds)
 
     def endlevel(self):
-        self.playerlvl += 1
-        self.rect.center = self.spawnpoint
-    
+        file_in = open("level.txt","r")
+        for line in file_in:
+            lvlnum = int(line)
+            lvlnum += 1
+        file_in.close()
+
+        file_out = open("level.txt","w")
+        num = str(lvlnum)
+        file_out.write(num)
+        file_out.close()
+        self.__init__(self.level.spawn, self.level, self.bounds)
+
+
     def update(self, dt):
         dt = dt / 1000.0
         keystate = pygame.key.get_pressed()
@@ -141,21 +148,7 @@ class Player(Sprite):
             
         #collide doors
         for sprite in self.touches(self.level.door):
-            if self.playerlvl == self.level.levelnum:
-                self.endlevel()
-                file_in = open("level.txt","r")
-                for line in file_in:
-                    lvlnum = int(line)
-                    lvlnum += 1
-                    print lvlnum
-                file_in.close()
-                  #  except IOError: 
-                   #     pass
-
-                file_out = open("level.txt","w")
-                num = str(lvlnum)
-                file_out.write(lvlnum)
-                file_out.close()
+            self.endlevel()
 
         #fall off bottom
         if self.rect.bottom > self.bounds.bottom:
@@ -189,7 +182,6 @@ class Player(Sprite):
                         num += 1
                         print num
                     file_in.close()
-                  #  except IOError: 
                     file_out = open("Textdata.txt","w")
                     num = str(num)
                     file_out.write(num)

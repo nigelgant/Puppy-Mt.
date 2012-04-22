@@ -2,7 +2,7 @@ import pygame
 from pygame.locals import *
 from pygame import Surface
 from pygame.sprite import Sprite, Group, GroupSingle, groupcollide
-from puppies import Puppy, RegPuppy, Bouncer, Fire
+from puppies import Puppy, RegPuppy, Bouncer, Fire, Gold
 
 def drawtile():
     pass    
@@ -57,8 +57,8 @@ class Level(object):
 
 class L1(Level):
     levelnum = 0
-    wlimit = 0  #whistle limit
-    tlimit = 0  #treat limit
+    wlimit = 5  #whistle limit
+    tlimit = 5  #treat limit
 
     def __init__(self):
         self.spawn = (50, 200) #spawnpoint
@@ -74,16 +74,13 @@ class L1(Level):
         ##puppies
         pup1 = RegPuppy((130, 280), 1, self.tiles)
         pup2 = RegPuppy((330, 280), 0, self.tiles)
-        pup3 = Bouncer((370, 230), 2, self.tiles)
+        pup3 = Bouncer((370, 230), 2, 400, self.tiles)
+        pup4 = Gold((100, 180))
+        pup5 = Gold((140, 250))
       #  pup4 = Fire((800, 230), (-1, 0), 90, self.tiles)
       #  pup5 = Fire((330, 0), (0, 1), 90, self.tiles)
-        self.pups = Group(pup1, pup2, pup3)
-        """
-        self.pups = Group(   
-            RegPuppy((130, 380), 1, self.tiles),
-            RegPuppy((400, 381), 0, self.tiles)
-            )
-        """
+        self.pups = Group(pup1, pup2, pup3, pup4, pup5)
+
         self.door = GroupSingle(Door((470,260)))
         
 
@@ -120,7 +117,7 @@ class L3(Level):
     tlimit = 3
 
     def __init__(self):
-        self.spawn = (50, 115) #spawnpoint
+        self.spawn = (50, 20) #spawnpoint
 
         ##tiles - (coordinates) (length, height) (RGB)
         self.tiles = Group(     
@@ -134,7 +131,7 @@ class L3(Level):
 
         ##puppies
         self.pups = Group(
-            Bouncer((160, 235), 2, self.tiles),
+            Bouncer((160, 235), 2, 430, self.tiles),
             RegPuppy((130, 381), 1, self.tiles),
             RegPuppy((400, 381), 0, self.tiles)
             )
