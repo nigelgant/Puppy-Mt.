@@ -43,7 +43,7 @@ class Player(Sprite):
     def jump(self):
         if not self.off_ground:
             self.off_ground = True
-            self.vy = 260 #jump speed
+            self.vy = 280 #jump speed
 
     def whistle(self):
         if self.whistlecount < self.level.wlimit and self.level.wlimit > 0:
@@ -56,7 +56,6 @@ class Player(Sprite):
                 soundwave.rect.midright = self.rect.midleft
             self.waves.add(soundwave)
             self.whistlecount += 1
-            print "whistles:", self.whistlecount
 
     def throw(self):
         if self.treatcount < self.level.tlimit and self.level.tlimit > 0:
@@ -117,8 +116,8 @@ class Player(Sprite):
         dx = self.vx * dt
         dy = -self.vy * dt
 
-        if self.off_ground == True:
-            dx *= 0.5
+        if self.off_ground == True:  #slow jumping
+            dx *= 0.7
 
         #update position
         prev_rect = self.rect
@@ -154,6 +153,14 @@ class Player(Sprite):
         if self.rect.bottom > self.bounds.bottom:
             self.die()
 
+        if self.rect.left < self.bounds.left: #left side of screen
+            self.vx = 0
+            self.rect.left = self.bounds.left
+
+        elif self.rect.right > self.bounds.right:
+            self.vx = 0
+            self.rect.right = self.bounds.right
+
         for sprite in self.touches(self.level.pups):
             rect = sprite.rect
             for RegPuppy in self.touches(self.level.pups):
@@ -176,13 +183,13 @@ class Player(Sprite):
                 #collect gold puppy
                 elif RegPuppy.state == 5:
                     RegPuppy.kill()
-                    file_in = open("Textdata.txt","r")
+                    file_in = open("score.txt","r")
                     for line in file_in:
                         num = int(line)
                         num += 1
                         print num
                     file_in.close()
-                    file_out = open("Textdata.txt","w")
+                    file_out = open("score.txt","w")
                     num = str(num)
                     file_out.write(num)
                     file_out.close
@@ -241,7 +248,7 @@ class Wave(Projectile):
 
     def __init__(self, bounds, level, facing):
         Projectile.__init__(self, bounds, level, facing)
-        self.image.fill(self.color)
+        self.proj = load_image("soundwave.jpg")
 
     def update(self):
         Projectile.update(self)
@@ -258,6 +265,11 @@ class Wave(Projectile):
 
         for pup in self.touches(self.level.pups):
             self.kill()
+  
+    def draw(self, screen):
+        rect = self.proj.get_rect()
+        rect.center = self.rect.center
+        screen.blit(self.proj, rect)
 
 class Treat(Projectile):
     color = 139, 69, 19

@@ -69,23 +69,25 @@ class RegPuppy(Puppy):
                  
         for sprite in self.touches(self.level_tiles):
             rect = sprite.rect
-            
+
             if self.rect.bottom > rect.top:
-                if self.rect.right <= rect.left:
+                if self.rect.right >= (rect.left + 2):
                     self.vx *= -1
-                elif self.rect.left >= rect.right:
+                elif self.rect.left <= (rect.right - 2):
                     self.vx *= -1
 
-            if self.rect.bottom <= rect.top:
+            elif self.rect.bottom <= rect.top: #on top of tile
+                if self.rect.right >= (rect.right - 2):
+                    self.vx *= -1
+                elif self.rect.left <= (rect.left + 2):
+                    self.vx *= -1
+
+            elif self.rect.bottom == rect.bottom and self.rect.top == rect.top: #collide puppies
                 if self.rect.right > (rect.right - 2):
                     self.vx *= -1
                 elif self.rect.left < (rect.left + 2):
                     self.vx *= -1
-            if self.rect.bottom == rect.bottom and self.rect.top == rect.top:
-                if self.rect.right > (rect.right - 2):
-                    self.vx *= -1
-                elif self.rect.left < (rect.left + 2):
-                    self.vx *= -1
+
                     
 class Bouncer(Puppy):
     gravity = 600
@@ -144,6 +146,7 @@ class Bouncer(Puppy):
     
 class Fire(Puppy):
     color = 255, 140, 0
+    size = 22, 22
 
     def __init__(self, loc, direction, interval, level_tiles):
         Sprite.__init__(self)
@@ -191,7 +194,6 @@ class Fire(Puppy):
                 self.vy *= -1
 
 class Gold(Puppy):
-
     def __init__(self, loc):
         Sprite.__init__(self)
         self.image = Surface(self.size)
