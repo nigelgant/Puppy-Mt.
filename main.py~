@@ -5,7 +5,7 @@ from pygame.locals import *
 from pygame.sprite import Group, GroupSingle
 
 from player import Player
-from levels import Tile, L0, L1, L1A, L2, L2A, L3, L4, Last
+from levels import Tile, L0, L1, FoundTreat, L1A, L2, L2A, L3, L3A, L4, L5, FoundWhistle, Last
 from puppies import Puppy, RegPuppy
 
 SCREEN_SIZE = 800,360
@@ -17,7 +17,7 @@ def main():
     screen = pygame.display.set_mode(SCREEN_SIZE)
     bounds = screen.get_rect()
 
-    file_out = open("Textdata.txt", "w") #score
+    file_out = open("score.txt", "w") #score
     file_out.write("0")
     file_out.close()
     
@@ -31,7 +31,7 @@ def main():
     file_in.close()
     
     #initialize game
-    lvls = [L0(), L1(), L1A(), L2(), L2A(), L3(), L4(), Last()]
+    lvls = [L0(), L1(), FoundTreat(), L1A(), L2(), L2A(), L3(), L3A(), L4(), L5(), FoundWhistle(), Last()]
 
     lvl = lvls[lvlnum]   #starting level
 
@@ -65,7 +65,7 @@ def main():
                     player.whistle()
                 elif event.type == KEYDOWN and event.key == K_x: #throw
                     player.throw()
-            elif lvl.state == 0:
+            elif lvl.state == 0 or lvl.state == 3:
                 if event.type == KEYDOWN and event.key == K_SPACE:
                     player.endlevel()
             if lvl.state == 1:  #temporary: for skipping levels
@@ -83,7 +83,9 @@ def main():
 
         #update
         dt = clock.tick(30)
-        if lvl.state == 0 or lvl.state == 2:
+        if lvl.state == 1:
+            lvl.draw(screen, player)
+        else:
             lvl.draw(screen)
         
         if lvl.state == 1:
@@ -100,7 +102,7 @@ def main():
             player.waves.draw(screen)
             player.treats.draw(screen)
             lvl.tiles.draw(screen)
-
+            lvl.draw(screen, player)
             lvl.pups.draw(screen)
             lvl.door.draw(screen)
         pygame.display.flip()

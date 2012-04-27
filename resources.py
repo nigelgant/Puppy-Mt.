@@ -19,7 +19,6 @@ def load_image(name):
     if name not in images:
       #  path = os.path.join(IMG_DIR, name + ".bmp")
         path = os.path.join(IMG_DIR, name)
-        print images
 
         images[name] = pygame.image.load(path).convert()
     return images[name]

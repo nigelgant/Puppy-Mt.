@@ -146,6 +146,7 @@ class Bouncer(Puppy):
     
 class Fire(Puppy):
     color = 255, 140, 0
+    size = 22, 22
 
     def __init__(self, loc, direction, interval, level_tiles):
         Sprite.__init__(self)
@@ -193,7 +194,6 @@ class Fire(Puppy):
                 self.vy *= -1
 
 class Gold(Puppy):
-
     def __init__(self, loc):
         Sprite.__init__(self)
         self.image = Surface(self.size)

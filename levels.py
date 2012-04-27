@@ -107,6 +107,10 @@ class Between(Level):
         rect.center = bounds.centerx, bounds.centery + bounds.height /2.5
         screen.blit(self.cont, rect)
 
+class Menu(Between):   #finish later
+    def __init__(self):
+        pass 
+
 class L0(Between):
     def __init__(self):
         self.spawn = (50, 160)
@@ -114,7 +118,7 @@ class L0(Between):
         self.bg = load_image("jungle1.bmp")
 
 class L1(Level):
-    wlimit = 5  #whistle limit
+    wlimit = 0  #whistle limit
     tlimit = 0  #treat limit
 
     def __init__(self):

@@ -9,31 +9,82 @@ from resources import load_image
 from spritesheet import SpriteSheet
 from anim import Animation
 
+class PlayerAnimation(Animation):
+    _rows = {(1, 0): 0,
+             (-1, 0): 2,
+             (0, -1): 0,
+             (0, 1) : 0,
+             (1, 1): 0,
+             (-1, -1): 2,
+             (-1, 1): 2,
+             (1, -1): 0
+             } #add the dying rows later?
+        
+    def __init__(self, player, image, duration):
+        self.player = player
+        self.y = self._rows[(1, 0)] #need to fix?
+
+        spritesheet = SpriteSheet(image, (3, 4))
+        frames = [ (duration, 0),
+                   (duration, 1),
+                   (duration, 2), 
+                   (duration, 1) ]
+        
+        Animation.__init__(self, spritesheet, frames)
+
+    def update(self, dt):
+        vx, vy = self.player.vx, self.player.vy
+
+        #calculate the direction facing
+        try:
+            vx /= abs(vx)
+        except:
+            vx = 0
+        try:
+            vy /= abs(vy)
+        except:
+            vy = 0
+
+        #figure out spritesheet row
+        if vx == 0 and vy == 0:
+            self.time = 0
+            self.x = 1
+
+        else:
+            self.time += dt
+            self.x = self.get_frame_data(self.time)
+            self.y = self._rows[(vx, vy)]        
+            if self.player.facing == "left" and self.player.off_ground == True:
+                self.y = self._rows[(-1, 0)]
+
 class Player(Sprite):
     size = 18, 34
-    color = 0, 0, 255
     playerspeed = 200
     gravity = 600
 
     def __init__(self, loc, level, bounds):
         Sprite.__init__(self)
-        
+        self.vx = 0
+        self.vy = 0
+
         self.facing = "right"  #facing right
 
         self.level = level
         self.spawnpoint = loc
         self.bounds = bounds
 
-        self.image = Surface(self.size)
+        self.anim = PlayerAnimation(self, "chetanim copy.bmp", 120)
+        self.image = self.anim.get_current_frame()
+
+      #  self.image = Surface(self.size)
         self.rect = self.image.get_rect()
         self.rect.center = loc
         
-        self.image.fill(self.color)
+      #  self.image.fill(self.color)
         rect = self.image.get_rect().inflate(-4,-4) #what does this do?
-        self.image.fill(self.color, rect)
+     #   self.image.fill(self.color, rect)
         
-        self.vx = 0
-        self.vy = 0
+
         self.off_ground = True
         self.waves = Group() #soundwaves
         self.treats = Group() #dog treats
@@ -64,7 +115,6 @@ class Player(Sprite):
             treat.rect.midleft = self.rect.midright
             self.treats.add(treat)
             self.treatcount += 1
-            print "treats:", self.treatcount
 
     def touches(self, group):
         touching = Group()
@@ -75,13 +125,13 @@ class Player(Sprite):
         return touching
     
     def die(self):
-        #insert dying animation        
+        #insert dying animation
         self.level.reset()
         self.__init__(self.level.spawn, self.level, self.bounds)
 
     def reset(self):
         self.level.reset()
-        file_out = open("Textdata.txt","w")
+        file_out = open("score.txt","w")
         file_out.write("0")
         file_out.close
         self.__init__(self.level.spawn, self.level, self.bounds)
@@ -101,8 +151,12 @@ class Player(Sprite):
 
 
     def update(self, dt):
-        dt = dt / 1000.0
+      #  dt = dt / 1000.0
         keystate = pygame.key.get_pressed()
+        
+        #animation
+        self.anim.update(dt)
+        self.image = self.anim.get_current_frame()
 
         self.vx = 0
         if keystate[K_LEFT]:
@@ -111,6 +165,9 @@ class Player(Sprite):
         if keystate[K_RIGHT]:
             self.vx += self.playerspeed
             self.facing = "right"
+
+        dt = dt / 1000.0
+
 
         self.vy -= dt * self.gravity
         dx = self.vx * dt
@@ -124,7 +181,6 @@ class Player(Sprite):
         self.rect = self.rect.move(dx, dy)
 
         self.off_ground = True
-       
 
         for sprite in self.touches(self.level.tiles):
             rect = sprite.rect
@@ -161,6 +217,9 @@ class Player(Sprite):
             self.vx = 0
             self.rect.right = self.bounds.right
 
+        dying = False
+        diecounter = 0    
+            
         for sprite in self.touches(self.level.pups):
             rect = sprite.rect
             for RegPuppy in self.touches(self.level.pups):
@@ -209,9 +268,11 @@ class Projectile(Sprite):
 
     def __init__(self, bounds, level, facing):
         Sprite.__init__(self)
-        self.image = Surface(self.size)
+      #  self.image = Surface(self.size)
+        self.image = self.proj
         self.facing = facing
         self.rect = self.image.get_rect()
+      #  self.rect = self.proj.get_rect()
         self.bounds = bounds
         self.level = level
 
@@ -236,7 +297,6 @@ class Projectile(Sprite):
 
         for sprite in self.touches(self.level.tiles):
             rect = sprite.rect
-
             #collide walls
             if self.rect.left <= rect.right:
                 self.kill()
@@ -244,11 +304,9 @@ class Projectile(Sprite):
                 self.kill()
 
 class Wave(Projectile):
-    color = 0, 0, 230
-
     def __init__(self, bounds, level, facing):
+        self.proj = load_image("soundwave.png")
         Projectile.__init__(self, bounds, level, facing)
-        self.proj = load_image("soundwave.jpg")
 
     def update(self):
         Projectile.update(self)
@@ -264,7 +322,8 @@ class Wave(Projectile):
                 self.kill()
 
         for pup in self.touches(self.level.pups):
-            self.kill()
+            if pup.state != 5:
+                self.kill()
   
     def draw(self, screen):
         rect = self.proj.get_rect()
@@ -272,11 +331,12 @@ class Wave(Projectile):
         screen.blit(self.proj, rect)
 
 class Treat(Projectile):
-    color = 139, 69, 19
+   # color = 139, 69, 19
     
     def __init__(self, bounds, level, facing):
+        self.proj = load_image("treat.png")
         Projectile.__init__(self, bounds, level, facing)
-        self.image.fill(self.color)
+       # self.image.fill(self.color)
 
     def update(self):
         Projectile.update(self)
@@ -290,6 +350,11 @@ class Treat(Projectile):
             if Bouncer.state == 2:
                 Bouncer.state = 3
                 self.kill()
+
+    def draw(self, screen):
+        rect = self.proj.get_rect()
+        rect.center = self.rect.center
+        screen.blit(self.proj, rect)
         
         
 

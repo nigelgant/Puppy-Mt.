@@ -5,8 +5,6 @@ from resources import load_image
 
 class SpriteSheet(object):
     def __init__(self, image, dimensions, colorkey=-1):
-
-        #load the image
         if type(image) is str:
             image = load_image(image)
 #examines the pixel at (0,0), so we can set that to the transparent color
@@ -19,7 +17,6 @@ class SpriteSheet(object):
         w = self.width = 1.0 * image.get_width() / cols
         h = self.height = 1.0 * image.get_height() / rows
         
-        #build the images
         self._images = []
         for y in range(rows):
             row = []
