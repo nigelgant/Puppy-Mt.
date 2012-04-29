@@ -332,15 +332,16 @@ class L5(Level):
         self.type = "jungle"
         ##tiles - (coordinates) (length, height) (RGB)
         self.tiles = Group(     
-            Tile((0, 240), (40, 240), (0,150,0)),
-            Tile((120, 200), (160, 120), (200,150,0)),
-            Tile((200, 120), (240, 40), (200,150,0)),
-            Tile((320, 160), (80, 40), (0,150, 0)),
-            Tile((480, 160), (40, 80), (200,150,0)),
-            Tile((560, 200), (40, 120), (0,150, 0)),
-            Tile((600, 240), (40, 160), (0,150, 0)),
-            Tile((760, 120), (120, 120), (200,150,0)),
-            Tile((560, 100), (120, 80), (0,150, 0))
+            Tile((0, 240), (120, 120), (0,150,0)),
+            Tile((120, 200), (80, 160), (200,150,0)),
+            Tile((200, 140), (40, 240), (200,150,0)),
+            Tile((280, 160), (120, 200), (0,150, 0)),
+            Tile((480, 160), (80, 200), (200,150,0)),
+            Tile((560, 200), (40, 160), (0,150, 0)),
+            Tile((600, 240), (160, 120), (0,150, 0)),
+            Tile((760, 120), (40, 240), (200,150,0)),
+            Tile((560, 100), (240, 20), (0,150, 0)),
+            Tile((720, 160), (240, 20), (0,150, 0)),   
             )
         ##puppies
         pup1 = RegPuppy((125, 200), 1, self.tiles)
@@ -349,10 +350,10 @@ class L5(Level):
         pup4 = RegPuppy((565, 100), 1, self.tiles)
         pup5 = RegPuppy((605, 240), 1, self.tiles)
         pup6 = RegPuppy((685, 240), 1, self.tiles)
-        pup7 = Gold((725, 120))
+        pup7 = Gold((725, 160))
         self.pups = Group(pup1, pup2, pup3, pup4, pup5, pup6, pup7)
 
-        self.door = GroupSingle(CliffDoor((730,200)))
+        self.door = GroupSingle(CliffDoor((730,100)))
 
 class FoundWhistle(Between):
     song = None
@@ -365,7 +366,7 @@ class L5A(Between):
     song = None
     def __init__(self):
         self.state = 0
-        self.spawn = (50, 50)
+        self.spawn = (50, 100)
         self.bg = load_image("cliffs1.bmp")
 
 class L6(Level):
@@ -374,7 +375,7 @@ class L6(Level):
 
     def __init__(self):
         self.state = 1
-        self.spawn = (50, 50) #spawnpoint
+        self.spawn = (50, 100) #spawnpoint
         self.type = "cliff"
 
         ##tiles - (coordinates) (length, height) (RGB)
@@ -401,7 +402,7 @@ class L6A(Between):
     song = None
     def __init__(self):
         self.state = 0
-        self.spawn = (40, 140)
+        self.spawn = (40, 100)
         self.bg = load_image("cliffs2.png")
 
 
@@ -411,7 +412,7 @@ class L7(Level):
 
     def __init__(self):
         self.state = 1
-        self.spawn = (40, 140) #spawnpoint
+        self.spawn = (40, 100) #spawnpoint
         self.type = "cliff"
 
         ##tiles - (coordinates) (length, height) (RGB)
@@ -419,19 +420,18 @@ class L7(Level):
             Tile((0, 120), (80, 240), (cliff)),
             Tile((80, 280), (40, 80), (cliff)),
             Tile((200, 280), (80, 80), (cliff)),
-            Tile((280, 200), (200, 160), (cliff)),
+            Tile((280, 220), (200, 160), (cliff)),
             Tile((480, 320), (200, 40), (cliff)),
             Tile((680, 200), (120, 160), (cliff))
             )
         ##puppies
         pup1 = RegPuppy((205, 280), 1, self.tiles)
-        pup2 = RegPuppy((285, 200), 1, self.tiles)
-        pup3 = RegPuppy((365, 200), 0, self.tiles)
-        pup4 = RegPuppy((400, 200), 1, self.tiles)
-        pup5 = Bouncer((525, 320), 2, 440, self.tiles)
-        pup6 = Bouncer((595, 320), 2, 460, self.tiles)
+        pup3 = RegPuppy((365, 220), 0, self.tiles)
+        pup4 = RegPuppy((400, 220), 1, self.tiles)
+        pup5 = Bouncer((525, 320), 2, 400, self.tiles)
+        pup6 = Bouncer((595, 320), 2, 400, self.tiles)
         pup7 = Gold((560, 320))
-        self.pups = Group(pup1, pup2, pup3, pup4, pup5, pup6, pup7)
+        self.pups = Group(pup1, pup3, pup4, pup5, pup6, pup7)
 
         self.door = GroupSingle(CliffDoor((740,200)))
 
@@ -448,23 +448,22 @@ class L8(Level):
         ##tiles - (coordinates) (length, height) (RGB)
         self.tiles = Group(     
             Tile((0, 240), (160, 120), (0,150,0)),
-            Tile((160, 100), (120, 260), (0,150,0)),
+            Tile((160, 140), (120, 260), (0,150,0)),
             Tile((360, 200), (80, 160), (200,150,0)),
             Tile((480, 160), (80, 200), (200,150,0)),
             Tile((600, 200), (40, 160), (0,150, 0)),
-            Tile((680, 120), (80, 240), (0,150, 0)),
+            Tile((680, 120), (120, 240), (0,150, 0)),
             Tile((400, 60), (160, 20), (200,150,0)),
             Tile((440, 280), (40, 80), (0,150, 0))
             )
         ##puppies
-        pup1 = Bouncer((80, 240), 2, 200, self.tiles)
-        pup2 = Bouncer((120, 240), 2, 200, self.tiles)
-        pup3 = RegPuppy((165, 100), 1, self.tiles)
-        pup4 = Bouncer((445, 280), 2, 200, self.tiles)
-        pup5 = Bouncer((605, 200), 2, 200, self.tiles)
-        pup6 = RegPuppy((540, 60), 1, self.tiles)
-        pup7 = Gold((560, 320))
-        self.pups = Group(pup1, pup2, pup3, pup4, pup5, pup6, pup7)
+        pup1 = Bouncer((80, 240), 2, 300, self.tiles)
+        pup2 = Bouncer((120, 240), 2, 400, self.tiles)
+        pup4 = Bouncer((445, 280), 2, 400, self.tiles)
+        pup5 = Bouncer((605, 200), 2, 350, self.tiles)
+        pup6 = RegPuppy((530, 60), 1, self.tiles)
+        pup7 = Gold((460, 60))
+        self.pups = Group(pup1, pup2, pup4, pup5, pup6, pup7)
 
         self.door = GroupSingle(CliffDoor((750, 120)))
 
