@@ -10,9 +10,10 @@ IMG_DIR = os.path.join(DATA_DIR, "images")
 MUSIC_DIR = os.path.join(DATA_DIR, "music")
 
 def play_song(song, times=-1):
-    path = os.path.join(MUSIC_DIR, song + ".ogg")
-    pygame.mixer.music.load(path)
-    pygame.mixer.music.play(times)
+    if song is not None:
+        path = os.path.join(MUSIC_DIR, song + ".ogg")
+        pygame.mixer.music.load(path)
+        pygame.mixer.music.play(times)
 
 images = {}
 def load_image(name):
