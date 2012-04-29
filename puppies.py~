@@ -11,7 +11,6 @@ class Puppy(Sprite):
         pass
 
 class RegPuppy(Puppy):
-
     def __init__(self, loc, state, level_tiles):
         Sprite.__init__(self)
         self.image = Surface(self.size)

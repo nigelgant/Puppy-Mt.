@@ -5,11 +5,12 @@ from pygame.locals import *
 from pygame.sprite import Group, GroupSingle
 
 from player import Player
-from levels import Tile, L0, L1, FoundTreat, L1A, L2, L2A, L3, L3A, L4, L5, FoundWhistle, Last
+from levels import Tile, L0, L1, FoundTreat, L1A, L2, L2A, L3, L3A, L4, L4A, L5, FoundWhistle, L5A, L6, L6A, L7, L8, L9, L10, Last
 from puppies import Puppy, RegPuppy
+from resources import play_song
 
 SCREEN_SIZE = 800,360
-BG_COLOR = 255, 255, 255
+BG_COLOR = 0, 200, 200  #remove later?
 
 def main():
     #initialize pygame
@@ -31,9 +32,9 @@ def main():
     file_in.close()
     
     #initialize game
-    lvls = [L0(), L1(), FoundTreat(), L1A(), L2(), L2A(), L3(), L3A(), L4(), L5(), FoundWhistle(), Last()]
+    lvls = [L0(), L1(), FoundTreat(), L1A(), L2(), L2A(), L3(), L3A(), L4(), L4A(), L5(), FoundWhistle(), L5A(), L6(), L6A(), L7(), L8(), L9(), L10(), Last()]
 
-    lvl = lvls[lvlnum]   #starting level
+    lvl = lvls[lvlnum]  #starting level
 
     file_out = open("level.txt","w")
     num = str(lvlnum)
@@ -56,18 +57,21 @@ def main():
                 done = True
             elif event.type == KEYDOWN and event.key == K_ESCAPE:
                 done = True
-            if lvl.state == 1:
+        
+            if lvl.state == 1 and player.dying == False:
                 if event.type == KEYDOWN and event.key == K_UP:
                     player.jump()
                 elif event.type == KEYDOWN and event.key == K_r:  #reset level
                     player.reset()
-                elif event.type == KEYDOWN and event.key == K_z: #whistle
+                elif event.type == KEYDOWN and event.key == K_x: #whistle
                     player.whistle()
-                elif event.type == KEYDOWN and event.key == K_x: #throw
+                elif event.type == KEYDOWN and event.key == K_z: #throw
                     player.throw()
+
             elif lvl.state == 0 or lvl.state == 3:
                 if event.type == KEYDOWN and event.key == K_SPACE:
                     player.endlevel()
+                    play_song(lvl.song)
             if lvl.state == 1:  #temporary: for skipping levels
                 if event.type == KEYDOWN and event.key == K_SPACE:
                     player.endlevel()
@@ -98,13 +102,13 @@ def main():
 
         #draw
             screen.fill(BG_COLOR)
+            lvl.draw(screen, player)
             player_grp.draw(screen)
             player.waves.draw(screen)
             player.treats.draw(screen)
             lvl.tiles.draw(screen)
-            lvl.draw(screen, player)
-            lvl.pups.draw(screen)
             lvl.door.draw(screen)
+            lvl.pups.draw(screen)
         pygame.display.flip()
      #   clock.tick(30)
 
