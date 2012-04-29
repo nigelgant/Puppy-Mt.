@@ -45,3 +45,5 @@ tramp
 # Org-mode
 .org-id-locations
 *_archive
+level.txt
+score.txt
