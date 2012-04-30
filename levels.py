@@ -116,7 +116,6 @@ class Level(object):
         file_in = open("score.txt","r")
         for line in file_in:
             self.score = str(line)
-        if 
     def reset(self):
         self.__init__()
 
@@ -238,11 +237,11 @@ class L1(Level):
             )
             """
         self.tiles = Group(     
-            Tile((0, 200), (240, 160), jungle),
-            Tile((240, 280), (200, 80), jungle),
-            Tile((520, 280), (120, 80), jungle),
-            Tile((640, 240), (160, 120), jungle),
-            Tile((320, 160), (140, 20), jungle)
+            Tile((0, 200), (240, 160), self.jungle),
+            Tile((240, 280), (200, 80), self.jungle),
+            Tile((520, 280), (120, 80), self.jungle),
+            Tile((640, 240), (160, 120), self.jungle),
+            Tile((320, 160), (140, 20), self.jungle)
             )
         ##puppies
         pup1 = RegPuppy((245, 280), 1, self.tiles)
