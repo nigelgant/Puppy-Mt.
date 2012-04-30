@@ -10,7 +10,7 @@ SCREEN_SIZE = 800,360
 screen = pygame.display.set_mode(SCREEN_SIZE)
 
 from player import Player
-from levels import Tile, Menu, Prologue1, Prologue2, L1A, L1, FoundTreat, L2, L2A, L3, L3A, L4, L4A, L5, FoundWhistle, L5A, L6, L6A, L7A, L7, L8A, L8, L9A, L9, L10A, L10, L11A, L11, L12A, L12, L13A, L13, L14A, L14, L15A, L15, Last
+from levels import Tile, Menu, Prologue1, Prologue2, L1A, L1, FoundTreat, L2, L2A, L3, L3A, L4, L4A, L5, FoundWhistle, L5A, L6, L6A, L7A, L7, L8A, L8, L9A, L9, L10A, L10, L11A, L11, L12A, L12, L13A, L13, L14A, L14, L15A, L15, Almost, Last
 from puppies import Puppy, RegPuppy
 from resources import play_song
 
@@ -37,13 +37,12 @@ def main():
     file_in.close()
     
     #initialize game
-    lvls = [Menu(), Prologue1(), Prologue2(), L1A(), L1(), FoundTreat(), L2A(), L2(), L3A(), L3(), L4A(), L4(), L5A(), L5(), FoundWhistle(), L6A(), L6(), L7A(), L7(), L8A(), L8(), L9A(), L9(), L10A(), L10(), L11A(), L11(), L12A(), L12(), L13A(), L13(), L14A(), L14(), L15A(), L15(), Last()]
+    lvls = [Menu(), Prologue1(), Prologue2(), L1A(), L1(), FoundTreat(), L2A(), L2(), L3A(), L3(), L4A(), L4(), L5A(), L5(), FoundWhistle(), L6A(), L6(), L7A(), L7(), L8A(), L8(), L9A(), L9(), L10A(), L10(), L11A(), L11(), L12A(), L12(), L13A(), L13(), L14A(), L14(), L15A(), L15(), Almost(), Last()]
 
  
     lvl = lvls[0]  #starting level
    # if lvl.state == "menu":
     #    lvl = lvls[lvl.newlvlnum]
-     #   print lvl
 
   #  file_out = open("level.txt","w")
   #  num = str(lvlnum)
@@ -69,7 +68,6 @@ def main():
             lvl.draw_titles(screen)
             pygame.display.flip()
             if lvl.newlvlnum > 0:
-                print "no menu"
                 in_menu = False
                 level = lvl.newlvlnum
                 lvl = lvls[lvl.newlvlnum]
@@ -114,8 +112,8 @@ def main():
                 if event.type == KEYDOWN and event.key == K_SPACE:
                     player.endlevel()
                     play_song(lvl.song)
-            elif lvl.state == "last":
-                play_song(lvl.song)
+        #    elif lvl.state == "last":
+         #       play_song(lvl.song)
             if lvl.state != "menu" and lvl.state != "last":  #temporary: for skipping levels
                 if event.type == KEYDOWN and event.key == K_k:
                     player.endlevel()

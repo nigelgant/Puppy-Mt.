@@ -194,6 +194,15 @@ class Between(Level):
             rect = self.lvltitle.get_rect()
             rect.center = bounds.centerx, bounds.centery - bounds.height /6
             screen.blit(self.lvltitle, rect)
+
+        if self.state == "last":
+            font = pygame.font.Font(pixfont, 30)
+            self.lvltitle = font.render(("FINAL SCORE:"+" "+self.score), True, self.fg_color)
+
+            rect = self.lvltitle.get_rect()
+            rect.center = bounds.centerx + 160, bounds.centery + bounds.height /16
+            screen.blit(self.lvltitle, rect)
+
         if self.state != "menu" and self.state != "last":
             font = pygame.font.Font(pixfont, 15)
             self.cont = font.render("PRESS SPACE TO CONTINUE", True, self.fg_color)
@@ -211,6 +220,7 @@ class Menu(Between):   #finish later
         self.bg = load_image("menu.png")
         self.spawn = (0, 160)
         self.newlvlnum = 0
+        self.inst = False
 
     def draw(self, screen):
         bounds = screen.get_rect()
@@ -223,21 +233,26 @@ class Menu(Between):   #finish later
         pygame.font.init()
         pixfont = "./data/fonts/pixelated.ttf"
         font = pygame.font.Font(pixfont, 40)
+        if self.inst == False:
+            self.newgame = font.render(("NEW GAME"), True, self.fg_color)
+            self.newgamerect = self.newgame.get_rect()
+            self.newgamerect.center = bounds.centerx - 220, bounds.centery
+            screen.blit(self.newgame, self.newgamerect)
 
-        self.newgame = font.render(("NEW GAME"), True, self.fg_color)
-        self.newgamerect = self.newgame.get_rect()
-        self.newgamerect.center = bounds.centerx - 220, bounds.centery
-        screen.blit(self.newgame, self.newgamerect)
+            self.contgame = font.render(("CONTINUE GAME"), True, self.fg_color)
+            self.contgamerect = self.contgame.get_rect()
+            self.contgamerect.center = bounds.centerx - 220, bounds.centery + 60
+            screen.blit(self.contgame, self.contgamerect)
 
-        self.contgame = font.render(("CONTINUE GAME"), True, self.fg_color)
-        self.contgamerect = self.contgame.get_rect()
-        self.contgamerect.center = bounds.centerx - 220, bounds.centery + 60
-        screen.blit(self.contgame, self.contgamerect)
+            self.instructions = font.render(("INSTRUCTIONS"), True, self.fg_color)
+            self.instrect = self.instructions.get_rect()
+            self.instrect.center = bounds.centerx - 220, bounds.centery + 120
+            screen.blit(self.instructions, self.instrect)
 
-        self.instructions = font.render(("INSTRUCTIONS"), True, self.fg_color)
-        self.instrect = self.instructions.get_rect()
-        self.instrect.center = bounds.centerx - 220, bounds.centery + 120
-        screen.blit(self.instructions, self.instrect)
+        if self.inst == True:
+            self.bg = load_image("instructions.png")
+        elif self.inst == False:
+            self.bg = load_image("menu.png")
 
     def update(self):
         self.mouse = pygame.mouse.get_pos()
@@ -260,7 +275,10 @@ class Menu(Between):   #finish later
                     file_in.close()
 
                 if self.instrect.collidepoint(event.pos):
-                    print "instructions"
+                    self.inst = True
+
+            if event.type == KEYDOWN and event.key == K_x:
+                self.inst = False
 
 #class Instructions(Between):
     
@@ -930,9 +948,16 @@ class L15(Level):
 
         self.door = GroupSingle(LabDoor((750,320)))
 
+class Almost(Between):
+    song = "ending"
+    def __init__(self):
+        self.state = 3
+        self.spawn = (20, 200)
+        self.bg = load_image("almost.png")
 
 class Last(Between):
-    song = "ending"
+    song = None
+
     def __init__(self):
         self.state = "last"
         self.spawn = (20, 200)
