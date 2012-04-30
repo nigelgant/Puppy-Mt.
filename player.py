@@ -65,13 +65,9 @@ class PlayerAnimation(Animation):
             self.x = self.get_frame_data(self.time)
             self.y = self._rows[(vx, vy)]
         if self.player.dying == True:
-         #   self.time += dt
-          #  self.x = self.get_frame_data(self.time)
             if self.player.facing == "right":
-            #    self.y = self._rows[(1, 7)]
                 self.y = 1
             if self.player.facing == "left":
-            #    self.y = self._rows[(-1, 7)]
                 self.y = 3
             if self.player.dyingcounter <= 0.5:
                 self.x = 0
@@ -89,6 +85,8 @@ class Player(Sprite):
         Sprite.__init__(self)
         self.vx = 0
         self.vy = 0
+
+        self.collect = False
 
         self.facing = "right"  #facing right
 
@@ -111,6 +109,11 @@ class Player(Sprite):
         self.whistlecount = 0
         self.treatcount = 0
         self.dyingcounter = 0
+
+       # file_in = open("score.txt","r")
+       # for line in file_in:
+        #    self.scorenum = str(line)
+        self.scorenum = 0
 
     def jump(self):
         if not self.off_ground:
@@ -154,12 +157,7 @@ class Player(Sprite):
         self.__init__(self.level.spawn, self.level, self.bounds)
 
     def reset(self):
-     #   file_in = open("score.txt","r")
-     #   lvlnum = str(file_in)
         self.level.reset()
-        file_out = open("score.txt","w")
-        file_out.write("0")
-        file_out.close
         self.__init__(self.level.spawn, self.level, self.bounds)
 
     def endlevel(self):
@@ -169,12 +167,22 @@ class Player(Sprite):
             lvlnum += 1
         file_in.close()
 
+        file_in = open("score.txt","r")
+        for line in file_in:
+            self.levelnew = int(line)
+        file_in.close()
+
+        file_out = open("score.txt","w")
+        file_out.write(str(int(self.scorenum) + self.levelnew))
+        file_out.close()
+        
         file_out = open("level.txt","w")
         num = str(lvlnum)
         file_out.write(num)
         file_out.close()
         self.__init__(self.level.spawn, self.level, self.bounds)
-
+        
+       
     def update(self, dt):
         #animation
         self.anim.update(dt)
@@ -194,6 +202,8 @@ class Player(Sprite):
         self.vy -= dt * self.gravity
         dx = self.vx * dt
         dy = -self.vy * dt
+
+        self.collect = False
 
         if self.off_ground == True:  #slow jumping
             dx *= 0.7
@@ -268,23 +278,11 @@ class Player(Sprite):
 
                 #collect gold puppy
                 elif RegPuppy.state == 5:
+                    self.collect = True
                     RegPuppy.kill()
-                    file_in = open("score.txt","r")
-                    for line in file_in:
-                        num = int(line)
-                        num += 1
-                    file_in.close()
-                    file_out = open("score.txt","w")
-                    num = str(num)
-                    file_out.write(num)
-                    file_out.close
-
-         #   for Bouncer in self.touches(self.level.pups):
-          #      self.die()
-
-        #    for Fire in self.touches(self.level.pups):
-         #       self.die()
-            
+                    self.scorenum += 1
+                    self.level.score = self.scorenum
+        
             for Gold in self.touches(self.level.pups):
                 if Gold.state == 5:
                     Gold.collected()

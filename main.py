@@ -22,14 +22,6 @@ def main():
     pygame.init()
     screen = pygame.display.set_mode(SCREEN_SIZE)
     bounds = screen.get_rect()
-
-    file_out = open("score.txt", "w") #score
-    file_out.write("0")  #temporary
-    file_out.close()
-
-  #  file_out = open("level.txt", "w")  #temporary: rewrites to 0 at start
-  #  file_out.write("0")  #temp
-  #  file_out.close()   #temp
     
     file_in = open("level.txt","r")
     for line in file_in:
@@ -39,28 +31,16 @@ def main():
     #initialize game
     lvls = [Menu(), Prologue1(), Prologue2(), L1A(), L1(), FoundTreat(), L2A(), L2(), L3A(), L3(), L4A(), L4(), L5A(), L5(), FoundWhistle(), L6A(), L6(), L7A(), L7(), L8A(), L8(), L9A(), L9(), L10A(), L10(), L11A(), L11(), L12A(), L12(), L13A(), L13(), L14A(), L14(), L15A(), L15(), Almost(), Last()]
 
- 
     lvl = lvls[0]  #starting level
-   # if lvl.state == "menu":
-    #    lvl = lvls[lvl.newlvlnum]
-
-  #  file_out = open("level.txt","w")
-  #  num = str(lvlnum)
-  #  file_out.write(num)
-  #  file_out.close()
 
     in_menu = True
-
-   # lvl = L3()  #temporary: for testing levels
     player = Player(lvl.spawn, lvl, bounds)
     player_grp = GroupSingle(player) #spritegroup for player
-
     #game loop
     done = False
     clock = pygame.time.Clock()
     
     while not done:
-
         while in_menu == True:
             lvl = lvls[0]
             lvl.update()
@@ -81,6 +61,7 @@ def main():
                     file_out = open("level.txt", "w")  #temporary: rewrites to 0 at start
                     file_out.write(level)  #temp
                     file_out.close()   #temp
+
                     if lvl.type == "jungle":
                         lvl.song = "jungle1"
                         play_song(lvl.song)
@@ -112,8 +93,6 @@ def main():
                 if event.type == KEYDOWN and event.key == K_SPACE:
                     player.endlevel()
                     play_song(lvl.song)
-        #    elif lvl.state == "last":
-         #       play_song(lvl.song)
             if lvl.state != "menu" and lvl.state != "last":  #temporary: for skipping levels
                 if event.type == KEYDOWN and event.key == K_k:
                     player.endlevel()
@@ -129,7 +108,8 @@ def main():
         #update
         dt = clock.tick(30)
         if lvl.state == 1:
-            lvl.draw_hud(screen, player)
+            pass
+      #      lvl.draw_hud(screen, player)
         else:
             lvl.draw(screen)
         if lvl.state == "menu":

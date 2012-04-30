@@ -113,9 +113,6 @@ class Level(object):
         self.pups = Group()
         self.tiles = Group()
 
-        file_in = open("score.txt","r")
-        for line in file_in:
-            self.score = str(line)
     def reset(self):
         self.__init__()
 
@@ -128,17 +125,21 @@ class Level(object):
             if pup.state == 1 or pup.state == 2:
                 self.tiles.remove(pup)
                 self.pups.add(pup)
+
     def draw_hud(self, screen, player):
         bounds = screen.get_rect()
-       # pygame.font.init()
         pixfont = "./data/fonts/pixelated.ttf"
         self.player = player
+
         file_in = open("score.txt","r")
         for line in file_in:
             self.score = str(line)
+        self.currentscore = self.score
+
+        self.display_score = int(self.currentscore) + int(self.player.scorenum)            
         font = pygame.font.Font(pixfont, 15)
        
-        self.scoredisplay = font.render(("SCORE:"+" "+str(self.score)), True, self.fg_color)
+        self.scoredisplay = font.render(("SCORE:"+" "+str(self.display_score)), True, self.fg_color)
         rect = self.scoredisplay.get_rect()
         rect.center = bounds.centerx - 360, bounds.centery - 160
         screen.blit(self.scoredisplay, rect)
@@ -259,13 +260,13 @@ class Menu(Between):   #finish later
         for event in pygame.event.get():
             if event.type == MOUSEBUTTONDOWN:
                 if self.newgamerect.collidepoint(event.pos):
+                    file_out = open("score.txt", "w") #reset score
+                    file_out.write("0") 
+                    file_out.close()
+
                     file_out = open("level.txt", "w")
                     file_out.write("1") 
                     file_out.close()
-                    #reset score
-                    file_out = open("score.txt", "w")
-                    file_out.write("0") 
-                    file_out.close()  
                     self.newlvlnum = 1
                     
                 if self.contgamerect.collidepoint(event.pos):
@@ -279,8 +280,6 @@ class Menu(Between):   #finish later
 
             if event.type == KEYDOWN and event.key == K_x:
                 self.inst = False
-
-#class Instructions(Between):
     
 class Prologue1(Between):
     song = None
@@ -296,13 +295,10 @@ class Prologue2(Between):
         self.cutscene = True
         self.bg = load_image("prologue2.png")
 
-
 class L1A(Between):
     song = "jungle1"
 
     def __init__(self):
-      #  play_song(self.song)
-
         self.spawn = (50, 160)
         self.state = 0
         self.bg = load_image("jungle1.png")
@@ -316,15 +312,6 @@ class L1(Level):
         self.spawn = (50, 100) #spawnpoint
         self.type = "jungle"
         ##tiles - (coordinates) (length, height) (RGB)
-        """
-        self.tiles = Group(     
-            Tile((0, 200), (240, 160), jungle),
-            Tile((240, 280), (200, 80), jungle),
-            Tile((520, 280), (120, 80), jungle),
-            Tile((640, 240), (160, 120), jungle),
-            Tile((320, 160), (140, 20), jungle)
-            )
-            """
         self.tiles = Group(     
             Tile((0, 200), (240, 160), self.jungle),
             Tile((240, 280), (200, 80), self.jungle),
