@@ -204,6 +204,13 @@ class Between(Level):
             rect.center = bounds.centerx + 160, bounds.centery + bounds.height /16
             screen.blit(self.lvltitle, rect)
 
+            if int(self.score) == 15:
+                font = pygame.font.Font(pixfont, 20)
+                self.award = font.render(("GOLDEN  RETRIEVER  AWARD"), True, (255, 215, 0))
+                rect = self.award.get_rect()
+                rect.center = bounds.centerx + 160, bounds.centery + bounds.height /8
+                screen.blit(self.award, rect)
+
         if self.state != "menu" and self.state != "last":
             font = pygame.font.Font(pixfont, 15)
             self.cont = font.render("PRESS SPACE TO CONTINUE", True, self.fg_color)
@@ -549,7 +556,7 @@ class L7(Level):
             Tile((200, 280), (80, 80), (self.cliff)),
             Tile((280, 220), (200, 160), (self.cliff)),
             Tile((480, 320), (200, 40), (self.cliff)),
-            Tile((680, 200), (120, 160), (self.cliff))
+            Tile((680, 210), (120, 160), (self.cliff))
             )
         ##puppies
         pup1 = RegPuppy((205, 280), 1, self.tiles)
@@ -560,7 +567,7 @@ class L7(Level):
         pup7 = Gold((560, 320))
         self.pups = Group(pup1, pup3, pup4, pup5, pup6, pup7)
 
-        self.door = GroupSingle(CliffDoor((740,200)))
+        self.door = GroupSingle(CliffDoor((740,210)))
 
 class L8A(Between):
     song = None

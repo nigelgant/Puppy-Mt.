@@ -5,7 +5,7 @@ from pygame.locals import *
 from pygame import Surface
 from pygame.sprite import Sprite, Group, groupcollide, spritecollideany
 from levels import Tile
-from resources import load_image
+from resources import load_image, load_sfx
 from spritesheet import SpriteSheet
 from anim import Animation
 
@@ -119,10 +119,14 @@ class Player(Sprite):
         if not self.off_ground:
             self.off_ground = True
             self.vy = 280 #jump speed
+            self.jumpsound = load_sfx("jump")
+            self.jumpsound.play()
 
     def whistle(self):
         if self.whistlecount < self.level.wlimit and self.level.wlimit > 0:
             soundwave = Wave(self.bounds, self.level, self.facing)
+            self.whistlesound = load_sfx("whistle")
+            self.whistlesound.play()
             if self.facing == "right":
                 soundwave.rect.left = self.rect.right
                 soundwave.rect.midleft = self.rect.midright
@@ -135,6 +139,8 @@ class Player(Sprite):
     def throw(self):
         if self.treatcount < self.level.tlimit and self.level.tlimit > 0:
             treat = Treat(self.bounds, self.level, self.facing)
+            self.throwsound = load_sfx("throw")
+            self.throwsound.play()
             if self.facing == "right":
                 treat.rect.left = self.rect.right
                 treat.rect.midleft = self.rect.midright
@@ -240,6 +246,8 @@ class Player(Sprite):
 
         #collide doors
         for sprite in self.touches(self.level.door):
+            self.endsound = load_sfx("endlevel")
+            self.endsound.play()
             self.endlevel()
 
         #fall off bottom
@@ -272,13 +280,17 @@ class Player(Sprite):
                  
                 #killed by puppy
                 if RegPuppy.state == 1 or RegPuppy.state == 2 or RegPuppy.state == 4:
+                    self.hitsound = load_sfx("hit")
+                    self.hitsound.play()
                     self.vx = 0
                     self.vy = 0
                     self.dying = True
+      
 
                 #collect gold puppy
                 elif RegPuppy.state == 5:
-                    self.collect = True
+                    self.goldsound = load_sfx("collect")
+                    self.goldsound.play()
                     RegPuppy.kill()
                     self.scorenum += 1
                     self.level.score = self.scorenum
