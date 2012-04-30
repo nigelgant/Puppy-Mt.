@@ -709,7 +709,7 @@ class L11(Level):
         pup7 = Gold((325, 140))
         self.pups = Group(pup1, pup2, pup3, pup4, pup5, pup6, pup7)
 
-        self.door = GroupSingle(TreeDoor((750,280)))
+        self.door = GroupSingle(LabDoor((750,280)))
 
 class L12A(Between):
     song = None
@@ -756,7 +756,7 @@ class L12(Level):
         pup9 = Gold((240, 80))
         self.pups = Group(pup1, pup2, pup3, pup4, pup5, pup6, pup7, pup8, pup9)
 
-        self.door = GroupSingle(TreeDoor((750,320)))
+        self.door = GroupSingle(LabDoor((750,320)))
 
 class L13A(Between):
     song = None
@@ -809,7 +809,7 @@ class L13(Level):
 
         self.pups = Group(pup1, pup2, pup3, pup4, pup5, pup6, pup7, pup8, pup9, pup10, pup11)
 
-        self.door = GroupSingle(TreeDoor((750,340)))
+        self.door = GroupSingle(LabDoor((750,340)))
 class L14A(Between):
     song = None
     def __init__(self):
@@ -857,7 +857,7 @@ class L14(Level):
 
         self.pups = Group(pup1, pup2, pup3, pup4, pup5, pup6, pup7, pup8, pup9)
 
-        self.door = GroupSingle(TreeDoor((750,320)))
+        self.door = GroupSingle(LabDoor((750,320)))
 
 class L15A(Between):
     song = None
@@ -913,7 +913,7 @@ class L15(Level):
 
         self.pups = Group(pup1, pup2, pup3, pup4, pup5, pup6, pup7, pup8, pup9, pup10, pup11, pup12)
 
-        self.door = GroupSingle(TreeDoor((750,320)))
+        self.door = GroupSingle(LabDoor((750,320)))
 
 class Last(Between):
     def __init__(self):
