@@ -6,8 +6,8 @@ from puppies import Puppy, RegPuppy, Bouncer, Fire, Gold
 from resources import load_image, play_song
 
 #jungle = 0, 150, 0
-cliff = 200, 150, 0
-lab = 80, 80, 80
+#cliff = 200, 150, 0
+#lab = 80, 80, 80
 
 class TiledImage(object):
     def __init__(self, image, rect=None):
@@ -161,6 +161,8 @@ class Level(object):
             self.bg = load_image("junglebg1.png")
         elif self.type == "cliff":
             self.bg = load_image("cliffbg.png")
+        elif self.type == "lab":
+            self.bg = load_image("labbg.png")
         rect = self.bg.get_rect()
         rect.center = bounds.centerx, bounds.centery
         screen.blit(self.bg, rect)
@@ -308,7 +310,7 @@ class L3A(Between):
 
 class L3(Level):
     wlimit = 0
-    tlimit = 1
+    tlimit = 2
     def __init__(self):
         self.state = 1
         self.spawn = (50, 160)
@@ -341,7 +343,7 @@ class L4A(Between):
 
 class L4(Level):
     wlimit = 0
-    tlimit = 2
+    tlimit = 3
     def __init__(self):
         self.state = 1
         self.spawn = (50, 70) #spawnpoint
@@ -357,7 +359,7 @@ class L4(Level):
             Tile((360, 200), (40, 160), self.jungle),
             Tile((400, 240), (120, 120), self.jungle),
             Tile((600, 280), (120, 80), self.jungle),
-            Tile((720, 200), (80, 160), self.jungle)
+            Tile((720, 220), (80, 160), self.jungle)
             )
         ##puppies
         self.pups = Group(
@@ -365,7 +367,7 @@ class L4(Level):
             RegPuppy((405, 240), 1, self.tiles),
             RegPuppy((605, 280), 1, self.tiles),
             Gold((45, 320)))
-        self.door = GroupSingle(TreeDoor((730,200)))
+        self.door = GroupSingle(TreeDoor((730,220)))
 
 class L5A(Between):
     song = None
@@ -376,7 +378,7 @@ class L5A(Between):
 
 class L5(Level):
     wlimit = 0
-    tlimit = 3
+    tlimit = 4
     def __init__(self):
         self.state = 1
         self.spawn = (50, 200)
@@ -422,7 +424,7 @@ class L6A(Between):
 
 class L6(Level):
     wlimit = 2  #whistle limit
-    tlimit = 2  #treat limit
+    tlimit = 3  #treat limit
 
     def __init__(self):
         self.state = 1
@@ -459,7 +461,7 @@ class L7A(Between):
 
 class L7(Level):
     wlimit = 2  #whistle limit
-    tlimit = 3  #treat limit
+    tlimit = 4  #treat limit
 
     def __init__(self):
         self.state = 1
@@ -495,7 +497,7 @@ class L8A(Between):
 
 class L8(Level):
     wlimit = 2  #whistle limit
-    tlimit = 3  #treat limit
+    tlimit = 4  #treat limit
     song = None
 
     def __init__(self):
@@ -534,7 +536,7 @@ class L9A(Between):
 
 class L9(Level):
     wlimit = 2  #whistle limit
-    tlimit = 2  #treat limit
+    tlimit = 3  #treat limit
 
     def __init__(self):
         self.state = 1
@@ -545,9 +547,9 @@ class L9(Level):
         self.tiles = Group(     
             Tile((0, 120), (80, 240), (self.cliff)),
             Tile((80, 160), (85, 200), (self.cliff)),
-            Tile((280, 80), (200, 40), (self.cliff)),
-            Tile((240, 120), (240, 40), (self.cliff)),
-            Tile((160, 160), (320, 40), (self.cliff)),
+            Tile((280, 80), (160, 40), (self.cliff)),
+            Tile((240, 120), (200, 40), (self.cliff)),
+            Tile((160, 160), (280, 40), (self.cliff)),
             Tile((160, 240), (320, 120), (self.cliff)),
             Tile((480, 280), (80, 80), (self.cliff)),
             Tile((600, 200), (40, 160), (self.cliff)),
@@ -557,7 +559,7 @@ class L9(Level):
         ##puppies
         pup1 = RegPuppy((85, 160), 1, self.tiles)
         pup3 = RegPuppy((360, 80), 0, self.tiles)
-        pup4 = RegPuppy((420, 80), 1, self.tiles)
+        pup4 = RegPuppy((400, 80), 1, self.tiles)
         pup5 = Bouncer((525, 280), 2, 300, self.tiles)
         pup6 = Fire((800, 240), (-1, 0), 60, self.tiles)
         pup7 = Fire((800, 80), (-1, 0), 100, self.tiles)
@@ -575,8 +577,8 @@ class L10A(Between):
 
 
 class L10(Level):
-    wlimit = 2  #whistle limit
-    tlimit = 2  #treat limit
+    wlimit = 3  #whistle limit
+    tlimit = 3  #treat limit
 
     def __init__(self):
         self.state = 1
@@ -610,7 +612,7 @@ class L10(Level):
         pup8 = Gold((720, 120))
         self.pups = Group(pup1, pup2, pup3, pup4, pup5, pup6, pup7, pup8)
 
-        self.door = GroupSingle(CliffDoor((750,280)))
+        self.door = GroupSingle(LabDoor((750,280)))
 class L11A(Between):
     song = None
     def __init__(self):
@@ -619,13 +621,13 @@ class L11A(Between):
         self.bg = load_image("lab1.png")
 
 class L11(Level):
-    wlimit = 2  #whistle limit
-    tlimit = 3  #treat limit
+    wlimit = 3  #whistle limit
+    tlimit = 4  #treat limit
 
     def __init__(self):
         self.state = 1
         self.spawn = (20, 100) #spawnpoint
-        self.type = "jungle"
+        self.type = "lab"
 
         ##tiles - (coordinates) (length, height) (RGB)
         self.tiles = Group(     
@@ -663,13 +665,13 @@ class L12A(Between):
         self.bg = load_image("lab2.png")
 
 class L12(Level):
-    wlimit = 2  #whistle limit
-    tlimit = 4  #treat limit
+    wlimit = 3  #whistle limit
+    tlimit = 5  #treat limit
 
     def __init__(self):
         self.state = 1
         self.spawn = (20, 130) #spawnpoint
-        self.type = "jungle"
+        self.type = "lab"
 
         ##tiles - (coordinates) (length, height) (RGB)
         self.tiles = Group(     
@@ -711,12 +713,12 @@ class L13A(Between):
 
 class L13(Level):
     wlimit = 2  #whistle limit
-    tlimit = 3  #treat limit
+    tlimit = 4  #treat limit
 
     def __init__(self):
         self.state = 1
         self.spawn = (20, 120) #spawnpoint
-        self.type = "jungle"
+        self.type = "lab"
 
         ##tiles - (coordinates) (length, height) (RGB)
         self.tiles = Group(     
@@ -763,12 +765,12 @@ class L14A(Between):
 
 class L14(Level):
     wlimit = 3  #whistle limit
-    tlimit = 4  #treat limit
+    tlimit = 5  #treat limit
 
     def __init__(self):
         self.state = 1
         self.spawn = (20, 200) #spawnpoint
-        self.type = "jungle"
+        self.type = "lab"
 
         ##tiles - (coordinates) (length, height) (RGB)
         self.tiles = Group(     
@@ -780,8 +782,8 @@ class L14(Level):
             Tile((240, 120), (120, 40), (self.lab)),
             Tile((240, 200), (360, 80), (self.lab)),
             Tile((480, 140), (40, 60), (self.lab)),
-            Tile((520, 100), (83, 100), (self.lab)),
-            Tile((600, 100), (80, 20), (self.lab)),
+            Tile((520, 100), (80, 100), (self.lab)),
+            Tile((595, 100), (85, 20), (self.lab)),
             Tile((600, 320), (200, 40), (self.lab)),
             Tile((640, 160), (42, 120), (self.lab)),
             Tile((680, 160), (40, 40), (self.lab)),
@@ -812,12 +814,12 @@ class L15A(Between):
 
 class L15(Level):
     wlimit = 3  #whistle limit
-    tlimit = 4  #treat limit
+    tlimit = 5  #treat limit
 
     def __init__(self):
         self.state = 1
         self.spawn = (20, 100) #spawnpoint
-        self.type = "jungle"
+        self.type = "lab"
 
         ##tiles - (coordinates) (length, height) (RGB)
         self.tiles = Group(     
