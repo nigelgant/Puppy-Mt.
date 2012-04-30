@@ -114,7 +114,9 @@ def main():
                 if event.type == KEYDOWN and event.key == K_SPACE:
                     player.endlevel()
                     play_song(lvl.song)
-            if lvl.state != "menu":  #temporary: for skipping levels
+            elif lvl.state == "last":
+                play_song(lvl.song)
+            if lvl.state != "menu" and lvl.state != "last":  #temporary: for skipping levels
                 if event.type == KEYDOWN and event.key == K_k:
                     player.endlevel()
 
