@@ -290,7 +290,7 @@ class Player(Sprite):
                     Gold.collected()
           
 class Projectile(Sprite):
-    speed = 15
+    speed = 17
     size = 20, 15
 
     def __init__(self, bounds, level, facing):

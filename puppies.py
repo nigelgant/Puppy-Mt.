@@ -229,7 +229,8 @@ class Bouncer(Puppy):
         self.anim.update(dt)
         self.image = self.anim.get_current_frame()
 
-        dt = dt / 1000.0
+      #  dt = dt / 1000.0
+        dt = dt / 1150.0
 
         self.vy -= dt * self.gravity
         dy = -self.vy * dt
