@@ -281,13 +281,13 @@ class L2(Level):
 
         ##tiles - (coordinates) (length, height) (RGB)
         self.tiles = Group(     
-            Tile((0, 280), (200, 80), jungle),
-            Tile((200, 240), (40, 120), jungle),
-            Tile((240, 200), (40, 160), jungle),
-            Tile((280, 160), (160, 200), jungle),
-            Tile((440, 240), (160, 120), jungle),
-            Tile((680, 280), (120, 80), jungle),
-            Tile((120, 100), (120, 20), jungle)
+            Tile((0, 280), (200, 80), self.jungle),
+            Tile((200, 240), (40, 120), self.jungle),
+            Tile((240, 200), (40, 160), self.jungle),
+            Tile((280, 160), (160, 200), self.jungle),
+            Tile((440, 240), (160, 120), self.jungle),
+            Tile((680, 280), (120, 80), self.jungle),
+            Tile((120, 100), (120, 20), self.jungle)
             )
         ##puppies
         pup1 = RegPuppy((285, 160), 1, self.tiles)
@@ -315,13 +315,13 @@ class L3(Level):
         self.type = "jungle"
 
         self.tiles = Group(     
-            Tile((0, 200), (400, 160), jungle),
-            Tile((120, 160), (120, 40), jungle),
-            Tile((200, 120), (160, 40), jungle),
-            Tile((480, 200), (80, 200), jungle),
-            Tile((560, 160), (80, 200), jungle),
-            Tile((620, 120), (120, 240), jungle),
-            Tile((720, 80), (80, 280), jungle)
+            Tile((0, 200), (400, 160), self.jungle),
+            Tile((120, 160), (120, 40), self.jungle),
+            Tile((200, 120), (160, 40), self.jungle),
+            Tile((480, 200), (80, 200), self.jungle),
+            Tile((560, 160), (80, 200), self.jungle),
+            Tile((620, 120), (120, 240), self.jungle),
+            Tile((720, 80), (80, 280), self.jungle)
             )
         ##puppies
         pup2 = RegPuppy((275, 120), 1, self.tiles)
@@ -348,16 +348,16 @@ class L4(Level):
         self.type = "jungle"
         ##tiles - (coordinates) (length, height) (RGB)
         self.tiles = Group(     
-            Tile((0, 120), (40, 240), jungle),
-            Tile((40, 120), (160, 120), jungle),
-            Tile((40, 320), (240, 40), jungle),
-            Tile((120, 280), (80, 40), jungle),
-            Tile((280, 280), (40, 80), jungle),
-            Tile((320, 240), (40, 120), jungle),
-            Tile((360, 200), (40, 160), jungle),
-            Tile((400, 240), (120, 120), jungle),
-            Tile((600, 280), (120, 80), jungle),
-            Tile((720, 200), (80, 160), jungle)
+            Tile((0, 120), (40, 240), self.jungle),
+            Tile((40, 120), (160, 120), self.jungle),
+            Tile((40, 320), (240, 40), self.jungle),
+            Tile((120, 280), (80, 40), self.jungle),
+            Tile((280, 280), (40, 80), self.jungle),
+            Tile((320, 240), (40, 120), self.jungle),
+            Tile((360, 200), (40, 160), self.jungle),
+            Tile((400, 240), (120, 120), self.jungle),
+            Tile((600, 280), (120, 80), self.jungle),
+            Tile((720, 200), (80, 160), self.jungle)
             )
         ##puppies
         self.pups = Group(
@@ -383,16 +383,16 @@ class L5(Level):
         self.type = "jungle"
         ##tiles - (coordinates) (length, height) (RGB)
         self.tiles = Group(     
-            Tile((0, 240), (120, 120), jungle),
-            Tile((120, 200), (80, 160), jungle),
-            Tile((200, 140), (40, 240), jungle),
-            Tile((280, 160), (120, 200), jungle),
-            Tile((480, 160), (80, 200), jungle),
-            Tile((560, 200), (40, 160), jungle),
-            Tile((600, 240), (160, 120), jungle),
-            Tile((760, 120), (40, 240), jungle),
-            Tile((560, 100), (240, 20), jungle),
-            Tile((720, 160), (240, 20), jungle),   
+            Tile((0, 240), (120, 120), self.jungle),
+            Tile((120, 200), (80, 160), self.jungle),
+            Tile((200, 140), (40, 240), self.jungle),
+            Tile((280, 160), (120, 200), self.jungle),
+            Tile((480, 160), (80, 200), self.jungle),
+            Tile((560, 200), (40, 160), self.jungle),
+            Tile((600, 240), (160, 120), self.jungle),
+            Tile((760, 120), (40, 240), self.jungle),
+            Tile((560, 100), (240, 20), self.jungle),
+            Tile((720, 160), (240, 20), self.jungle),   
             )
         ##puppies
         pup1 = RegPuppy((125, 200), 1, self.tiles)
@@ -431,13 +431,13 @@ class L6(Level):
 
         ##tiles - (coordinates) (length, height) (RGB)
         self.tiles = Group(     
-            Tile((0, 120), (120, 240), (cliff)),
-            Tile((120, 240), (120, 120), (cliff)),
-            Tile((240, 80), (120, 280), (cliff)),
-            Tile((360, 160), (120, 200), (cliff)),
-            Tile((600, 160), (40, 200), (cliff)),
-            Tile((640, 120), (200, 240), (cliff)),
-            Tile((440, 60), (120, 20), (cliff))
+            Tile((0, 120), (120, 240), (self.cliff)),
+            Tile((120, 240), (120, 120), (self.cliff)),
+            Tile((240, 80), (120, 280), (self.cliff)),
+            Tile((360, 160), (120, 200), (self.cliff)),
+            Tile((600, 160), (40, 200), (self.cliff)),
+            Tile((640, 120), (200, 240), (self.cliff)),
+            Tile((440, 60), (120, 20), (self.cliff))
             )
         ##puppies
         pup1 = Bouncer((165, 240), 2, 430, self.tiles)
@@ -468,12 +468,12 @@ class L7(Level):
 
         ##tiles - (coordinates) (length, height) (RGB)
         self.tiles = Group(     
-            Tile((0, 120), (80, 240), (cliff)),
-            Tile((80, 280), (40, 80), (cliff)),
-            Tile((200, 280), (80, 80), (cliff)),
-            Tile((280, 220), (200, 160), (cliff)),
-            Tile((480, 320), (200, 40), (cliff)),
-            Tile((680, 200), (120, 160), (cliff))
+            Tile((0, 120), (80, 240), (self.cliff)),
+            Tile((80, 280), (40, 80), (self.cliff)),
+            Tile((200, 280), (80, 80), (self.cliff)),
+            Tile((280, 220), (200, 160), (self.cliff)),
+            Tile((480, 320), (200, 40), (self.cliff)),
+            Tile((680, 200), (120, 160), (self.cliff))
             )
         ##puppies
         pup1 = RegPuppy((205, 280), 1, self.tiles)
@@ -505,14 +505,14 @@ class L8(Level):
 
         ##tiles - (coordinates) (length, height) (RGB)
         self.tiles = Group(     
-            Tile((0, 240), (160, 120), cliff),
-            Tile((160, 140), (120, 260), cliff),
-            Tile((360, 200), (80, 160), cliff),
-            Tile((480, 160), (80, 200), cliff),
-            Tile((600, 200), (40, 160), cliff),
-            Tile((680, 120), (120, 240), cliff),
-            Tile((400, 60), (160, 20), cliff),
-            Tile((440, 280), (40, 80), cliff)
+            Tile((0, 240), (160, 120), self.cliff),
+            Tile((160, 140), (120, 260), self.cliff),
+            Tile((360, 200), (80, 160), self.cliff),
+            Tile((480, 160), (80, 200), self.cliff),
+            Tile((600, 200), (40, 160), self.cliff),
+            Tile((680, 120), (120, 240), self.cliff),
+            Tile((400, 60), (160, 20), self.cliff),
+            Tile((440, 280), (40, 80), self.cliff)
             )
         ##puppies
         pup1 = Bouncer((80, 240), 2, 300, self.tiles)
@@ -543,16 +543,16 @@ class L9(Level):
 
         ##tiles - (coordinates) (length, height) (RGB)
         self.tiles = Group(     
-            Tile((0, 120), (80, 240), (cliff)),
-            Tile((80, 160), (85, 200), (cliff)),
-            Tile((280, 80), (200, 40), (cliff)),
-            Tile((240, 120), (240, 40), (cliff)),
-            Tile((160, 160), (320, 40), (cliff)),
-            Tile((160, 240), (320, 120), (cliff)),
-            Tile((480, 280), (80, 80), (cliff)),
-            Tile((600, 200), (40, 160), (cliff)),
-            Tile((680, 200), (40, 160), (cliff)),
-            Tile((760, 200), (40, 160), (cliff))
+            Tile((0, 120), (80, 240), (self.cliff)),
+            Tile((80, 160), (85, 200), (self.cliff)),
+            Tile((280, 80), (200, 40), (self.cliff)),
+            Tile((240, 120), (240, 40), (self.cliff)),
+            Tile((160, 160), (320, 40), (self.cliff)),
+            Tile((160, 240), (320, 120), (self.cliff)),
+            Tile((480, 280), (80, 80), (self.cliff)),
+            Tile((600, 200), (40, 160), (self.cliff)),
+            Tile((680, 200), (40, 160), (self.cliff)),
+            Tile((760, 200), (40, 160), (self.cliff))
             )
         ##puppies
         pup1 = RegPuppy((85, 160), 1, self.tiles)
@@ -585,19 +585,19 @@ class L10(Level):
 
         ##tiles - (coordinates) (length, height) (RGB)
         self.tiles = Group(     
-            Tile((0, 120), (80, 240), (cliff)),
-            Tile((120, 80), (40, 280), (cliff)),
-            Tile((160, 160), (40, 200), (cliff)),
-            Tile((200, 80), (40, 280), (cliff)),
-            Tile((320, 80), (40, 280), (cliff)),
-            Tile((360, 120), (160, 40), (cliff)),
-            Tile((360, 160), (200, 40), (cliff)),
-            Tile((400, 320), (400, 40), (lab)),
-            Tile((480, 240), (120, 40), (lab)),
-            Tile((600, 120), (40, 160), (lab)),
-            Tile((640, 120), (160, 40), (lab)),
-            Tile((720, 280), (80, 40), (lab)),
-            Tile((640, 80), (40, 40), (lab))
+            Tile((0, 120), (80, 240), (self.cliff)),
+            Tile((120, 80), (40, 280), (self.cliff)),
+            Tile((160, 160), (40, 200), (self.cliff)),
+            Tile((200, 80), (40, 280), (self.cliff)),
+            Tile((320, 80), (40, 280), (self.cliff)),
+            Tile((360, 120), (160, 40), (self.cliff)),
+            Tile((360, 160), (200, 40), (self.cliff)),
+            Tile((400, 320), (400, 40), (self.lab)),
+            Tile((480, 240), (120, 40), (self.lab)),
+            Tile((600, 120), (40, 160), (self.lab)),
+            Tile((640, 120), (160, 40), (self.lab)),
+            Tile((720, 280), (80, 40), (self.lab)),
+            Tile((640, 80), (40, 40), (self.lab))
             )
         ##puppies
         pup1 = Bouncer((170, 160), 2, 400, self.tiles)
@@ -629,19 +629,19 @@ class L11(Level):
 
         ##tiles - (coordinates) (length, height) (RGB)
         self.tiles = Group(     
-            Tile((0, 120), (120, 120), lab),
-            Tile((0, 240), (400, 120), lab),
-            Tile((0, 0), (240, 40), lab),
-            Tile((120, 160), (40, 80), lab),
-            Tile((160, 200), (40, 40), lab),
-            Tile((240, 0), (80, 200), lab),
-            Tile((320, 0), (480, 80), lab),
-            Tile((320, 140), (40, 20), lab),
-            Tile((400, 280), (280, 80), lab),
-            Tile((440, 240), (40, 40), lab),
-            Tile((480, 160), (40, 40), lab),
-            Tile((480, 200), (160, 80), lab),
-            Tile((720, 280), (80, 80), lab)
+            Tile((0, 120), (120, 120), self.lab),
+            Tile((0, 240), (400, 120), self.lab),
+            Tile((0, 0), (240, 40), self.lab),
+            Tile((120, 160), (40, 80), self.lab),
+            Tile((160, 200), (40, 40), self.lab),
+            Tile((240, 0), (80, 200), self.lab),
+            Tile((320, 0), (480, 80), self.lab),
+            Tile((320, 140), (40, 20), self.lab),
+            Tile((400, 280), (280, 80), self.lab),
+            Tile((440, 240), (40, 40), self.lab),
+            Tile((480, 160), (40, 40), self.lab),
+            Tile((480, 200), (160, 80), self.lab),
+            Tile((720, 280), (80, 80), self.lab)
             )
         ##puppies
         pup1 = RegPuppy((285, 240), 0, self.tiles)
@@ -673,20 +673,20 @@ class L12(Level):
 
         ##tiles - (coordinates) (length, height) (RGB)
         self.tiles = Group(     
-            Tile((0, 0), (80, 80), (lab)),
-            Tile((0, 80), (400, 40), (lab)),
-            Tile((0, 200), (80, 80), (lab)),
-            Tile((0, 280), (645, 80), (lab)),
-            Tile((80, 0), (280, 40), (lab)),
-            Tile((320, 220), (80, 80), (lab)),
-            Tile((360, 120), (120, 40), (lab)),
-            Tile((440, 160), (80, 40), (lab)),
-            Tile((560, 120), (160, 40), (lab)),
-            Tile((640, 160), (40, 200), (lab)),
-            Tile((680, 320), (120, 40), (lab)),
-            Tile((720, 200), (40, 40), (lab)),
-            Tile((395, 260), (250, 20), (lab)),
-            Tile((760, 120), (80, 80), (lab))
+            Tile((0, 0), (80, 80), (self.lab)),
+            Tile((0, 80), (400, 40), (self.lab)),
+            Tile((0, 200), (80, 80), (self.lab)),
+            Tile((0, 280), (645, 80), (self.lab)),
+            Tile((80, 0), (280, 40), (self.lab)),
+            Tile((320, 220), (80, 80), (self.lab)),
+            Tile((360, 120), (120, 40), (self.lab)),
+            Tile((440, 160), (80, 40), (self.lab)),
+            Tile((560, 120), (160, 40), (self.lab)),
+            Tile((640, 160), (40, 200), (self.lab)),
+            Tile((680, 320), (120, 40), (self.lab)),
+            Tile((720, 200), (40, 40), (self.lab)),
+            Tile((395, 260), (250, 20), (self.lab)),
+            Tile((760, 120), (80, 80), (self.lab))
             )
         ##puppies
         pup1 = RegPuppy((85, 280), 1, self.tiles)
@@ -720,21 +720,21 @@ class L13(Level):
 
         ##tiles - (coordinates) (length, height) (RGB)
         self.tiles = Group(     
-            Tile((0, 140), (80, 160), (lab)),
-            Tile((0, 240), (120, 120), (lab)),
-            Tile((120, 0), (40, 120), (lab)),
-            Tile((160, 0), (120, 40), (lab)),
-            Tile((160, 80), (160, 40), (lab)),
-            Tile((160, 320), (40, 40), (lab)),
-            Tile((240, 320), (40, 40), (lab)),
-            Tile((320, 180), (160, 180), (lab)),
-            Tile((400, 80), (240, 40), (lab)),
-            Tile((440, 120), (40, 80), (lab)),
-            Tile((480, 340), (320, 20), (lab)),
-            Tile((520, 240), (280, 40), (lab)),
-            Tile((640, 80), (40, 120), (lab)),
-            Tile((680, 160), (40, 40), (lab)),
-            Tile((720, 80), (40, 120), (lab))
+            Tile((0, 140), (80, 160), (self.lab)),
+            Tile((0, 240), (120, 120), (self.lab)),
+            Tile((120, 0), (40, 120), (self.lab)),
+            Tile((160, 0), (120, 40), (self.lab)),
+            Tile((160, 80), (160, 40), (self.lab)),
+            Tile((160, 320), (40, 40), (self.lab)),
+            Tile((240, 320), (40, 40), (self.lab)),
+            Tile((320, 180), (160, 180), (self.lab)),
+            Tile((400, 80), (240, 40), (self.lab)),
+            Tile((440, 120), (40, 80), (self.lab)),
+            Tile((480, 340), (320, 20), (self.lab)),
+            Tile((520, 240), (280, 40), (self.lab)),
+            Tile((640, 80), (40, 120), (self.lab)),
+            Tile((680, 160), (40, 40), (self.lab)),
+            Tile((720, 80), (40, 120), (self.lab))
 
             )
         ##puppies
@@ -772,20 +772,20 @@ class L14(Level):
 
         ##tiles - (coordinates) (length, height) (RGB)
         self.tiles = Group(     
-            Tile((0, 0), (240, 40), (lab)),
-            Tile((0, 40), (40, 40), (lab)),
-            Tile((0, 80), (280, 40), (lab)),
-            Tile((0, 240), (80, 40), (lab)),
-            Tile((0, 260), (600, 100), (lab)),
-            Tile((240, 120), (120, 40), (lab)),
-            Tile((240, 200), (360, 80), (lab)),
-            Tile((480, 140), (40, 60), (lab)),
-            Tile((520, 100), (83, 100), (lab)),
-            Tile((600, 100), (80, 20), (lab)),
-            Tile((600, 320), (200, 40), (lab)),
-            Tile((640, 160), (42, 120), (lab)),
-            Tile((680, 160), (40, 40), (lab)),
-            Tile((720, 0), (80, 200), (lab))
+            Tile((0, 0), (240, 40), (self.lab)),
+            Tile((0, 40), (40, 40), (self.lab)),
+            Tile((0, 80), (280, 40), (self.lab)),
+            Tile((0, 240), (80, 40), (self.lab)),
+            Tile((0, 260), (600, 100), (self.lab)),
+            Tile((240, 120), (120, 40), (self.lab)),
+            Tile((240, 200), (360, 80), (self.lab)),
+            Tile((480, 140), (40, 60), (self.lab)),
+            Tile((520, 100), (83, 100), (self.lab)),
+            Tile((600, 100), (80, 20), (self.lab)),
+            Tile((600, 320), (200, 40), (self.lab)),
+            Tile((640, 160), (42, 120), (self.lab)),
+            Tile((680, 160), (40, 40), (self.lab)),
+            Tile((720, 0), (80, 200), (self.lab))
 
             )
         ##puppies
@@ -821,25 +821,25 @@ class L15(Level):
 
         ##tiles - (coordinates) (length, height) (RGB)
         self.tiles = Group(     
-            Tile((0, 0), (360, 40), (lab)),
-            Tile((0, 120), (160, 40), (lab)),
-            Tile((0, 280), (40, 40), (lab)),
-            Tile((0, 320), (480, 40), (lab)),
-            Tile((80, 200), (240, 40), (lab)),
-            Tile((40, 220), (240, 20), (lab)),
-            Tile((200, 240), (40, 80), (lab)),
-            Tile((240, 100), (120, 100), (lab)),
-            Tile((360, 120), (80, 80), (lab)),
-            Tile((360, 280), (40, 40), (lab)),
-            Tile((440, 80), (40, 120), (lab)),
-            Tile((440, 280), (40, 40), (lab)),
-            Tile((520, 160), (80, 40), (lab)),
-            Tile((520, 280), (40, 80), (lab)),
-            Tile((600, 80), (200, 120), (lab)),
-            Tile((600, 200), (40, 80), (lab)),
-            Tile((560, 320), (240, 40), (lab)),
-            Tile((200, 160), (40, 40), (lab)),
-            Tile((0, 260), (10, 20), (lab))
+            Tile((0, 0), (360, 40), (self.lab)),
+            Tile((0, 120), (160, 40), (self.lab)),
+            Tile((0, 280), (40, 40), (self.lab)),
+            Tile((0, 320), (480, 40), (self.lab)),
+            Tile((80, 200), (240, 40), (self.lab)),
+            Tile((40, 220), (240, 20), (self.lab)),
+            Tile((200, 240), (40, 80), (self.lab)),
+            Tile((240, 100), (120, 100), (self.lab)),
+            Tile((360, 120), (80, 80), (self.lab)),
+            Tile((360, 280), (40, 40), (self.lab)),
+            Tile((440, 80), (40, 120), (self.lab)),
+            Tile((440, 280), (40, 40), (self.lab)),
+            Tile((520, 160), (80, 40), (self.lab)),
+            Tile((520, 280), (40, 80), (self.lab)),
+            Tile((600, 80), (200, 120), (self.lab)),
+            Tile((600, 200), (40, 80), (self.lab)),
+            Tile((560, 320), (240, 40), (self.lab)),
+            Tile((200, 160), (40, 40), (self.lab)),
+            Tile((0, 260), (10, 20), (self.lab))
             )
         ##puppies
         pup1 = RegPuppy((45, 320), 1, self.tiles)
