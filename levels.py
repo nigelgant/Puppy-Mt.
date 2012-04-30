@@ -272,12 +272,11 @@ class L3(Level):
             Tile((720, 80), (80, 280), (0, 150, 0))
             )
         ##puppies
-        pup1 = RegPuppy((165, 160), 1, self.tiles)
         pup2 = RegPuppy((275, 120), 1, self.tiles)
         pup4 = RegPuppy((655, 120), 1, self.tiles)
         pup5 = Gold((285, 200))
         pup6 = RegPuppy((295, 200), 1, self.tiles)
-        self.pups = Group(pup1, pup2, pup4, pup5, pup6)
+        self.pups = Group(pup2, pup4, pup5, pup6)
 
         self.door = GroupSingle(TreeDoor((730,80)))
 
@@ -478,7 +477,7 @@ class L9A(Between):
     song = None
     def __init__(self):
         self.state = 0
-        self.spawn = (20, 130)
+        self.spawn = (20, 100)
         self.bg = load_image("cliffs4.png")
 
 class L9(Level):
@@ -487,13 +486,13 @@ class L9(Level):
 
     def __init__(self):
         self.state = 1
-        self.spawn = (20, 130) #spawnpoint
+        self.spawn = (20, 100) #spawnpoint
         self.type = "cliff"
 
         ##tiles - (coordinates) (length, height) (RGB)
         self.tiles = Group(     
             Tile((0, 120), (80, 240), (cliff)),
-            Tile((80, 160), (80, 200), (cliff)),
+            Tile((80, 160), (85, 200), (cliff)),
             Tile((280, 80), (200, 40), (cliff)),
             Tile((240, 120), (240, 40), (cliff)),
             Tile((160, 160), (320, 40), (cliff)),
@@ -501,20 +500,19 @@ class L9(Level):
             Tile((480, 280), (80, 80), (cliff)),
             Tile((600, 200), (40, 160), (cliff)),
             Tile((680, 200), (40, 160), (cliff)),
-            Tile((720, 200), (40, 160), (cliff))
+            Tile((760, 200), (40, 160), (cliff))
             )
         ##puppies
         pup1 = RegPuppy((85, 160), 1, self.tiles)
-        pup2 = RegPuppy((285, 80), 1, self.tiles)
         pup3 = RegPuppy((360, 80), 0, self.tiles)
         pup4 = RegPuppy((420, 80), 1, self.tiles)
-        pup5 = Bouncer((525, 280), 2, 200, self.tiles)
+        pup5 = Bouncer((525, 280), 2, 300, self.tiles)
         pup6 = Fire((800, 240), (-1, 0), 60, self.tiles)
         pup7 = Fire((800, 80), (-1, 0), 100, self.tiles)
         pup8 = Gold((170, 240))
-        self.pups = Group(pup1, pup2, pup3, pup4, pup5, pup6, pup7, pup8)
+        self.pups = Group(pup1, pup3, pup4, pup5, pup6, pup7, pup8)
 
-        self.door = GroupSingle(CliffDoor((750,120)))
+        self.door = GroupSingle(CliffDoor((765,200)))
 
 class L10A(Between):
     song = None
@@ -536,26 +534,26 @@ class L10(Level):
         ##tiles - (coordinates) (length, height) (RGB)
         self.tiles = Group(     
             Tile((0, 120), (80, 240), (cliff)),
-            Tile((120, 80), (80, 200), (cliff)),
-            Tile((160, 160), (200, 40), (cliff)),
-            Tile((200, 80), (240, 40), (cliff)),
-            Tile((320, 80), (320, 40), (cliff)),
-            Tile((360, 120), (320, 120), (cliff)),
-            Tile((360, 160), (80, 80), (cliff)),
-            Tile((400, 320), (40, 160), (lab)),
-            Tile((480, 240), (40, 160), (lab)),
+            Tile((120, 80), (40, 280), (cliff)),
+            Tile((160, 160), (40, 200), (cliff)),
+            Tile((200, 80), (40, 280), (cliff)),
+            Tile((320, 80), (40, 280), (cliff)),
+            Tile((360, 120), (160, 40), (cliff)),
+            Tile((360, 160), (200, 40), (cliff)),
+            Tile((400, 320), (400, 40), (lab)),
+            Tile((480, 240), (120, 40), (lab)),
             Tile((600, 120), (40, 160), (lab)),
-            Tile((640, 120), (40, 160), (lab)),
-            Tile((720, 280), (40, 160), (lab)),
+            Tile((640, 120), (160, 40), (lab)),
+            Tile((720, 280), (80, 40), (lab)),
             Tile((640, 80), (40, 40), (lab))
             )
         ##puppies
-        pup1 = Bouncer((170, 160), 2, 200, self.tiles)
+        pup1 = Bouncer((170, 160), 2, 400, self.tiles)
         pup2 = RegPuppy((365, 120), 1, self.tiles)
-        pup3 = Bouncer((565, 240), 2, 200, self.tiles)
+        pup3 = Bouncer((565, 240), 2, 430, self.tiles)
         pup4 = RegPuppy((490, 320), 0, self.tiles)
         pup5 = Fire((800, 40), (-1, 0), 90, self.tiles)
-        pup6 = Fire((800, 80), (-1, 0), 60, self.tiles)
+        pup6 = Fire((800, 80), (-1, 0), 100, self.tiles)
         pup7 = Fire((720, 0), (-1, 1), 120, self.tiles)
         pup8 = Gold((720, 120))
         self.pups = Group(pup1, pup2, pup3, pup4, pup5, pup6, pup7, pup8)
@@ -584,7 +582,7 @@ class L11(Level):
             Tile((0, 0), (240, 40), (lab)),
             Tile((120, 160), (40, 80), (lab)),
             Tile((160, 200), (40, 40), (lab)),
-            Tile((240, 0), (80, 280), (lab)),
+            Tile((240, 0), (80, 200), (lab)),
             Tile((320, 0), (480, 80), (lab)),
             Tile((320, 140), (40, 20), (lab)),
             Tile((400, 280), (280, 80), (lab)),
@@ -594,13 +592,13 @@ class L11(Level):
             Tile((720, 280), (80, 80), (lab))
             )
         ##puppies
-        pup1 = RegPuppy((285, 240), 1, self.tiles)
-        pup2 = Bouncer((410, 280), 2, 400, self.tiles)
-        pup3 = Bouncer((450, 280), 2, 400, self.tiles)
-        pup4 = RegPuppy((525, 200), 0, self.tiles)
+        pup1 = RegPuppy((285, 240), 0, self.tiles)
+        pup2 = Bouncer((410, 280), 2, 350, self.tiles)
+        pup3 = Bouncer((450, 280), 2, 300, self.tiles)
+        pup4 = RegPuppy((525, 200), 1, self.tiles)
         pup5 = Fire((800, 160), (-1, 0), 90, self.tiles)
         pup6 = Fire((800, 80), (-1, 0), 60, self.tiles)
-        pup7 = Gold((720, 120))
+        pup7 = Gold((325, 140))
         self.pups = Group(pup1, pup2, pup3, pup4, pup5, pup6, pup7)
 
         self.door = GroupSingle(TreeDoor((750,280)))
@@ -614,7 +612,7 @@ class L12A(Between):
 
 class L12(Level):
     wlimit = 2  #whistle limit
-    tlimit = 3  #treat limit
+    tlimit = 4  #treat limit
 
     def __init__(self):
         self.state = 1
@@ -626,25 +624,25 @@ class L12(Level):
             Tile((0, 0), (80, 80), (lab)),
             Tile((0, 80), (400, 40), (lab)),
             Tile((0, 200), (80, 80), (lab)),
-            Tile((0, 280), (640, 80), (lab)),
+            Tile((0, 280), (645, 80), (lab)),
             Tile((80, 0), (280, 40), (lab)),
-            Tile((320, 200), (80, 80), (lab)),
+            Tile((320, 220), (80, 80), (lab)),
             Tile((360, 120), (120, 40), (lab)),
             Tile((440, 160), (80, 40), (lab)),
             Tile((560, 120), (160, 40), (lab)),
             Tile((640, 160), (40, 200), (lab)),
             Tile((680, 320), (120, 40), (lab)),
             Tile((720, 200), (40, 40), (lab)),
-            Tile((760, 120), (80, 80), (lab)),
-            Tile((720, 200), (40, 120), (lab))
+            Tile((395, 260), (250, 20), (lab)),
+            Tile((760, 120), (80, 80), (lab))
             )
         ##puppies
         pup1 = RegPuppy((85, 280), 1, self.tiles)
-        pup2 = RegPuppy((320, 280), 1, self.tiles)
-        pup3 = RegPuppy((450, 280), 1, self.tiles)
+        pup2 = RegPuppy((295, 280), 1, self.tiles)
+        pup3 = RegPuppy((450, 260), 1, self.tiles)
         pup4 = RegPuppy((565, 120), 1, self.tiles)
         pup5 = RegPuppy((320, 80), 0, self.tiles)
-        pup6 = Bouncer((525, 280), 2, 400, self.tiles)
+        pup6 = Bouncer((525, 280), 2, 350, self.tiles)
         pup7 = Bouncer((445, 120), 2, 400, self.tiles)
         pup8 = Fire((0, 80), (1, 0), 60, self.tiles)
         pup9 = Gold((240, 80))
@@ -656,7 +654,7 @@ class L13A(Between):
     song = None
     def __init__(self):
         self.state = 0
-        self.spawn = (20, 100)
+        self.spawn = (20, 120)
         self.bg = load_image("lab3.png")
 
 class L13(Level):
@@ -665,19 +663,19 @@ class L13(Level):
 
     def __init__(self):
         self.state = 1
-        self.spawn = (20, 130) #spawnpoint
+        self.spawn = (20, 120) #spawnpoint
         self.type = "jungle"
 
         ##tiles - (coordinates) (length, height) (RGB)
         self.tiles = Group(     
-            Tile((0, 80), (80, 160), (lab)),
+            Tile((0, 140), (80, 160), (lab)),
             Tile((0, 240), (120, 120), (lab)),
             Tile((120, 0), (40, 120), (lab)),
             Tile((160, 0), (120, 40), (lab)),
             Tile((160, 80), (160, 40), (lab)),
             Tile((160, 320), (40, 40), (lab)),
             Tile((240, 320), (40, 40), (lab)),
-            Tile((320, 200), (160, 160), (lab)),
+            Tile((320, 180), (160, 180), (lab)),
             Tile((400, 80), (240, 40), (lab)),
             Tile((440, 120), (40, 80), (lab)),
             Tile((480, 340), (320, 20), (lab)),
@@ -688,34 +686,36 @@ class L13(Level):
 
             )
         ##puppies
-        pup1 = RegPuppy((245, 80), 0, self.tiles)
-        pup2 = Bouncer((165, 320), 2, 400, self.tiles)
+        pup1 = RegPuppy((255, 80), 0, self.tiles)
+        pup2 = Bouncer((165, 320), 2, 350, self.tiles)
         pup3 = Bouncer((245, 320), 2, 400, self.tiles)
-        pup4 = Bouncer((325, 200), 2, 400, self.tiles)
+        pup4 = Bouncer((325, 175), 2, 350, self.tiles)
         pup5 = RegPuppy((405, 80), 1, self.tiles)
-        pup6 = Bouncer((530, 240), 2, 400, self.tiles)
-        pup7 = Bouncer((605, 240), 2, 400, self.tiles)
+        pup6 = Bouncer((530, 240), 2, 300, self.tiles)
+        pup7 = Bouncer((605, 235), 2, 300, self.tiles)
         pup8 = Bouncer((685, 160), 2, 400, self.tiles)
-        pup9 = Fire((0, 80), (1, 0), 60, self.tiles)
-        pup10 = Gold((240, 80))
+        pup9 = Fire((0, 80), (1, 0), 90, self.tiles)
+        pup10 = Gold((230, 80))
+        pup11 = RegPuppy((485, 340), 1, self.tiles)
 
-        self.pups = Group(pup1, pup2, pup3, pup4, pup5, pup6, pup7, pup8, pup9, pup10)
+
+        self.pups = Group(pup1, pup2, pup3, pup4, pup5, pup6, pup7, pup8, pup9, pup10, pup11)
 
         self.door = GroupSingle(TreeDoor((750,340)))
 class L14A(Between):
     song = None
     def __init__(self):
         self.state = 0
-        self.spawn = (20, 130)
+        self.spawn = (20, 200)
         self.bg = load_image("lab4.png")
 
 class L14(Level):
-    wlimit = 2  #whistle limit
-    tlimit = 3  #treat limit
+    wlimit = 3  #whistle limit
+    tlimit = 4  #treat limit
 
     def __init__(self):
         self.state = 1
-        self.spawn = (20, 130) #spawnpoint
+        self.spawn = (20, 200) #spawnpoint
         self.type = "jungle"
 
         ##tiles - (coordinates) (length, height) (RGB)
@@ -724,26 +724,25 @@ class L14(Level):
             Tile((0, 40), (40, 40), (lab)),
             Tile((0, 80), (280, 40), (lab)),
             Tile((0, 240), (80, 40), (lab)),
-            Tile((0, 280), (600, 80), (lab)),
+            Tile((0, 260), (600, 100), (lab)),
             Tile((240, 120), (120, 40), (lab)),
             Tile((240, 200), (360, 80), (lab)),
-            Tile((480, 160), (40, 40), (lab)),
-            Tile((520, 80), (80, 120), (lab)),
-            Tile((600, 0), (200, 40), (lab)),
-            Tile((600, 80), (80, 40), (lab)),
+            Tile((480, 140), (40, 60), (lab)),
+            Tile((520, 100), (83, 100), (lab)),
+            Tile((600, 100), (80, 20), (lab)),
             Tile((600, 320), (200, 40), (lab)),
-            Tile((640, 160), (40, 120), (lab)),
-            Tile((720, 160), (40, 40), (lab)),
-            Tile((760, 40), (80, 160), (lab))
+            Tile((640, 160), (42, 120), (lab)),
+            Tile((680, 160), (40, 40), (lab)),
+            Tile((720, 0), (80, 200), (lab))
 
             )
         ##puppies
         pup1 = RegPuppy((45, 80), 1, self.tiles)
         pup2 = RegPuppy((245, 80), 0, self.tiles)
-        pup3 = RegPuppy((85, 280), 0, self.tiles)
+        pup3 = RegPuppy((85, 260), 1, self.tiles)
         pup4 = RegPuppy((285, 200), 0, self.tiles)
-        pup5 = Bouncer((365, 200), 2, 400, self.tiles)
-        pup6 = RegPuppy((645, 80), 0, self.tiles)
+        pup5 = Bouncer((365, 200), 2, 350, self.tiles)
+        pup6 = RegPuppy((645, 100), 1, self.tiles)
         pup7 = RegPuppy((645, 320), 0, self.tiles)
         pup8 = Fire((280, 360), (-1, -1), 60, self.tiles)
         pup9 = Gold((210, 80))
@@ -760,8 +759,8 @@ class L15A(Between):
         self.bg = load_image("lab5.png")
 
 class L15(Level):
-    wlimit = 2  #whistle limit
-    tlimit = 3  #treat limit
+    wlimit = 3  #whistle limit
+    tlimit = 4  #treat limit
 
     def __init__(self):
         self.state = 1
@@ -774,9 +773,10 @@ class L15(Level):
             Tile((0, 120), (160, 40), (lab)),
             Tile((0, 280), (40, 40), (lab)),
             Tile((0, 320), (480, 40), (lab)),
-            Tile((40, 200), (240, 40), (lab)),
+            Tile((80, 200), (240, 40), (lab)),
+            Tile((40, 220), (240, 20), (lab)),
             Tile((200, 240), (40, 80), (lab)),
-            Tile((240, 80), (120, 120), (lab)),
+            Tile((240, 100), (120, 100), (lab)),
             Tile((360, 120), (80, 80), (lab)),
             Tile((360, 280), (40, 40), (lab)),
             Tile((440, 80), (40, 120), (lab)),
@@ -785,21 +785,22 @@ class L15(Level):
             Tile((520, 280), (40, 80), (lab)),
             Tile((600, 80), (200, 120), (lab)),
             Tile((600, 200), (40, 80), (lab)),
-            Tile((560, 320), (140, 40), (lab))
-
+            Tile((560, 320), (240, 40), (lab)),
+            Tile((200, 160), (40, 40), (lab)),
+            Tile((0, 260), (10, 20), (lab))
             )
         ##puppies
         pup1 = RegPuppy((45, 320), 1, self.tiles)
         pup2 = Bouncer((165, 190), 2, 400, self.tiles)
-        pup3 = Bouncer((365, 115), 2, 500, self.tiles)
-        pup4 = RegPuppy((340, 320), 1, self.tiles)
-        pup5 = Bouncer((405, 320), 2, 400, self.tiles)
+        pup3 = Bouncer((365, 115), 2, 350, self.tiles)
+        pup4 = RegPuppy((330, 320), 1, self.tiles)
+        pup5 = Bouncer((405, 320), 2, 350, self.tiles)
         pup6 = RegPuppy((605, 80), 1, self.tiles)
-        pup7 = RegPuppy((605, 320), 1, self.tiles)
-        pup8 = Fire((0, 320), (1, 0), 60, self.tiles)
-        pup9 = Fire((360, 0), (1, 1), 60, self.tiles)
-        pup10 = Fire((640, 0), (0, 1), 60, self.tiles)
-        pup11 = Fire((800, 120), (-1, 1), 60, self.tiles)
+        pup7 = RegPuppy((615, 320), 0, self.tiles)
+        pup8 = Fire((-80, 320), (1, 0), 55, self.tiles)
+        pup9 = Fire((240, -80), (1, 1), 60, self.tiles)
+        pup10 = Fire((600, -80), (0, 2), 65, self.tiles)
+        pup11 = Fire((880, 60), (-1, 1), 50, self.tiles)
         pup12 = Gold((245, 320))
 
         self.pups = Group(pup1, pup2, pup3, pup4, pup5, pup6, pup7, pup8, pup9, pup10, pup11, pup12)
