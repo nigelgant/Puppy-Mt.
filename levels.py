@@ -6,8 +6,8 @@ from puppies import Puppy, RegPuppy, Bouncer, Fire, Gold
 from resources import load_image, play_song
 
 #jungle = 0, 150, 0
-#cliff = 200, 150, 0
-#lab = 80, 80, 80
+cliff = 200, 150, 0
+lab = 80, 80, 80
 
 class TiledImage(object):
     def __init__(self, image, rect=None):
@@ -202,14 +202,68 @@ class Between(Level):
             screen.blit(self.cont, rect)
 
 class Menu(Between):   #finish later
+    song = "menu"
+
     def __init__(self):
+        play_song(self.song)
+
         self.state = "menu"
         self.bg = load_image("menu.png")
-        
-    def update(self):
-        keystate = pygame.key.get_pressed()
-            
+        self.spawn = (0, 160)
+        self.newlvlnum = 0
 
+    def draw(self, screen):
+        bounds = screen.get_rect()
+        rect = self.bg.get_rect()
+        rect.center = bounds.centerx, bounds.centery
+        screen.blit(self.bg, rect)
+
+    def draw_titles(self, screen):
+        bounds = screen.get_rect()
+        pygame.font.init()
+        pixfont = "./data/fonts/pixelated.ttf"
+        font = pygame.font.Font(pixfont, 40)
+
+        self.newgame = font.render(("NEW GAME"), True, self.fg_color)
+        self.newgamerect = self.newgame.get_rect()
+        self.newgamerect.center = bounds.centerx - 220, bounds.centery
+        screen.blit(self.newgame, self.newgamerect)
+
+        self.contgame = font.render(("CONTINUE GAME"), True, self.fg_color)
+        self.contgamerect = self.contgame.get_rect()
+        self.contgamerect.center = bounds.centerx - 220, bounds.centery + 60
+        screen.blit(self.contgame, self.contgamerect)
+
+        self.instructions = font.render(("INSTRUCTIONS"), True, self.fg_color)
+        self.instrect = self.instructions.get_rect()
+        self.instrect.center = bounds.centerx - 220, bounds.centery + 120
+        screen.blit(self.instructions, self.instrect)
+
+    def update(self):
+        self.mouse = pygame.mouse.get_pos()
+        for event in pygame.event.get():
+            if event.type == MOUSEBUTTONDOWN:
+                if self.newgamerect.collidepoint(event.pos):
+                    file_out = open("level.txt", "w")
+                    file_out.write("1") 
+                    file_out.close()
+                    #reset score
+                    file_out = open("score.txt", "w")
+                    file_out.write("0") 
+                    file_out.close()  
+                    self.newlvlnum = 1
+                    
+                if self.contgamerect.collidepoint(event.pos):
+                    file_in = open("level.txt","r")
+                    for line in file_in:
+                        self.newlvlnum = int(line)
+                    file_in.close()
+
+                if self.instrect.collidepoint(event.pos):
+                    print "instructions"
+
+#class Instructions(Between):
+    
 class L1A(Between):
     song = "jungle1"
 
@@ -864,3 +918,4 @@ class L15(Level):
 class Last(Between):
     def __init__(self):
         self.state = 2
+

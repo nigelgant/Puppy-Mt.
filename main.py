@@ -10,7 +10,7 @@ SCREEN_SIZE = 800,360
 screen = pygame.display.set_mode(SCREEN_SIZE)
 
 from player import Player
-from levels import Tile, L1A, L1, FoundTreat, L2, L2A, L3, L3A, L4, L4A, L5, FoundWhistle, L5A, L6, L6A, L7A, L7, L8A, L8, L9A, L9, L10A, L10, L11A, L11, L12A, L12, L13A, L13, L14A, L14, L15A, L15, Last
+from levels import Tile, Menu, L1A, L1, FoundTreat, L2, L2A, L3, L3A, L4, L4A, L5, FoundWhistle, L5A, L6, L6A, L7A, L7, L8A, L8, L9A, L9, L10A, L10, L11A, L11, L12A, L12, L13A, L13, L14A, L14, L15A, L15, Last
 from puppies import Puppy, RegPuppy
 from resources import play_song
 
@@ -24,12 +24,12 @@ def main():
     bounds = screen.get_rect()
 
     file_out = open("score.txt", "w") #score
-    file_out.write("0")
+    file_out.write("0")  #temporary
     file_out.close()
-    
-    file_out = open("level.txt", "w")  #temporary: rewrites to 0 at start
-    file_out.write("0")  #temp
-    file_out.close()   #temp
+
+  #  file_out = open("level.txt", "w")  #temporary: rewrites to 0 at start
+  #  file_out.write("0")  #temp
+  #  file_out.close()   #temp
     
     file_in = open("level.txt","r")
     for line in file_in:
@@ -37,14 +37,20 @@ def main():
     file_in.close()
     
     #initialize game
- #   lvls = [L1A(), L1(), FoundTreat(), L2A(), L2(), L3A(), L3(), L4A(), L4(), L5A(), L5(), FoundWhistle(), L6A(), L6(), L7A(), L7(), L8A(), L8(), L9A(), L9(), L10A(), L10(), L11A(), L11(), L12A(), L12(), L13A(), L13(), L14A(), L14(), L15A(), L15(), Last()]
-    lvls = [L1A(), L1()]
-    lvl = lvls[lvlnum]  #starting level
+    lvls = [Menu(), L1A(), L1(), FoundTreat(), L2A(), L2(), L3A(), L3(), L4A(), L4(), L5A(), L5(), FoundWhistle(), L6A(), L6(), L7A(), L7(), L8A(), L8(), L9A(), L9(), L10A(), L10(), L11A(), L11(), L12A(), L12(), L13A(), L13(), L14A(), L14(), L15A(), L15(), Last()]
 
-    file_out = open("level.txt","w")
-    num = str(lvlnum)
-    file_out.write(num)
-    file_out.close()
+ 
+    lvl = lvls[0]  #starting level
+   # if lvl.state == "menu":
+    #    lvl = lvls[lvl.newlvlnum]
+     #   print lvl
+
+  #  file_out = open("level.txt","w")
+  #  num = str(lvlnum)
+  #  file_out.write(num)
+  #  file_out.close()
+
+    in_menu = True
 
    # lvl = L3()  #temporary: for testing levels
     player = Player(lvl.spawn, lvl, bounds)
@@ -55,6 +61,36 @@ def main():
     clock = pygame.time.Clock()
     
     while not done:
+
+        while in_menu == True:
+            lvl = lvls[0]
+            lvl.update()
+            lvl.draw(screen)
+            lvl.draw_titles(screen)
+            pygame.display.flip()
+            if lvl.newlvlnum > 0:
+                print "no menu"
+                in_menu = False
+                level = lvl.newlvlnum
+                lvl = lvls[lvl.newlvlnum]
+                if lvl.state == 1:
+                    file_in = open("level.txt","r")
+                    for line in file_in:
+                        level = (int(line) - 1)
+                    file_in.close()
+                    level = str(level)
+
+                    file_out = open("level.txt", "w")  #temporary: rewrites to 0 at start
+                    file_out.write(level)  #temp
+                    file_out.close()   #temp
+                    if lvl.type == "jungle":
+                        lvl.song = "jungle1"
+                        play_song(lvl.song)
+                    elif lvl.type == "cliff":
+                        pass
+                    elif lvl.type == "lab":
+                        pass
+                
         # input
         for event in pygame.event.get():
             keystate = pygame.key.get_pressed()
@@ -95,7 +131,10 @@ def main():
             lvl.draw_hud(screen, player)
         else:
             lvl.draw(screen)
-        
+        if lvl.state == "menu":
+            lvl.update()
+            lvl.draw_titles(screen)
+
         if lvl.state == 1:
             player.update(dt)
             player.waves.update()
@@ -114,6 +153,7 @@ def main():
             lvl.door.draw(screen)
             lvl.pups.draw(screen)
             lvl.draw_hud(screen, player)
+ 
             
         pygame.display.flip()
      #   clock.tick(30)
