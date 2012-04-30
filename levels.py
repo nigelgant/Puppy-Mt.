@@ -264,6 +264,21 @@ class Menu(Between):   #finish later
 
 #class Instructions(Between):
     
+class Prologue1(Between):
+    song = None
+    def __init__(self):
+        self.spawn = (50, 160)
+        self.state = 3
+        self.bg = load_image("prologue1.png")
+class Prologue2(Between):
+    song = None
+    def __init__(self):
+        self.spawn = (50, 160)
+        self.state = 3
+        self.cutscene = True
+        self.bg = load_image("prologue2.png")
+
+
 class L1A(Between):
     song = "jungle1"
 
@@ -470,7 +485,7 @@ class FoundWhistle(Between):
         self.bg = load_image("foundwhistle.png")
 
 class L6A(Between):
-    song = None
+    song = "cliffs"
     def __init__(self):
         self.state = 0
         self.spawn = (50, 100)
@@ -668,7 +683,7 @@ class L10(Level):
 
         self.door = GroupSingle(LabDoor((750,280)))
 class L11A(Between):
-    song = None
+    song = "lab"
     def __init__(self):
         self.state = 0
         self.spawn = (20, 100)

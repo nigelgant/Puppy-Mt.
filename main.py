@@ -10,7 +10,7 @@ SCREEN_SIZE = 800,360
 screen = pygame.display.set_mode(SCREEN_SIZE)
 
 from player import Player
-from levels import Tile, Menu, L1A, L1, FoundTreat, L2, L2A, L3, L3A, L4, L4A, L5, FoundWhistle, L5A, L6, L6A, L7A, L7, L8A, L8, L9A, L9, L10A, L10, L11A, L11, L12A, L12, L13A, L13, L14A, L14, L15A, L15, Last
+from levels import Tile, Menu, Prologue1, Prologue2, L1A, L1, FoundTreat, L2, L2A, L3, L3A, L4, L4A, L5, FoundWhistle, L5A, L6, L6A, L7A, L7, L8A, L8, L9A, L9, L10A, L10, L11A, L11, L12A, L12, L13A, L13, L14A, L14, L15A, L15, Last
 from puppies import Puppy, RegPuppy
 from resources import play_song
 
@@ -37,7 +37,7 @@ def main():
     file_in.close()
     
     #initialize game
-    lvls = [Menu(), L1A(), L1(), FoundTreat(), L2A(), L2(), L3A(), L3(), L4A(), L4(), L5A(), L5(), FoundWhistle(), L6A(), L6(), L7A(), L7(), L8A(), L8(), L9A(), L9(), L10A(), L10(), L11A(), L11(), L12A(), L12(), L13A(), L13(), L14A(), L14(), L15A(), L15(), Last()]
+    lvls = [Menu(), Prologue1(), Prologue2(), L1A(), L1(), FoundTreat(), L2A(), L2(), L3A(), L3(), L4A(), L4(), L5A(), L5(), FoundWhistle(), L6A(), L6(), L7A(), L7(), L8A(), L8(), L9A(), L9(), L10A(), L10(), L11A(), L11(), L12A(), L12(), L13A(), L13(), L14A(), L14(), L15A(), L15(), Last()]
 
  
     lvl = lvls[0]  #starting level
@@ -87,10 +87,11 @@ def main():
                         lvl.song = "jungle1"
                         play_song(lvl.song)
                     elif lvl.type == "cliff":
-                        pass
+                        lvl.song = "cliffs"
+                        play_song(lvl.song)
                     elif lvl.type == "lab":
-                        pass
-                
+                        lvl.song = "lab"
+                        play_song(lvl.song)
         # input
         for event in pygame.event.get():
             keystate = pygame.key.get_pressed()
