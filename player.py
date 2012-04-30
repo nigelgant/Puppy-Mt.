@@ -154,7 +154,9 @@ class Player(Sprite):
         self.__init__(self.level.spawn, self.level, self.bounds)
 
     def reset(self):
-        self.level.reset()
+     #   file_in = open("score.txt","r")
+     #   lvlnum = str(file_in)
+     #   self.level.reset()
         file_out = open("score.txt","w")
         file_out.write("0")
         file_out.close
@@ -271,7 +273,6 @@ class Player(Sprite):
                     for line in file_in:
                         num = int(line)
                         num += 1
-                        print num
                     file_in.close()
                     file_out = open("score.txt","w")
                     num = str(num)

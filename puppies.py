@@ -237,7 +237,6 @@ class Fire(Puppy):
         self.level_tiles = level_tiles
         self.image.fill(self.color)
         self.spawncounter = 0
-        print self.interval
 
         self.rect = self.image.get_rect()
         self.rect.bottomleft = loc

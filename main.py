@@ -5,7 +5,7 @@ from pygame.locals import *
 from pygame.sprite import Group, GroupSingle
 
 from player import Player
-from levels import Tile, L0, L1, FoundTreat, L1A, L2, L2A, L3, L3A, L4, L4A, L5, FoundWhistle, L5A, L6, L6A, L7, L8, L9, L10, Last
+from levels import Tile, L1A, L1, FoundTreat, L2, L2A, L3, L3A, L4, L4A, L5, FoundWhistle, L5A, L6, L6A, L7A, L7, L8A, L8, L9A, L9, L10A, L10, L11A, L11, L12A, L12, L13A, L13, L14A, L14, L15A, L15, Last
 from puppies import Puppy, RegPuppy
 from resources import play_song
 
@@ -32,7 +32,7 @@ def main():
     file_in.close()
     
     #initialize game
-    lvls = [L0(), L1(), FoundTreat(), L1A(), L2(), L2A(), L3(), L3A(), L4(), L4A(), L5(), FoundWhistle(), L5A(), L6(), L6A(), L7(), L8(), L9(), L10(), Last()]
+    lvls = [L1A(), L1(), FoundTreat(), L2A(), L2(), L3A(), L3(), L4A(), L4(), L5A(), L5(), FoundWhistle(), L6A(), L6(), L7A(), L7(), L8A(), L8(), L9A(), L9(), L10A(), L10(), L11A(), L11(), L12A(), L12(), L13A(), L13(), L14A(), L14(), L15A(), L15(), Last()]
 
     lvl = lvls[lvlnum]  #starting level
 
@@ -109,6 +109,7 @@ def main():
             lvl.tiles.draw(screen)
             lvl.door.draw(screen)
             lvl.pups.draw(screen)
+            
         pygame.display.flip()
      #   clock.tick(30)
 

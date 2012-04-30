@@ -105,12 +105,12 @@ class Level(object):
         screen.blit(self.bg, rect)
 
         font = pygame.font.Font(pixfont, 15)
-
+       
         self.scoredisplay = font.render(("SCORE:"+" "+str(self.score)), True, self.fg_color)
         rect = self.scoredisplay.get_rect()
         rect.center = bounds.centerx - 360, bounds.centery - 160
         screen.blit(self.scoredisplay, rect)
-
+        
         if self.wlimit > 0: 
             self.whistles = font.render(("WHISTLES:"+" "+str(self.wlimit - self.player.whistlecount)), True, self.fg_color)
             rect = self.whistles.get_rect()
@@ -166,7 +166,7 @@ class Menu(Between):   #finish later
         keystate = pygame.key.get_pressed()
             
 
-class L0(Between):
+class L1A(Between):
     song = "jungle1"
 
     def __init__(self):
@@ -174,7 +174,7 @@ class L0(Between):
 
         self.spawn = (50, 160)
         self.state = 0
-        self.bg = load_image("jungle1.bmp")
+        self.bg = load_image("jungle1.png")
 
 class L1(Level):
     wlimit = 0  #whistle limit
@@ -202,7 +202,7 @@ class L1(Level):
         self.door = GroupSingle(TreeDoor((720,240)))
 
 class FoundTreat(Between):
-    song = "cypress"
+    song = None
 
     def __init__(self):
         self.spawn = (50, 230)
@@ -210,7 +210,7 @@ class FoundTreat(Between):
         self.bg = load_image("foundtreat.bmp")
 
 
-class L1A(Between):
+class L2A(Between):
     song = None
 
     def __init__(self):
@@ -248,7 +248,7 @@ class L2(Level):
 
         self.door = GroupSingle(TreeDoor((720,280)))
 
-class L2A(Between):
+class L3A(Between):
     song = None
     def __init__(self):
         self.state = 0
@@ -281,7 +281,7 @@ class L3(Level):
 
         self.door = GroupSingle(TreeDoor((730,80)))
 
-class L3A(Between):
+class L4A(Between):
     song = None
     def __init__(self):
         self.state = 0
@@ -316,7 +316,7 @@ class L4(Level):
             Gold((45, 320)))
         self.door = GroupSingle(TreeDoor((730,200)))
 
-class L4A(Between):
+class L5A(Between):
     song = None
     def __init__(self):
         self.state = 0
@@ -362,7 +362,7 @@ class FoundWhistle(Between):
         self.state = 3
         self.bg = load_image("foundwhistle.png")
 
-class L5A(Between):
+class L6A(Between):
     song = None
     def __init__(self):
         self.state = 0
@@ -398,7 +398,7 @@ class L6(Level):
 
         self.door = GroupSingle(CliffDoor((740,120)))
 
-class L6A(Between):
+class L7A(Between):
     song = None
     def __init__(self):
         self.state = 0
@@ -435,6 +435,13 @@ class L7(Level):
 
         self.door = GroupSingle(CliffDoor((740,200)))
 
+class L8A(Between):
+    song = None
+    def __init__(self):
+        self.state = 0
+        self.spawn = (20, 220)
+        self.bg = load_image("cliffs3.png")
+
 class L8(Level):
     wlimit = 2  #whistle limit
     tlimit = 3  #treat limit
@@ -466,6 +473,13 @@ class L8(Level):
         self.pups = Group(pup1, pup2, pup4, pup5, pup6, pup7)
 
         self.door = GroupSingle(CliffDoor((750, 120)))
+
+class L9A(Between):
+    song = None
+    def __init__(self):
+        self.state = 0
+        self.spawn = (20, 130)
+        self.bg = load_image("cliffs4.png")
 
 class L9(Level):
     wlimit = 2  #whistle limit
@@ -501,6 +515,13 @@ class L9(Level):
         self.pups = Group(pup1, pup2, pup3, pup4, pup5, pup6, pup7, pup8)
 
         self.door = GroupSingle(CliffDoor((750,120)))
+
+class L10A(Between):
+    song = None
+    def __init__(self):
+        self.state = 0
+        self.spawn = (20, 50)
+        self.bg = load_image("cliffs5.png")
 
 
 class L10(Level):
@@ -540,6 +561,12 @@ class L10(Level):
         self.pups = Group(pup1, pup2, pup3, pup4, pup5, pup6, pup7, pup8)
 
         self.door = GroupSingle(CliffDoor((750,280)))
+class L11A(Between):
+    song = None
+    def __init__(self):
+        self.state = 0
+        self.spawn = (20, 100)
+        self.bg = load_image("lab1.png")
 
 class L11(Level):
     wlimit = 2  #whistle limit
@@ -548,6 +575,7 @@ class L11(Level):
     def __init__(self):
         self.state = 1
         self.spawn = (20, 100) #spawnpoint
+        self.type = "jungle"
 
         ##tiles - (coordinates) (length, height) (RGB)
         self.tiles = Group(     
@@ -575,8 +603,14 @@ class L11(Level):
         pup7 = Gold((720, 120))
         self.pups = Group(pup1, pup2, pup3, pup4, pup5, pup6, pup7)
 
-        self.door = GroupSingle(Door((750,280)))
+        self.door = GroupSingle(TreeDoor((750,280)))
 
+class L12A(Between):
+    song = None
+    def __init__(self):
+        self.state = 0
+        self.spawn = (20, 130)
+        self.bg = load_image("lab2.png")
 
 class L12(Level):
     wlimit = 2  #whistle limit
@@ -585,6 +619,7 @@ class L12(Level):
     def __init__(self):
         self.state = 1
         self.spawn = (20, 130) #spawnpoint
+        self.type = "jungle"
 
         ##tiles - (coordinates) (length, height) (RGB)
         self.tiles = Group(     
@@ -615,8 +650,14 @@ class L12(Level):
         pup9 = Gold((240, 80))
         self.pups = Group(pup1, pup2, pup3, pup4, pup5, pup6, pup7, pup8, pup9)
 
-        self.door = GroupSingle(Door((750,320)))
+        self.door = GroupSingle(TreeDoor((750,320)))
 
+class L13A(Between):
+    song = None
+    def __init__(self):
+        self.state = 0
+        self.spawn = (20, 100)
+        self.bg = load_image("lab3.png")
 
 class L13(Level):
     wlimit = 2  #whistle limit
@@ -625,6 +666,7 @@ class L13(Level):
     def __init__(self):
         self.state = 1
         self.spawn = (20, 130) #spawnpoint
+        self.type = "jungle"
 
         ##tiles - (coordinates) (length, height) (RGB)
         self.tiles = Group(     
@@ -659,8 +701,13 @@ class L13(Level):
 
         self.pups = Group(pup1, pup2, pup3, pup4, pup5, pup6, pup7, pup8, pup9, pup10)
 
-        self.door = GroupSingle(Door((750,340)))
-
+        self.door = GroupSingle(TreeDoor((750,340)))
+class L14A(Between):
+    song = None
+    def __init__(self):
+        self.state = 0
+        self.spawn = (20, 130)
+        self.bg = load_image("lab4.png")
 
 class L14(Level):
     wlimit = 2  #whistle limit
@@ -669,6 +716,7 @@ class L14(Level):
     def __init__(self):
         self.state = 1
         self.spawn = (20, 130) #spawnpoint
+        self.type = "jungle"
 
         ##tiles - (coordinates) (length, height) (RGB)
         self.tiles = Group(     
@@ -702,8 +750,14 @@ class L14(Level):
 
         self.pups = Group(pup1, pup2, pup3, pup4, pup5, pup6, pup7, pup8, pup9)
 
-        self.door = GroupSingle(Door((750,320)))
+        self.door = GroupSingle(TreeDoor((750,320)))
 
+class L15A(Between):
+    song = None
+    def __init__(self):
+        self.state = 0
+        self.spawn = (20, 100)
+        self.bg = load_image("lab5.png")
 
 class L15(Level):
     wlimit = 2  #whistle limit
@@ -712,6 +766,7 @@ class L15(Level):
     def __init__(self):
         self.state = 1
         self.spawn = (20, 100) #spawnpoint
+        self.type = "jungle"
 
         ##tiles - (coordinates) (length, height) (RGB)
         self.tiles = Group(     
@@ -749,7 +804,7 @@ class L15(Level):
 
         self.pups = Group(pup1, pup2, pup3, pup4, pup5, pup6, pup7, pup8, pup9, pup10, pup11, pup12)
 
-        self.door = GroupSingle(Door((750,320)))
+        self.door = GroupSingle(TreeDoor((750,320)))
 
 class Last(Between):
     def __init__(self):
