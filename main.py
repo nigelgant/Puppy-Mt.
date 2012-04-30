@@ -1,8 +1,13 @@
 #!/usr/bin/env python
 
+
 import pygame
 from pygame.locals import *
 from pygame.sprite import Group, GroupSingle
+
+pygame.init()
+SCREEN_SIZE = 800,360
+screen = pygame.display.set_mode(SCREEN_SIZE)
 
 from player import Player
 from levels import Tile, L1A, L1, FoundTreat, L2, L2A, L3, L3A, L4, L4A, L5, FoundWhistle, L5A, L6, L6A, L7A, L7, L8A, L8, L9A, L9, L10A, L10, L11A, L11, L12A, L12, L13A, L13, L14A, L14, L15A, L15, Last
@@ -81,14 +86,13 @@ def main():
             lvlnum = int(line)
         file_in.close()
 
-      #  lvl = lvls[(player.playerlvl)]
         lvl = lvls[lvlnum]
         player.level = lvl
 
         #update
         dt = clock.tick(30)
         if lvl.state == 1:
-            lvl.draw(screen, player)
+            lvl.draw_hud(screen, player)
         else:
             lvl.draw(screen)
         
@@ -109,6 +113,7 @@ def main():
             lvl.tiles.draw(screen)
             lvl.door.draw(screen)
             lvl.pups.draw(screen)
+            lvl.draw_hud(screen, player)
             
         pygame.display.flip()
      #   clock.tick(30)

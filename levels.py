@@ -5,19 +5,49 @@ from pygame.sprite import Sprite, Group, GroupSingle, groupcollide
 from puppies import Puppy, RegPuppy, Bouncer, Fire, Gold
 from resources import load_image, play_song
 
-jungle = 0, 150, 0
+#jungle = 0, 150, 0
 cliff = 200, 150, 0
 lab = 80, 80, 80
 
+class TiledImage(object):
+    def __init__(self, image, rect=None):
+        self.image = image
+        if rect is None:
+            self.rect = image.get_rect()
+        else:
+            self.rect = rect
+    
+    def draw(self, surf, rect=None):
+        # if no rect is given, use surfaces rect
+        if rect is None:
+            rect = surf.get_rect()
+
+        w, h = self.rect.size
+        x, y = self.rect.topleft
+
+        # calculate the start and end points
+        x0 = rect.x - (-x % w)
+        x1 = rect.x + rect.width
+
+        y0 = rect.y - (-y % h)
+        y1 = rect.y + rect.height
+
+        # loop through and draw images
+        for y in xrange(y0, y1, h):
+            for x in xrange(x0, x1, w):
+                surf.blit(self.image, (x, y))
+
 class Tile(Sprite):
-    def __init__(self, loc, size, color):
+    def __init__(self, loc, size, img):
         self.size = size
         self.color = color
         Sprite.__init__(self)
         self.image = Surface(self.size)
         self.rect = self.image.get_rect()
+        tiled_img = TiledImage(img)
+        tiled_img.draw(self.image)
+
         self.rect.topleft = loc
-        self.image.fill(self.color)
         self.state = "tile"
 
 class Door(Sprite):
@@ -60,10 +90,24 @@ class CliffDoor(Door):
       #  rect.center = self.rect.center
         screen.blit(self.door, rect)
 
+class LabDoor(Door):
+    def __init__(self, loc):
+        Sprite.__init__(self)
+        self.door = load_image("labdoor.png")
+        self.door.set_colorkey((255,255,255))
+        self.image = self.door
+        self.rect = self.image.get_rect()
+        self.rect.bottomleft = loc
+
+    def draw(self, screen):
+        rect = self.door.get_rect()
+        screen.blit(self.door, rect)
 
 class Level(object):
     fg_color = 0, 0, 0
-    global jungle, cliff, lab  #for tile colors
+    jungle = load_image("tilegrass.png")
+    cliff = load_image("tilecliff.png")
+    lab = load_image("tilemetal.png")
 
     def __init__(self):
         self.pups = Group()
@@ -72,7 +116,7 @@ class Level(object):
         file_in = open("score.txt","r")
         for line in file_in:
             self.score = str(line)
-
+        if 
     def reset(self):
         self.__init__()
 
@@ -81,29 +125,18 @@ class Level(object):
             if pup.state == 0 or pup.state == 3:
                self.pups.remove(pup)
                self.tiles.add(pup)
-
         for pup in self.tiles:
             if pup.state == 1 or pup.state == 2:
                 self.tiles.remove(pup)
                 self.pups.add(pup)
-
-    def draw(self, screen, player):
+    def draw_hud(self, screen, player):
         bounds = screen.get_rect()
-        pygame.font.init()
+       # pygame.font.init()
         pixfont = "./data/fonts/pixelated.ttf"
         self.player = player
         file_in = open("score.txt","r")
         for line in file_in:
             self.score = str(line)
-
-        if self.type == "jungle":
-            self.bg = load_image("junglebg1.png")
-        elif self.type == "cliff":
-            self.bg = load_image("cliffbg.png")
-        rect = self.bg.get_rect()
-        rect.center = bounds.centerx, bounds.centery
-        screen.blit(self.bg, rect)
-
         font = pygame.font.Font(pixfont, 15)
        
         self.scoredisplay = font.render(("SCORE:"+" "+str(self.score)), True, self.fg_color)
@@ -122,6 +155,16 @@ class Level(object):
             rect = self.treats.get_rect()
             rect.center = bounds.centerx + 350, bounds.centery - 160
             screen.blit(self.treats, rect)
+
+    def draw(self, screen, player):
+        bounds = screen.get_rect()
+        if self.type == "jungle":
+            self.bg = load_image("junglebg1.png")
+        elif self.type == "cliff":
+            self.bg = load_image("cliffbg.png")
+        rect = self.bg.get_rect()
+        rect.center = bounds.centerx, bounds.centery
+        screen.blit(self.bg, rect)
 
 class Between(Level):
     fg_color = 255, 255, 255
@@ -185,6 +228,15 @@ class L1(Level):
         self.spawn = (50, 100) #spawnpoint
         self.type = "jungle"
         ##tiles - (coordinates) (length, height) (RGB)
+        """
+        self.tiles = Group(     
+            Tile((0, 200), (240, 160), jungle),
+            Tile((240, 280), (200, 80), jungle),
+            Tile((520, 280), (120, 80), jungle),
+            Tile((640, 240), (160, 120), jungle),
+            Tile((320, 160), (140, 20), jungle)
+            )
+            """
         self.tiles = Group(     
             Tile((0, 200), (240, 160), jungle),
             Tile((240, 280), (200, 80), jungle),
@@ -230,13 +282,13 @@ class L2(Level):
 
         ##tiles - (coordinates) (length, height) (RGB)
         self.tiles = Group(     
-            Tile((0, 280), (200, 80), (0,150,0)),
-            Tile((200, 240), (40, 120), (200,150,0)),
-            Tile((240, 200), (40, 160), (200,150,0)),
-            Tile((280, 160), (160, 200), (0,150, 0)),
-            Tile((440, 240), (160, 120), (200,150,0)),
-            Tile((680, 280), (120, 80), (0,150, 0)),
-            Tile((120, 100), (120, 20), (0,150, 0))
+            Tile((0, 280), (200, 80), jungle),
+            Tile((200, 240), (40, 120), jungle),
+            Tile((240, 200), (40, 160), jungle),
+            Tile((280, 160), (160, 200), jungle),
+            Tile((440, 240), (160, 120), jungle),
+            Tile((680, 280), (120, 80), jungle),
+            Tile((120, 100), (120, 20), jungle)
             )
         ##puppies
         pup1 = RegPuppy((285, 160), 1, self.tiles)
@@ -262,11 +314,12 @@ class L3(Level):
         self.state = 1
         self.spawn = (50, 160)
         self.type = "jungle"
+
         self.tiles = Group(     
-            Tile((0, 200), (400, 160), (0,150,0)),
-            Tile((120, 160), (120, 40), (200,150,0)),
-            Tile((200, 120), (160, 40), (200,150,0)),
-            Tile((480, 200), (80, 200), (0,150, 0)),
+            Tile((0, 200), (400, 160), jungle),
+            Tile((120, 160), (120, 40), jungle),
+            Tile((200, 120), (160, 40), jungle),
+            Tile((480, 200), (80, 200), jungle),
             Tile((560, 160), (80, 200), (200,150,0)),
             Tile((620, 120), (120, 240), (0,150, 0)),
             Tile((720, 80), (80, 280), (0, 150, 0))

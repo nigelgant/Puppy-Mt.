@@ -156,7 +156,7 @@ class Player(Sprite):
     def reset(self):
      #   file_in = open("score.txt","r")
      #   lvlnum = str(file_in)
-     #   self.level.reset()
+        self.level.reset()
         file_out = open("score.txt","w")
         file_out.write("0")
         file_out.close
@@ -261,7 +261,7 @@ class Player(Sprite):
                         self.rect.right = rect.left
                  
                 #killed by puppy
-                if RegPuppy.state == 1 or RegPuppy.state == 2:
+                if RegPuppy.state == 1 or RegPuppy.state == 2 or RegPuppy.state == 4:
                     self.vx = 0
                     self.vy = 0
                     self.dying = True

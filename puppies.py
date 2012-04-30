@@ -76,6 +76,37 @@ class GoldAnimation(Animation):
         self.x = self.get_frame_data(self.time)
         self.y = self._rows[(vx, vy)]
 
+class FireAnimation(Animation):
+    _rows = {(1, 0): 0,
+             (1, 1): 1,
+             (0, 1): 2,
+             (-1, 1): 3,
+             (-1, 0): 4,
+             (-1, -1): 5,
+             (0, -1): 6,
+             (1, -1): 7
+             }
+    def __init__(self, puppy, image, duration):
+        self.puppy = puppy
+        #self.y = self.rows[(1, 0)]
+        spritesheet = SpriteSheet(image, (1, 8))
+        frames = [ (duration, 0) ]
+        Animation.__init__(self, spritesheet, frames)
+
+    def update(self, dt):
+        vx, vy = self.puppy.vx, self.puppy.vy
+        try:
+            vx /= abs(vx)
+        except:
+            vx = 0
+        try:
+            vy /= abs(vy)
+        except:
+            vy = 0
+        self.time += dt
+        self.x = self.get_frame_data(self.time)
+        self.y = self._rows[(vx, vy)]
+
 class RegPuppy(Puppy):
     def __init__(self, loc, state, level_tiles):
         Sprite.__init__(self)
@@ -226,20 +257,24 @@ class Fire(Puppy):
 
     def __init__(self, loc, direction, interval, level_tiles):
         Sprite.__init__(self)
-        self.image = Surface(self.size)
+      #  self.image = Surface(self.size)
         self.vx, self.vy = direction
         self.direction = direction
         self.vx *= 10
         self.vy *= 10
         self.loc = loc
+        
+        self.anim = FireAnimation(self, "fireanim.png", 200)
+        self.image = self.anim.get_current_frame()
+        self.rect = self.image.get_rect()
+        self.rect.bottomleft = loc
+
         self.interval = interval
         self.state = 4
         self.level_tiles = level_tiles
-        self.image.fill(self.color)
+       # self.image.fill(self.color)
         self.spawncounter = 0
 
-        self.rect = self.image.get_rect()
-        self.rect.bottomleft = loc
         
     def touches(self, group):
         touching = Group()
@@ -255,12 +290,14 @@ class Fire(Puppy):
         self.rect.x += self.vx
         self.rect.y += self.vy
         prev_rect = self.rect
+
+        self.anim.update(dt)
+        self.image = self.anim.get_current_frame()
         
         if self.rect.right > self.bounds.right or self.rect.left < self.bounds.left or self.rect.top < self.bounds.top or self.rect.bottom > self.bounds.bottom:
             if self.spawncounter >= self.interval:
                 self.__init__(self.loc, self.direction, self.interval, self.level_tiles)
                 self.spawncounter = 0
-
 
         for sprite in self.touches(self.level_tiles):
             rect = sprite.rect
