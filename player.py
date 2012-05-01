@@ -114,10 +114,16 @@ class Player(Sprite):
         self.diefalling = False
         self.scorenum = 0
         self.has_played = False
+        self.has_fallen = False
+        self.has_splat = False
 
         self.falls = ["fall1","fall2","fall3","fall4","fall5","fall6"]
         self.fallsound = str(self.falls[(randint(0, 5))])
         self.fallingsound = load_sfx(self.fallsound)
+
+        self.splats = ["splat1","splat2","splat3","splat4"]
+        self.splatsound = str(self.splats[(randint(0, 3))])
+        self.hitsound = load_sfx(self.splatsound)
 
     def jump(self):
         if not self.off_ground:
@@ -237,7 +243,7 @@ class Player(Sprite):
                 
             #land
             if self.rect.bottom >= rect.top and prev_rect.bottom <= rect.top:
-                if sprite.state == 0:
+                if sprite.state == 0 or sprite.state == 3:
                     if not self.has_played:
                         self.bark = load_sfx("bark")
                         self.bark.play()
@@ -252,8 +258,11 @@ class Player(Sprite):
 
         if self.dying == True:  #death pause
             if self.diefalling == True:
-                self.fallingsound.play()
-                self.dyingcounter += dt *30
+                self.dyingcounter += dt*3
+                if not self.has_fallen:
+                    self.fallingsound.play()
+                    self.has_fallen = True
+                    self.diefalling = False
             else:
                 self.dyingcounter += dt*10
             if self.dyingcounter > 2:
@@ -285,8 +294,10 @@ class Player(Sprite):
             for RegPuppy in self.touches(self.level.pups):
                 #killed by puppy
                 if RegPuppy.state == 1 or RegPuppy.state == 2 or RegPuppy.state == 4:
-                    self.hitsound = load_sfx("hit")
-                    self.hitsound.play()
+                    if not self.has_splat:
+                        self.hitsound.play()
+                        self.fallingsound.play()
+                        self.has_splat = True
                     self.vx = 0
                     self.vy = 0
                     self.dying = True
