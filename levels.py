@@ -5,9 +5,7 @@ from pygame.sprite import Sprite, Group, GroupSingle, groupcollide
 from puppies import Puppy, RegPuppy, Bouncer, Fire, Gold
 from resources import load_image, play_song
 
-#jungle = 0, 150, 0
-cliff = 200, 150, 0
-lab = 80, 80, 80
+blinkcounter = 0
 
 class TiledImage(object):
     def __init__(self, image, rect=None):
@@ -40,7 +38,6 @@ class TiledImage(object):
 class Tile(Sprite):
     def __init__(self, loc, size, img):
         self.size = size
-        self.color = color
         Sprite.__init__(self)
         self.image = Surface(self.size)
         self.rect = self.image.get_rect()
@@ -51,16 +48,9 @@ class Tile(Sprite):
         self.state = "tile"
 
 class Door(Sprite):
-  #  size = 30,50
-    color = 0,0,0
-
     def __init__(self, loc):
         Sprite.__init__(self)
-      #  self.image = self.door
-       # self.rect = self.image.get_rect()
-        self.rect.bottomleft = loc
-      #  self.image.fill(self.color)
-        
+        self.rect.bottomleft = loc        
 
 class TreeDoor(Door):
     def __init__(self, loc):
@@ -73,7 +63,6 @@ class TreeDoor(Door):
 
     def draw(self, screen):
         rect = self.door.get_rect()
-      #  rect.center = self.rect.center
         screen.blit(self.door, rect)
 
 class CliffDoor(Door):
@@ -87,7 +76,6 @@ class CliffDoor(Door):
 
     def draw(self, screen):
         rect = self.door.get_rect()
-      #  rect.center = self.rect.center
         screen.blit(self.door, rect)
 
 class LabDoor(Door):
@@ -175,7 +163,15 @@ class Between(Level):
     def __init__(self):
         self.state = 0
 
-    def draw(self, screen):
+    def blinker(self, dt):
+        global blinkcounter
+        blinkcounter += dt/10
+        if blinkcounter > 100:
+            blinkcounter = 0
+        return blinkcounter
+
+    def draw(self, screen, dt):
+        self.dt = dt
         bounds = screen.get_rect()
         file_in = open("score.txt","r")
         for line in file_in:
@@ -212,11 +208,15 @@ class Between(Level):
                 screen.blit(self.award, rect)
 
         if self.state != "menu" and self.state != "last":
-            font = pygame.font.Font(pixfont, 15)
-            self.cont = font.render("PRESS SPACE TO CONTINUE", True, self.fg_color)
-            rect = self.cont.get_rect()
-            rect.center = bounds.centerx, bounds.centery + bounds.height /2.5
-            screen.blit(self.cont, rect)
+          #  print self.blinker(dt)
+            if self.blinker(dt) > 50:
+                font = pygame.font.Font(pixfont, 15)
+                self.cont = font.render("PRESS SPACE TO CONTINUE", True, self.fg_color)
+                rect = self.cont.get_rect()
+                rect.center = bounds.centerx, bounds.centery + bounds.height /2.5
+                screen.blit(self.cont, rect)
+            else:
+                pass
 
 class Menu(Between):   #finish later
     song = "menu"
@@ -229,6 +229,7 @@ class Menu(Between):   #finish later
         self.spawn = (0, 160)
         self.newlvlnum = 0
         self.inst = False
+        self.done = False
 
     def draw(self, screen):
         bounds = screen.get_rect()
@@ -236,7 +237,7 @@ class Menu(Between):   #finish later
         rect.center = bounds.centerx, bounds.centery
         screen.blit(self.bg, rect)
 
-    def draw_titles(self, screen):
+    def draw_titles(self, screen, dt):
         bounds = screen.get_rect()
         pygame.font.init()
         pixfont = "./data/fonts/pixelated.ttf"
@@ -244,27 +245,44 @@ class Menu(Between):   #finish later
         if self.inst == False:
             self.newgame = font.render(("NEW GAME"), True, self.fg_color)
             self.newgamerect = self.newgame.get_rect()
-            self.newgamerect.center = bounds.centerx - 220, bounds.centery
+            self.newgamerect.center = bounds.centerx - 210, bounds.centery - 30
             screen.blit(self.newgame, self.newgamerect)
 
             self.contgame = font.render(("CONTINUE GAME"), True, self.fg_color)
             self.contgamerect = self.contgame.get_rect()
-            self.contgamerect.center = bounds.centerx - 220, bounds.centery + 60
+            self.contgamerect.center = bounds.centerx - 210, bounds.centery + 30
             screen.blit(self.contgame, self.contgamerect)
 
             self.instructions = font.render(("INSTRUCTIONS"), True, self.fg_color)
             self.instrect = self.instructions.get_rect()
-            self.instrect.center = bounds.centerx - 220, bounds.centery + 120
+            self.instrect.center = bounds.centerx - 210, bounds.centery + 90
             screen.blit(self.instructions, self.instrect)
+
+            font = pygame.font.Font(pixfont, 20)
+            self.quit = font.render(("EXIT GAME"), True, self.fg_color)
+            self.quitrect = self.quit.get_rect()
+            self.quitrect.center = bounds.centerx - 210, bounds.centery + 145
+            screen.blit(self.quit, self.quitrect)
 
         if self.inst == True:
             self.bg = load_image("instructions.png")
+            if self.blinker(dt/2) > 50:
+                font = pygame.font.Font(pixfont, 18)
+                self.cont = font.render("PRESS X TO RETURN TO MENU", True, self.fg_color)
+                rect = self.cont.get_rect()
+                rect.center = bounds.centerx + 270, bounds.centery - 150
+                screen.blit(self.cont, rect)
         elif self.inst == False:
             self.bg = load_image("menu.png")
 
     def update(self):
         self.mouse = pygame.mouse.get_pos()
         for event in pygame.event.get():
+            keystate = pygame.key.get_pressed()
+            if event.type == QUIT:
+                self.done = True
+            elif event.type == KEYDOWN and event.key == K_ESCAPE:
+                self.done = True
             if event.type == MOUSEBUTTONDOWN:
                 if self.newgamerect.collidepoint(event.pos):
                     file_out = open("score.txt", "w") #reset score
@@ -284,6 +302,9 @@ class Menu(Between):   #finish later
 
                 if self.instrect.collidepoint(event.pos):
                     self.inst = True
+
+                if self.quitrect.collidepoint(event.pos):
+                    self.done = True
 
             if event.type == KEYDOWN and event.key == K_x:
                 self.inst = False

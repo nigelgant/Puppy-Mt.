@@ -41,12 +41,17 @@ def main():
     clock = pygame.time.Clock()
     
     while not done:
-        while in_menu == True:
+        dt = clock.tick(30)
+
+        while in_menu == True:  #Main menu
             lvl = lvls[0]
             lvl.update()
             lvl.draw(screen)
-            lvl.draw_titles(screen)
+            lvl.draw_titles(screen, dt)
             pygame.display.flip()
+            if lvl.done == True:
+                done = True
+                in_menu = False
             if lvl.newlvlnum > 0:
                 in_menu = False
                 level = lvl.newlvlnum
@@ -106,15 +111,15 @@ def main():
         player.level = lvl
 
         #update
-        dt = clock.tick(30)
+      #  dt = clock.tick(30)
         if lvl.state == 1:
             pass
       #      lvl.draw_hud(screen, player)
         else:
-            lvl.draw(screen)
+            lvl.draw(screen, dt)
         if lvl.state == "menu":
             lvl.update()
-            lvl.draw_titles(screen)
+            lvl.draw_titles(screen, dt)
 
         if lvl.state == 1:
             player.update(dt)

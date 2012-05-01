@@ -8,6 +8,8 @@ from levels import Tile
 from resources import load_image, load_sfx
 from spritesheet import SpriteSheet
 from anim import Animation
+from random import randint
+
 
 class PlayerAnimation(Animation):
     _rows = {(1, 0): 0,
@@ -109,11 +111,13 @@ class Player(Sprite):
         self.whistlecount = 0
         self.treatcount = 0
         self.dyingcounter = 0
-
-       # file_in = open("score.txt","r")
-       # for line in file_in:
-        #    self.scorenum = str(line)
+        self.diefalling = False
         self.scorenum = 0
+        self.has_played = False
+
+        self.falls = ["fall1","fall2","fall3","fall4","fall5","fall6"]
+        self.fallsound = str(self.falls[(randint(0, 5))])
+        self.fallingsound = load_sfx(self.fallsound)
 
     def jump(self):
         if not self.off_ground:
@@ -158,7 +162,7 @@ class Player(Sprite):
                 touching.add(sprite)
         return touching
     
-    def die(self):
+    def die(self, dt):
         self.level.reset()
         self.__init__(self.level.spawn, self.level, self.bounds)
 
@@ -217,7 +221,7 @@ class Player(Sprite):
         prev_rect = self.rect
         self.rect = self.rect.move(dx, dy)
         self.off_ground = True
-
+        
         for sprite in self.touches(self.level.tiles):
             rect = sprite.rect
 
@@ -233,16 +237,29 @@ class Player(Sprite):
                 
             #land
             if self.rect.bottom >= rect.top and prev_rect.bottom <= rect.top:
+                if sprite.state == 0:
+                    if not self.has_played:
+                        self.bark = load_sfx("bark")
+                        self.bark.play()
+                        self.has_played = True
+                
                 self.vy = 0
                 self.rect.bottom = rect.top
                 self.off_ground = False
+            
+        if self.has_played and self.off_ground:
+            self.has_played = False
 
         if self.dying == True:  #death pause
-            self.dyingcounter += dt*10
+            if self.diefalling == True:
+                self.fallingsound.play()
+                self.dyingcounter += dt *30
+            else:
+                self.dyingcounter += dt*10
             if self.dyingcounter > 2:
                 self.dying = False
         if self.dyingcounter > 2:
-            self.die()
+            self.die(dt)
 
         #collide doors
         for sprite in self.touches(self.level.door):
@@ -252,6 +269,7 @@ class Player(Sprite):
 
         #fall off bottom
         if self.rect.bottom > self.bounds.bottom:
+            self.diefalling = True
             self.dying = True
 
         if self.rect.left < self.bounds.left: #left side of screen
@@ -265,19 +283,6 @@ class Player(Sprite):
         for sprite in self.touches(self.level.pups):
             rect = sprite.rect
             for RegPuppy in self.touches(self.level.pups):
-                if RegPuppy.state == 0:
-                #collide top of regpuppy
-                    if self.rect.bottom >= rect.top and prev_rect.bottom <= rect.top: 
-                        self.vy = 0
-                        self.rect.bottom = rect.top
-                        self.off_ground = False
-
-                #collide side of regpuppy:
-                    if self.rect.left <= rect.right and prev_rect.left >= rect.right:
-                        self.rect.left = rect.right
-                    if self.rect.right >= rect.left and prev_rect.right <= rect.left:
-                        self.rect.right = rect.left
-                 
                 #killed by puppy
                 if RegPuppy.state == 1 or RegPuppy.state == 2 or RegPuppy.state == 4:
                     self.hitsound = load_sfx("hit")
@@ -286,7 +291,6 @@ class Player(Sprite):
                     self.vy = 0
                     self.dying = True
       
-
                 #collect gold puppy
                 elif RegPuppy.state == 5:
                     self.goldsound = load_sfx("collect")
