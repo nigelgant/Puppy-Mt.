@@ -230,6 +230,7 @@ class Menu(Between):   #finish later
         self.newlvlnum = 0
         self.inst = False
         self.done = False
+        self.mute = False
 
     def draw(self, screen):
         bounds = screen.get_rect()
@@ -283,6 +284,14 @@ class Menu(Between):   #finish later
                 self.done = True
             elif event.type == KEYDOWN and event.key == K_ESCAPE:
                 self.done = True
+            if event.type == KEYDOWN and event.key == K_m: #mute
+                if self.mute == False:
+                    self.mute = True
+                    pygame.mixer.music.pause()
+                elif self.mute == True:
+                    self.mute = False
+                    pygame.mixer.music.unpause()
+                    
             if event.type == MOUSEBUTTONDOWN:
                 if self.newgamerect.collidepoint(event.pos):
                     file_out = open("score.txt", "w") #reset score

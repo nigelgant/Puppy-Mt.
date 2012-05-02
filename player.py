@@ -125,18 +125,20 @@ class Player(Sprite):
         self.splatsound = str(self.splats[(randint(0, 3))])
         self.hitsound = load_sfx(self.splatsound)
 
-    def jump(self):
+    def jump(self, mute):
         if not self.off_ground:
             self.off_ground = True
             self.vy = 280 #jump speed
             self.jumpsound = load_sfx("jump")
-            self.jumpsound.play()
+            if mute == False:
+                self.jumpsound.play()
 
-    def whistle(self):
+    def whistle(self, mute):
         if self.whistlecount < self.level.wlimit and self.level.wlimit > 0:
             soundwave = Wave(self.bounds, self.level, self.facing)
             self.whistlesound = load_sfx("whistle")
-            self.whistlesound.play()
+            if mute == False:
+                self.whistlesound.play()
             if self.facing == "right":
                 soundwave.rect.left = self.rect.right
                 soundwave.rect.midleft = self.rect.midright
@@ -146,11 +148,12 @@ class Player(Sprite):
             self.waves.add(soundwave)
             self.whistlecount += 1
 
-    def throw(self):
+    def throw(self, mute):
         if self.treatcount < self.level.tlimit and self.level.tlimit > 0:
             treat = Treat(self.bounds, self.level, self.facing)
             self.throwsound = load_sfx("throw")
-            self.throwsound.play()
+            if mute == False:
+                self.throwsound.play()
             if self.facing == "right":
                 treat.rect.left = self.rect.right
                 treat.rect.midleft = self.rect.midright
@@ -199,7 +202,8 @@ class Player(Sprite):
         self.__init__(self.level.spawn, self.level, self.bounds)
         
        
-    def update(self, dt):
+    def update(self, dt, mute):
+        self.mute = mute
         #animation
         self.anim.update(dt)
         self.image = self.anim.get_current_frame()
@@ -246,7 +250,8 @@ class Player(Sprite):
                 if sprite.state == 0 or sprite.state == 3:
                     if not self.has_played:
                         self.bark = load_sfx("bark")
-                        self.bark.play()
+                        if self.mute == False:
+                            self.bark.play()
                         self.has_played = True
                 
                 self.vy = 0
@@ -273,7 +278,8 @@ class Player(Sprite):
         #collide doors
         for sprite in self.touches(self.level.door):
             self.endsound = load_sfx("endlevel")
-            self.endsound.play()
+            if self.mute == False:
+                self.endsound.play()
             self.endlevel()
 
         #fall off bottom
@@ -295,8 +301,9 @@ class Player(Sprite):
                 #killed by puppy
                 if RegPuppy.state == 1 or RegPuppy.state == 2 or RegPuppy.state == 4:
                     if not self.has_splat:
-                        self.hitsound.play()
-                        self.fallingsound.play()
+                        if self.mute == False:
+                            self.hitsound.play()
+                            self.fallingsound.play()
                         self.has_splat = True
                     self.vx = 0
                     self.vy = 0
@@ -305,7 +312,8 @@ class Player(Sprite):
                 #collect gold puppy
                 elif RegPuppy.state == 5:
                     self.goldsound = load_sfx("collect")
-                    self.goldsound.play()
+                    if self.mute == False:
+                        self.goldsound.play()
                     RegPuppy.kill()
                     self.scorenum += 1
                     self.level.score = self.scorenum

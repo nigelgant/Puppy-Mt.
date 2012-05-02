@@ -34,6 +34,8 @@ def main():
     lvl = lvls[0]  #starting level
 
     in_menu = True
+    mute = False
+
     player = Player(lvl.spawn, lvl, bounds)
     player_grp = GroupSingle(player) #spritegroup for player
     #game loop
@@ -54,6 +56,7 @@ def main():
                 in_menu = False
             if lvl.newlvlnum > 0:
                 in_menu = False
+                mute = lvl.mute
                 level = lvl.newlvlnum
                 lvl = lvls[lvl.newlvlnum]
                 if lvl.state == 1:
@@ -67,6 +70,7 @@ def main():
                     file_out.write(level)  #temp
                     file_out.close()   #temp
 
+                """
                     if lvl.type == "jungle":
                         lvl.song = "jungle1"
                         play_song(lvl.song)
@@ -76,6 +80,7 @@ def main():
                     elif lvl.type == "lab":
                         lvl.song = "lab"
                         play_song(lvl.song)
+                  """
         # input
         for event in pygame.event.get():
             keystate = pygame.key.get_pressed()
@@ -86,18 +91,26 @@ def main():
         
             if lvl.state == 1 and player.dying == False:
                 if event.type == KEYDOWN and event.key == K_UP:
-                    player.jump()
+                    player.jump(mute)
                 elif event.type == KEYDOWN and event.key == K_r:  #reset level
                     player.reset()
                 elif event.type == KEYDOWN and event.key == K_x: #whistle
-                    player.whistle()
+                    player.whistle(mute)
                 elif event.type == KEYDOWN and event.key == K_z: #throw
-                    player.throw()
+                    player.throw(mute)
 
-            elif lvl.state == 0 or lvl.state == 3:
+            if lvl.state == 0 or lvl.state == 1 or lvl.state == 2 or lvl.state == 3 or lvl.state == "last":
+                if event.type == KEYDOWN and event.key == K_m: #mute
+                    if mute == False:
+                        mute = True
+                    elif mute == True: #unmute
+                        mute = False
+
+            if lvl.state == 0 or lvl.state == 3:
                 if event.type == KEYDOWN and event.key == K_SPACE:
                     player.endlevel()
                     play_song(lvl.song)
+
             if lvl.state != "menu" and lvl.state != "last":  #temporary: for skipping levels
                 if event.type == KEYDOWN and event.key == K_k:
                     player.endlevel()
@@ -110,11 +123,15 @@ def main():
         lvl = lvls[lvlnum]
         player.level = lvl
 
+        if mute == True:
+            pygame.mixer.music.set_volume(0.0)
+        elif mute == False:
+            pygame.mixer.music.set_volume(1.0)
+
         #update
       #  dt = clock.tick(30)
         if lvl.state == 1:
             pass
-      #      lvl.draw_hud(screen, player)
         else:
             lvl.draw(screen, dt)
         if lvl.state == "menu":
@@ -122,7 +139,7 @@ def main():
             lvl.draw_titles(screen, dt)
 
         if lvl.state == 1:
-            player.update(dt)
+            player.update(dt, mute)
             player.waves.update()
             player.treats.update()
             lvl.pups.update(dt, bounds)
