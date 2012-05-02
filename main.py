@@ -70,7 +70,7 @@ def main():
                     file_out.write(level)  #temp
                     file_out.close()   #temp
 
-                """
+                
                     if lvl.type == "jungle":
                         lvl.song = "jungle1"
                         play_song(lvl.song)
@@ -80,7 +80,7 @@ def main():
                     elif lvl.type == "lab":
                         lvl.song = "lab"
                         play_song(lvl.song)
-                  """
+                  
         # input
         for event in pygame.event.get():
             keystate = pygame.key.get_pressed()
