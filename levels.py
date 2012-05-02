@@ -966,7 +966,7 @@ class L15(Level):
         pup9 = Fire((240, -80), (1, 1), 60, self.tiles)
         pup10 = Fire((600, -80), (0, 2), 65, self.tiles)
         pup11 = Fire((880, 60), (-1, 1), 50, self.tiles)
-        pup12 = Gold((245, 320))
+        pup12 = Gold((140, 320))
 
         self.pups = Group(pup1, pup2, pup3, pup4, pup5, pup6, pup7, pup8, pup9, pup10, pup11, pup12)
 

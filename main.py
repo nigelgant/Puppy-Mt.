@@ -90,7 +90,7 @@ def main():
                 done = True
         
             if lvl.state == 1 and player.dying == False:
-                if event.type == KEYDOWN and event.key == K_UP:
+                if event.type == KEYDOWN and event.key == K_UP or event.key == K_SPACE:
                     player.jump(mute)
                 elif event.type == KEYDOWN and event.key == K_r:  #reset level
                     player.reset()
